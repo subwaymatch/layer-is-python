@@ -47,11 +47,18 @@ image.clone() \
     .overlay(np.array([1.0, 0, 0.54]), 0.5) \
     .save('puppy_overlay50.jpg')
 
+image.clone() \
+    .soft_light('#00a2ff', 0.85) \
+    .save('puppy_soft_light85.jpg')
 
-
+image.clone() \
+    .grayscale() \
+    .hard_light('#6feb00', 0.75) \
+    .save('puppy_hard_light85.jpg')
 
 """
 
 image.clone() \
-    .soft_light('#00a2ff', 0.85) \
-    .save('puppy_soft_light85.jpg')
+    .grayscale() \
+    .hard_light('#6feb00', 0.75) \
+    .save('puppy_hard_light85.jpg')

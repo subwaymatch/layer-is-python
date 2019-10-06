@@ -155,6 +155,18 @@ class LayerImage():
         return self
 
     def hard_light(self, blend_data, opacity=1.0):
+        blend_data = get_rgb_float_if_hex(blend_data)
+
+        A = self.image_data
+        B = blend_data
+
+        data01 = (2 * A) * B
+        data02 = 1 - 2 * (1 - A) * (1 - B)
+
+        result = np.where(blend_data <= 0.5, data01, data02)
+
+        self.image_data = mix(self.image_data, result, opacity)
+
         return self
 
     def vivid_light(self, blend_data, opacity=1.0):
