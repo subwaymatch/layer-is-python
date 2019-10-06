@@ -83,10 +83,6 @@ image.clone() \
     .hue(0.2) \
     .save('puppy_hue.jpg')
 
-
-
-"""
-
 image.clone() \
     .saturation(-0.5) \
     .save('puppy_desaturate.jpg')
@@ -94,3 +90,18 @@ image.clone() \
 image.clone() \
     .saturation(0.3) \
     .save('puppy_saturate.jpg')
+
+image.clone() \
+    .lightness(-0.8) \
+    .save('puppy_lightness_negative80.jpg')
+
+image.clone() \
+    .lightness(0.3) \
+    .save('puppy_lightness30.jpg')
+
+
+"""
+
+image.clone() \
+    .curve('r', [0, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.8, 0.9, 0.95, 1.0]) \
+    .save('puppy_curve_red_boost.jpg')
