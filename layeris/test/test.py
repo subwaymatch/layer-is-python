@@ -56,9 +56,21 @@ image.clone() \
     .hard_light('#6feb00', 0.75) \
     .save('puppy_hard_light85.jpg')
 
+image.clone() \
+    .grayscale() \
+    .vivid_light('#b4ff00', 0.80) \
+    .save('puppy_vivid_light80.jpg')
+
+
 """
 
 image.clone() \
     .grayscale() \
-    .hard_light('#6feb00', 0.75) \
-    .save('puppy_hard_light85.jpg')
+    .linear_light('#c853ff', 0.70) \
+    .save('puppy_linear_light70.jpg')
+
+
+image.clone() \
+    .grayscale() \
+    .pin_light('#c853ff', 0.70) \
+    .save('puppy_pin_light70.jpg')
