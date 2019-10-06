@@ -10,5 +10,5 @@ print('hello world')
 image = LayerImage.from_file(filename)
 
 image\
-    .multiply('#65ebff', 0.36) \
-    .save('puppy_multiply_36.jpg') \
+    .grayscale() \
+    .save('aaa.jpg')

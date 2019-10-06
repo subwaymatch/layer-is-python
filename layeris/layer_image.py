@@ -3,7 +3,8 @@ import urllib
 import requests
 import numpy as np
 import matplotlib
-from .utils.data_type import convert_uint_to_float, convert_float_to_uint, hex_to_rgb_float
+from .utils.conversions import convert_uint_to_float, convert_float_to_uint, round_to_uint, get_rgb_float_if_hex
+from .utils.layers import mix
 
 
 class LayerImage():
@@ -18,6 +19,10 @@ class LayerImage():
 
         return LayerImage(image_data)
 
+    @staticmethod
+    def from_array(image_data):
+        return LayerImage(image_data)
+
     def __init__(self, image_data):
         self.image_data = image_data
 
@@ -25,33 +30,28 @@ class LayerImage():
         self.image_data = np.dot(self.image_data[..., :3], [
                                  0.2989, 0.5870, 0.1140])
 
+        self.image_data = np.stack(
+            (self.image_data,) * 3, axis=-1)
+
+        print(self.image_data.shape)
+
         return self
 
     def darken(self, blend_data, opacity=1.0):
-        if isinstance(blend_data, str):
-            blend_data = hex_to_rgb_float(blend_data)
+        blend_data = get_rgb_float_if_hex(blend_data)
 
         result = np.minimum(self.image_data, blend_data)
 
-        if opacity < 1.0:
-            self.image_data = self.image_data * \
-                (1.0 - opacity) + result * opacity
-        else:
-            self.image_data = result
+        self.image_data = mix(self.image_data, result, opacity)
 
         return self
 
     def multiply(self, blend_data, opacity=1.0):
-        if isinstance(blend_data, str):
-            blend_data = hex_to_rgb_float(blend_data)
+        blend_data = get_rgb_float_if_hex(blend_data)
 
         result = self.image_data * blend_data
 
-        if opacity < 1.0:
-            self.image_data = self.image_data * \
-                (1.0 - opacity) + result * opacity
-        else:
-            self.image_data = result
+        self.image_data = mix(self.image_data, result, opacity)
 
         return self
 
@@ -109,6 +109,9 @@ class LayerImage():
 
     def curve_adjustment(self, channel='rgb', curve_points=[0, 1]):
         return self
+
+    def clone(self):
+        return LayerImage.from_array(self.image_data)
 
     def save(self, filename):
         pillow_image = Image.fromarray(convert_float_to_uint(self.image_data))
