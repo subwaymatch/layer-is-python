@@ -214,16 +214,31 @@ class LayerImage():
         return self
 
     def brightness(self, factor):
+        self.image_data = np.clip(self.image_data * (1 + factor), 0, 1)
+
         return self
 
     # Legacy contrast mode
     def contrast(self, factor):
+        self.image_data = np.clip(factor * (self.image_data - 0.5) + 0.5, 0, 1)
+
         return self
 
     def hue(self, target_hue):
+        image_hsv_data = matplotlib.colors.rgb_to_hsv(self.image_data)
+        image_hsv_data[:, :, 0] = target_hue
+
+        self.image_data = matplotlib.colors.hsv_to_rgb(image_hsv_data)
+
         return self
 
     def saturation(self, factor):
+        image_hsv_data = matplotlib.colors.rgb_to_hsv(self.image_data)
+        image_hsv_data = np.clip(
+            image_hsv_data + image_hsv_data * [0, factor, 0], 0, 1)
+
+        self.image_data = matplotlib.colors.hsv_to_rgb(image_hsv_data)
+
         return self
 
     def lightness(self, factor):

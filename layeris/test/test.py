@@ -61,11 +61,7 @@ image.clone() \
     .vivid_light('#b4ff00', 0.80) \
     .save('puppy_vivid_light80.jpg')
 
-
-"""
-
 image.clone() \
-    .grayscale() \
     .linear_light('#c853ff', 0.70) \
     .save('puppy_linear_light70.jpg')
 
@@ -74,3 +70,27 @@ image.clone() \
     .grayscale() \
     .pin_light('#c853ff', 0.70) \
     .save('puppy_pin_light70.jpg')
+
+image.clone() \
+    .brightness(0.3) \
+    .save('puppy_brightness30.jpg')
+
+image.clone() \
+    .contrast(1.15) \
+    .save('puppy_contrast115.jpg')
+
+image.clone() \
+    .hue(0.2) \
+    .save('puppy_hue.jpg')
+
+
+
+"""
+
+image.clone() \
+    .saturation(-0.5) \
+    .save('puppy_desaturate.jpg')
+
+image.clone() \
+    .saturation(0.3) \
+    .save('puppy_saturate.jpg')
