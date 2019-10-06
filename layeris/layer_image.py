@@ -1,8 +1,10 @@
 from PIL import Image
+from io import BytesIO
 import urllib
 import requests
 import numpy as np
 import matplotlib
+import json
 from .utils.conversions import convert_uint_to_float, convert_float_to_uint, round_to_uint, get_rgb_float_if_hex, get_array_from_hex
 from .utils.layers import mix
 from .utils.channels import split_image_into_channels, merge_channels, channel_adjust
@@ -11,7 +13,11 @@ from .utils.channels import split_image_into_channels, merge_channels, channel_a
 class LayerImage():
     @staticmethod
     def from_url(url):
-        pass
+        response = requests.get(url)
+        image = Image.open(BytesIO(response.content))
+        image_data = convert_uint_to_float(np.asarray(image))
+
+        return LayerImage(image_data)
 
     @staticmethod
     def from_file(file_path):
@@ -251,14 +257,14 @@ class LayerImage():
 
         return self
 
-    def curve(self, channel='rgb', curve_points=[0, 1]):
+    def curve(self, channels='rgb', curve_points=[0, 1]):
         r, g, b = split_image_into_channels(self.image_data)
 
-        if 'r' in channel:
+        if 'r' in channels:
             r = channel_adjust(r, curve_points)
-        if 'g' in channel:
+        if 'g' in channels:
             g = channel_adjust(g, curve_points)
-        if 'b' in channel:
+        if 'b' in channels:
             b = channel_adjust(b, curve_points)
 
         self.image_data = merge_channels(r, g, b)
@@ -272,7 +278,84 @@ class LayerImage():
         return self.image_data
 
     def apply_from_json(self, filepath):
-        pass
+        with open(filepath, 'r') as content_file:
+            content = content_file.read()
+
+        json_obj = json.loads(content)
+        operations = json_obj['operations']
+
+        for op in operations:
+            hex_string = op['hex'] if 'hex' in op else None
+            opacity = op['opacity'] if 'opacity' in op else 1.0
+            factor = op['factor'] if 'factor' in op else None
+
+            if op['type'] == 'grayscale':
+                print('grayscale')
+                self.grayscale()
+            elif op['type'] == 'darken':
+                if hex_string is not None:
+                    self.darken(hex_string, opacity)
+            elif op['type'] == 'multiply':
+                if hex_string is not None:
+                    self.multiply(hex_string, opacity)
+            elif op['type'] == 'color_burn':
+                if hex_string is not None:
+                    self.color_burn(hex_string, opacity)
+            elif op['type'] == 'linear_burn':
+                if hex_string is not None:
+                    self.linear_burn(hex_string, opacity)
+            elif op['type'] == 'lighten':
+                if hex_string is not None:
+                    self.lighten(hex_string, opacity)
+            elif op['type'] == 'screen':
+                if hex_string is not None:
+                    self.screen(hex_string, opacity)
+            elif op['type'] == 'color_dodge':
+                if hex_string is not None:
+                    self.color_dodge(hex_string, opacity)
+            elif op['type'] == 'linear_dodge':
+                if hex_string is not None:
+                    self.linear_dodge(hex_string, opacity)
+            elif op['type'] == 'overlay':
+                if hex_string is not None:
+                    self.overlay(hex_string, opacity)
+            elif op['type'] == 'soft_light':
+                if hex_string is not None:
+                    self.soft_light(hex_string, opacity)
+            elif op['type'] == 'hard_light':
+                if hex_string is not None:
+                    self.hard_light(hex_string, opacity)
+            elif op['type'] == 'vivid_light':
+                if hex_string is not None:
+                    self.vivid_light(hex_string, opacity)
+            elif op['type'] == 'linear_light':
+                if hex_string is not None:
+                    self.linear_light(hex_string, opacity)
+            elif op['type'] == 'pin_light':
+                if hex_string is not None:
+                    self.pin_light(hex_string, opacity)
+            elif op['type'] == 'brightness':
+                if factor is not None:
+                    self.brightness(factor)
+            elif op['type'] == 'contrast':
+                if factor is not None:
+                    self.contrast(factor)
+            elif op['type'] == 'hue':
+                if 'hue' in op:
+                    self.hue(op['hue'])
+            elif op['type'] == 'saturation':
+                if factor is not None:
+                    self.saturation(factor)
+            elif op['type'] == 'lightness':
+                if factor is not None:
+                    self.lightness(factor)
+            elif op['type'] == 'curve':
+                if 'channels' in op and 'curve_points' in op:
+                    self.curve(op['channels'], op['curve_points'])
+            else:
+                pass
+
+        return self
 
     def save(self, filename, quality=75):
         pillow_image = Image.fromarray(convert_float_to_uint(self.image_data))

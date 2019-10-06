@@ -7,7 +7,11 @@ from layeris.layer_image import LayerImage
 
 dirname = os.path.dirname(__file__)
 
-files = ['puppy.jpg', 'woman.jpg', 'light_trace.jpg', 'hong_kong.jpg']
+# files = ['puppy.jpg', 'woman.jpg',
+#          'light_trace.jpg', 'car.jpg']
+
+# files = ['office.jpg', 'bus.jpg']
+files = ['office.jpg']
 
 for filename in files:
     filepath = os.path.join(dirname, filename)
@@ -16,6 +20,9 @@ for filename in files:
 
     image = LayerImage.from_file(filepath)
 
+    image.apply_from_json('seoul_blues.json').save('json_test.jpg')
+
+    """
     image.clone() \
         .grayscale() \
         .save(f'{file_save_prefix}_grayscale.jpg')\
@@ -108,3 +115,4 @@ for filename in files:
     image.clone() \
         .curve('r', [0, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.8, 0.9, 0.95, 1.0]) \
         .save(f'{file_save_prefix}_curve_red_boost.jpg')
+    """
