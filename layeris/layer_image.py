@@ -3,7 +3,7 @@ import urllib
 import requests
 import numpy as np
 import matplotlib
-from .utils.conversions import convert_uint_to_float, convert_float_to_uint, round_to_uint, get_rgb_float_if_hex
+from .utils.conversions import convert_uint_to_float, convert_float_to_uint, round_to_uint, get_rgb_float_if_hex, get_array_from_hex
 from .utils.layers import mix
 
 
@@ -33,8 +33,6 @@ class LayerImage():
         self.image_data = np.stack(
             (self.image_data,) * 3, axis=-1)
 
-        print(self.image_data.shape)
-
         return self
 
     def darken(self, blend_data, opacity=1.0):
@@ -56,27 +54,104 @@ class LayerImage():
         return self
 
     def color_burn(self, blend_data, opacity=1.0):
+        blend_data = get_rgb_float_if_hex(blend_data)
+
+        A = self.image_data
+        B = blend_data
+
+        with np.errstate(divide='ignore', invalid='ignore'):
+            result = np.clip(np.where(B > 0, 1 - (1 - A) / B, 0), 0, 1)
+
+        self.image_data = mix(self.image_data, result, opacity)
+
         return self
 
     def linear_burn(self, blend_data, opacity=1.0):
+        blend_data = get_rgb_float_if_hex(blend_data)
+
+        A = self.image_data
+        B = blend_data
+
+        result = np.clip(A + B - 1, 0, 1)
+
+        self.image_data = mix(self.image_data, result, opacity)
+
         return self
 
     def lighten(self, blend_data, opacity=1.0):
+        blend_data = get_rgb_float_if_hex(blend_data)
+
+        result = np.maximum(self.image_data, blend_data)
+
+        self.image_data = mix(self.image_data, result, opacity)
+
         return self
 
     def screen(self, blend_data, opacity=1.0):
+        blend_data = get_rgb_float_if_hex(blend_data)
+
+        A = self.image_data
+        B = blend_data
+
+        result = 1 - (1 - A) * (1 - B)
+
+        self.image_data = mix(self.image_data, result, opacity)
+
         return self
 
     def color_dodge(self, blend_data, opacity=1.0):
+        blend_data = get_rgb_float_if_hex(blend_data)
+
+        A = self.image_data
+        B = blend_data
+
+        with np.errstate(divide='ignore', invalid='ignore'):
+            result = np.where(B == 1, B, np.clip(A / (1 - B), 0, 1))
+
+        self.image_data = mix(self.image_data, result, opacity)
+
         return self
 
     def linear_dodge(self, blend_data, opacity=1.0):
+        blend_data = get_rgb_float_if_hex(blend_data)
+
+        A = self.image_data
+        B = blend_data
+
+        result = np.clip(A + B, 0, 1)
+
+        self.image_data = mix(self.image_data, result, opacity)
+
         return self
 
     def overlay(self, blend_data, opacity=1.0):
+        blend_data = get_rgb_float_if_hex(blend_data)
+
+        A = self.image_data
+        B = blend_data
+
+        data01 = (2 * A) * B
+        data02 = 1 - 2 * (1 - A) * (1 - B)
+
+        result = np.where(A <= 0.5, data01, data02)
+
+        self.image_data = mix(self.image_data, result, opacity)
+
         return self
 
     def soft_light(self, blend_data, opacity=1.0):
+        blend_data = get_rgb_float_if_hex(blend_data)
+
+        A = self.image_data
+        B = blend_data
+
+        data01 = 2 * A * B + np.square(A) * (1 - 2 * B)
+        data02 = np.sqrt(A) * (2 * B - 1) + (2 * A) * (1 - B)
+
+        result = np.where(blend_data <= 0.5, data01, data02)
+
+        self.image_data = mix(self.image_data, result, opacity)
+
         return self
 
     def hard_light(self, blend_data, opacity=1.0):
@@ -112,6 +187,9 @@ class LayerImage():
 
     def clone(self):
         return LayerImage.from_array(self.image_data)
+
+    def get_image_as_array(self):
+        return self.image_data
 
     def save(self, filename):
         pillow_image = Image.fromarray(convert_float_to_uint(self.image_data))
