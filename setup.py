@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="layeris",
-    version="0.1.0",
+    version="0.1.1",
     author="Ye Joo Park",
     author_email="subwaymatch@gmail.com",
     description="An open source image processing library that supports blend modes, curve adjustment, and other adjustments that graphic designers or photographers frequently use",
