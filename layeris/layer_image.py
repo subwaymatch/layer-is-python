@@ -271,9 +271,11 @@ class LayerImage():
     def get_image_as_array(self):
         return self.image_data
 
+    def apply_from_json(self, filepath):
+        pass
+
     def save(self, filename, quality=75):
         pillow_image = Image.fromarray(convert_float_to_uint(self.image_data))
-
         pillow_image.save(filename, quality=quality)
 
         return self
