@@ -63,30 +63,52 @@ image.grayscale()
 
 #### Darken
 ```
-image().grayscale().darken('#3fe28f')
+grayscale_image.darken('#3fe28f')
 ```
 ![sample_darken](https://user-images.githubusercontent.com/1064036/66762165-6b317880-eee0-11e9-960c-560d4f021aa2.jpg)
 
 #### Multiply
 ```
-image().grayscale().multiply('#3fe28f')
+grayscale_image.multiply('#3fe28f')
 ```
 ![sample_multiply](https://user-images.githubusercontent.com/1064036/66762301-af247d80-eee0-11e9-928d-4fa4a826f167.jpg)
 
 #### Color Burn
 ```
-image().grayscale().color_burn('#7fe3f8')
+grayscale_image.color_burn('#7fe3f8')
 ```
 ![sample_color_burn](https://user-images.githubusercontent.com/1064036/66762811-9f596900-eee1-11e9-961c-d673a6009a49.jpg)
 
 
 #### Linear Burn
 ```
-image().grayscale().linear_burn('#e1a8ff')
+grayscale_image.linear_burn('#e1a8ff')
 ```
 ![sample_linear_burn](https://user-images.githubusercontent.com/1064036/66762820-a2ecf000-eee1-11e9-95df-6625e2da712c.jpg)
 
+#### Lighten
+```
+image.lighten('#ff3ce1')
+```
+![sample_lighten](https://user-images.githubusercontent.com/1064036/66764586-117f7d00-eee5-11e9-96b6-e387e46d93e2.jpg)
 
+#### Screen
+```
+image.screen('#e633ba')
+```
+![sample_screen](https://user-images.githubusercontent.com/1064036/66764718-59060900-eee5-11e9-9539-23428676b4de.jpg)
+
+#### Color Dodge
+```
+image.color_dodge('#490cc7')
+```
+![sample_color_dodge](https://user-images.githubusercontent.com/1064036/66764854-a7b3a300-eee5-11e9-968c-cff40b1ea524.jpg)
+
+#### Linear Dodge
+```
+image.linear_dodge('#490cc7')
+```
+![sample_linear_dodge](https://user-images.githubusercontent.com/1064036/66764998-efd2c580-eee5-11e9-9795-f56976c639b2.jpg)
 
 ### Other utility methods
 
