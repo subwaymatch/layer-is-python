@@ -110,6 +110,43 @@ image.linear_dodge('#490cc7')
 ```
 ![sample_linear_dodge](https://user-images.githubusercontent.com/1064036/66764998-efd2c580-eee5-11e9-9795-f56976c639b2.jpg)
 
+#### Overlay
+```
+image.overlay('#ffb956')
+```
+![sample_overlay](https://user-images.githubusercontent.com/1064036/66765248-78e9fc80-eee6-11e9-99ff-7b1df141ac40.jpg)
+
+#### Soft Light
+```
+image.soft_light('#ff3cbc')
+```
+![sample_soft_light](https://user-images.githubusercontent.com/1064036/66765355-b77fb700-eee6-11e9-844a-5adb3b47b9cd.jpg)
+
+#### Hard Light
+```
+image.hard_light('#df5dff')
+```
+![sample_hard_light](https://user-images.githubusercontent.com/1064036/66765542-16453080-eee7-11e9-8a14-7fb1b6076618.jpg)
+
+#### Vivid Light
+```
+image.vivid_light('#ac5b7f')
+```
+![sample_vivid_light](https://user-images.githubusercontent.com/1064036/66765734-818f0280-eee7-11e9-8fce-1f03a2d08675.jpg)
+
+#### Linear Light
+```
+image.linear_light('#9fa500')
+```
+![sample_linear_light](https://user-images.githubusercontent.com/1064036/66765909-d29ef680-eee7-11e9-99ac-a088c4d2ae95.jpg)
+
+#### Pin Light
+```
+image.pin_light('#005546')
+```
+![sample_pin_light](https://user-images.githubusercontent.com/1064036/66766030-185bbf00-eee8-11e9-998a-8c44b6d34132.jpg)
+
+
 ### Other utility methods
 
 #### Getting image as NumPy array
