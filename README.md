@@ -21,7 +21,7 @@ Layer.is requires Python 3.6 or higher.
 ### Installation
 Install layer-is from PyPI repository. 
 ```
-$ pip install layer-is
+$ pip install layeris
 ```
 
 ### Load/Save an image
