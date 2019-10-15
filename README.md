@@ -162,6 +162,36 @@ image.pin_light('#005546')
 ```
 ![sample_pin_light](https://user-images.githubusercontent.com/1064036/66766030-185bbf00-eee8-11e9-998a-8c44b6d34132.jpg)
 
+### Non-blend mode operations
+
+#### Brightness
+
+Please note that this operation has yet to discover the exact algorithm (formula) used by Photoshop. However, the method used here is very close and extremely fast. 
+
+```
+image.brightness(0.2)
+```
+
+
+#### Contrast
+```
+image.contrast(1.15)
+```
+
+#### Hue
+```
+image.hue(0.2)
+```
+
+#### Saturation
+```
+image.saturation(-0.5)
+```
+
+#### Lightness
+```
+image.lightness(-0.8)
+```
 
 ### Other utility methods
 
