@@ -199,7 +199,7 @@ image.lightness(-0.8)
 ```python
 image.get_image_as_array()
 ```
-This will return a NumPy array with shape (`height`, `width`, 3). Note that the each pixel value is 
+This will return a NumPy array with shape (`height`, `width`, 3). Note that the each pixel value is `float` type, not `int` type.
 
 
 #### Cloning a LayerImage instance
