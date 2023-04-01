@@ -5,10 +5,15 @@
 # Layer.is
 A library that supports all blend modes in Photoshop, brightness, contrast, hue, saturation, lightness adjustments, and curve adjustments on separate RGB channels. 
 
+This project was a part of the 2019 Open Source Software Competition.
+
+[Introductory video](https://www.youtube.com/watch?v=PU_tEd8JgCw)
+[OSS Project Link](https://www.oss.kr/dev_competition_activities/show/b6c44d4b-e557-4ff1-adcc-5625216fddc8?page=3)
+
 ## Why use Layer.is? 
 
 - Supports all frequently used blend modes in Photoshop
-- Chain operations (like jQuery)
+- Chain operations
 - Straightforward API to manipulate images
 - Load sequence of operations from JSON
 - Can apply curve adjustment selectively to RGB channels
