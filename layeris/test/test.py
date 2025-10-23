@@ -3,7 +3,7 @@ import sys
 import numpy as np
 from pathlib import Path
 
-from layeris.layer_image import LayerImage
+from layeris import LayerImage
 
 dirname = os.path.dirname(__file__)
 

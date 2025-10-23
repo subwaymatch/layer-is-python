@@ -19,7 +19,7 @@ This project was a part of the 2019 Open Source Software Competition.
 - Can apply curve adjustment selectively to RGB channels
 
 ## Requirements
-Layer.is requires Python 3.6 or higher. 
+Layer.is requires Python 3.9 or higher.
 
 ## Quick Start
 
@@ -33,14 +33,14 @@ $ pip install layeris
 
 #### Loading an image from file
 ```python
-from layeris.layer_image import LayerImage
+from layeris import LayerImage
 
 image = LayerImage.from_file('/path/to/your/image.jpg')
 ```
 
 #### Loading an image from URL
 ```python
-from layeris.layer_image import LayerImage
+from layeris import LayerImage
 
 image = LayerImage.from_url('https://your-image-url')
 ```

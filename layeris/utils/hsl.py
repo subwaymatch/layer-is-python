@@ -1,27 +1,31 @@
+"""RGB and HSL conversion helpers."""
+
+from __future__ import annotations
+
+from typing import Sequence
+
 import numpy as np
 
-"""
-RGB to HSL color conversion
 
-Note that using rgb_to_hsl_arr() and hsl_to_rgb_arr() is very slow compared to matplotlib's colors.rgb_to_hsv() and colors.hsv_to_rgb(). 
+def rgb_to_hsl_arr(image_data: np.ndarray) -> np.ndarray:
+    """Convert an RGB image array to HSL using :func:`rgb_to_hsl`."""
 
-You should only use the methods below if you absolutely need HSL color space
-"""
-
-
-def rgb_to_hsl_arr(image_data):
     return np.apply_along_axis(rgb_to_hsl, -1, image_data)
 
 
-def hsl_to_rgb_arr(image_data):
+def hsl_to_rgb_arr(image_data: np.ndarray) -> np.ndarray:
+    """Convert an HSL image array to RGB using :func:`hsl_to_rgb`."""
+
     return np.apply_along_axis(hsl_to_rgb, -1, image_data)
 
 
-def rgb_to_hsl(rgb_as_float):
+def rgb_to_hsl(rgb_as_float: Sequence[float]) -> np.ndarray:
+    """Convert a single RGB colour (``0.0`` – ``1.0``) to HSL."""
+
     r, g, b = rgb_as_float
     high = max(r, g, b)
     low = min(r, g, b)
-    h, s, v = ((high + low) / 2,) * 3
+    h, s, l = ((high + low) / 2,) * 3
 
     if high == low:
         h = 0.0
@@ -37,13 +41,15 @@ def rgb_to_hsl(rgb_as_float):
         }[high]
         h /= 6
 
-    return [h, s, v]
+    return np.array([h, s, l], dtype=np.float32)
 
 
-def hsl_to_rgb(hsl_as_float):
+def hsl_to_rgb(hsl_as_float: Sequence[float]) -> np.ndarray:
+    """Convert a single HSL colour to RGB (``0.0`` – ``1.0``)."""
+
     h, s, l = hsl_as_float
 
-    def hue_to_rgb(p, q, t):
+    def hue_to_rgb(p: float, q: float, t: float) -> float:
         t += 1 if t < 0 else 0
         t -= 1 if t > 1 else 0
         if t < 1 / 6:
@@ -51,11 +57,11 @@ def hsl_to_rgb(hsl_as_float):
         if t < 1 / 2:
             return q
         if t < 2 / 3:
-            p + (q - p) * (2 / 3 - t) * 6
+            return p + (q - p) * (2 / 3 - t) * 6
         return p
 
     if s == 0:
-        r, g, b = l, l, l
+        r = g = b = l
     else:
         q = l * (1 + s) if l < 0.5 else l + s - l * s
         p = 2 * l - q
@@ -63,4 +69,4 @@ def hsl_to_rgb(hsl_as_float):
         g = hue_to_rgb(p, q, h)
         b = hue_to_rgb(p, q, h - 1 / 3)
 
-    return [r, g, b]
+    return np.array([r, g, b], dtype=np.float32)
