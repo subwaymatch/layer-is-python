@@ -1,23 +1,25 @@
+"""
+RGB to HSL color conversion.
+
+Note that using rgb_to_hsl_arr() and hsl_to_rgb_arr() is very slow compared
+to matplotlib's colors.rgb_to_hsv() and colors.hsv_to_rgb().
+
+You should only use the methods below if you absolutely need HSL color space.
+"""
+
 import numpy as np
-
-"""
-RGB to HSL color conversion
-
-Note that using rgb_to_hsl_arr() and hsl_to_rgb_arr() is very slow compared to matplotlib's colors.rgb_to_hsv() and colors.hsv_to_rgb(). 
-
-You should only use the methods below if you absolutely need HSL color space
-"""
+from numpy.typing import NDArray
 
 
-def rgb_to_hsl_arr(image_data):
+def rgb_to_hsl_arr(image_data: NDArray[np.float64]) -> NDArray[np.float64]:
     return np.apply_along_axis(rgb_to_hsl, -1, image_data)
 
 
-def hsl_to_rgb_arr(image_data):
+def hsl_to_rgb_arr(image_data: NDArray[np.float64]) -> NDArray[np.float64]:
     return np.apply_along_axis(hsl_to_rgb, -1, image_data)
 
 
-def rgb_to_hsl(rgb_as_float):
+def rgb_to_hsl(rgb_as_float: NDArray[np.float64]) -> list[float]:
     r, g, b = rgb_as_float
     high = max(r, g, b)
     low = min(r, g, b)
@@ -40,10 +42,10 @@ def rgb_to_hsl(rgb_as_float):
     return [h, s, v]
 
 
-def hsl_to_rgb(hsl_as_float):
+def hsl_to_rgb(hsl_as_float: NDArray[np.float64]) -> list[float]:
     h, s, l = hsl_as_float
 
-    def hue_to_rgb(p, q, t):
+    def hue_to_rgb(p: float, q: float, t: float) -> float:
         t += 1 if t < 0 else 0
         t -= 1 if t > 1 else 0
         if t < 1 / 6:
@@ -51,7 +53,7 @@ def hsl_to_rgb(hsl_as_float):
         if t < 1 / 2:
             return q
         if t < 2 / 3:
-            p + (q - p) * (2 / 3 - t) * 6
+            return p + (q - p) * (2 / 3 - t) * 6
         return p
 
     if s == 0:

@@ -1,17 +1,43 @@
-from PIL import Image
-from io import BytesIO
-import requests
-import numpy as np
-import matplotlib.colors
-import json
+from __future__ import annotations
 
+import json
+from io import BytesIO
+from pathlib import Path
+from typing import Any
+
+import matplotlib.colors
+import numpy as np
+import requests
+from numpy.typing import NDArray
+from PIL import Image
+
+from .utils.channels import channel_adjust, merge_channels, split_image_into_channels
 from .utils.conversions import (
-    convert_uint_to_float,
     convert_float_to_uint,
+    convert_uint_to_float,
     get_rgb_float_if_hex,
 )
 from .utils.layers import mix
-from .utils.channels import split_image_into_channels, merge_channels, channel_adjust
+
+# Blend mode operation names that accept a hex colour and opacity parameter.
+_BLEND_MODES: frozenset[str] = frozenset(
+    {
+        "darken",
+        "multiply",
+        "color_burn",
+        "linear_burn",
+        "lighten",
+        "screen",
+        "color_dodge",
+        "linear_dodge",
+        "overlay",
+        "soft_light",
+        "hard_light",
+        "vivid_light",
+        "linear_light",
+        "pin_light",
+    }
+)
 
 
 class LayerImage:
@@ -20,20 +46,20 @@ class LayerImage:
     # ------------------------------------------------------------------
 
     @staticmethod
-    def from_url(url):
+    def from_url(url: str) -> LayerImage:
         response = requests.get(url)
         image = Image.open(BytesIO(response.content))
         image = LayerImage._normalize_pil_image(image)
         return LayerImage(convert_uint_to_float(np.asarray(image)))
 
     @staticmethod
-    def from_file(file_path):
+    def from_file(file_path: str | Path) -> LayerImage:
         image = Image.open(file_path)
         image = LayerImage._normalize_pil_image(image)
         return LayerImage(convert_uint_to_float(np.asarray(image)))
 
     @staticmethod
-    def from_array(image_data):
+    def from_array(image_data: NDArray[np.float64]) -> LayerImage:
         return LayerImage(image_data)
 
     # ------------------------------------------------------------------
@@ -41,7 +67,7 @@ class LayerImage:
     # ------------------------------------------------------------------
 
     @staticmethod
-    def _normalize_pil_image(image):
+    def _normalize_pil_image(image: Image.Image) -> Image.Image:
         """Convert any PIL image mode to RGB or RGBA for consistent processing."""
         if image.mode == "RGBA":
             return image
@@ -59,29 +85,29 @@ class LayerImage:
     # Constructor
     # ------------------------------------------------------------------
 
-    def __init__(self, image_data):
+    def __init__(self, image_data: NDArray[np.float64]) -> None:
         # image_data is always a float32/float64 array in [0, 1]
         # shape is (H, W, 3) for RGB or (H, W, 4) for RGBA
-        self.image_data = image_data.astype(np.float64)
+        self.image_data: NDArray[np.float64] = image_data.astype(np.float64)
 
     # ------------------------------------------------------------------
     # Alpha helpers (internal)
     # ------------------------------------------------------------------
 
-    def _has_alpha(self):
+    def _has_alpha(self) -> bool:
         return self.image_data.ndim == 3 and self.image_data.shape[2] == 4
 
-    def _get_alpha(self):
+    def _get_alpha(self) -> NDArray[np.float64] | None:
         """Return the alpha channel as (H, W, 1) or None."""
         if self._has_alpha():
             return self.image_data[:, :, 3:4]
         return None
 
-    def _rgb(self):
+    def _rgb(self) -> NDArray[np.float64]:
         """Return a view of the RGB channels only."""
         return self.image_data[:, :, :3]
 
-    def _reattach_alpha(self, rgb_data):
+    def _reattach_alpha(self, rgb_data: NDArray[np.float64]) -> NDArray[np.float64]:
         """Combine processed RGB data with the original alpha channel (if any)."""
         alpha = self._get_alpha()
         if alpha is not None:
@@ -92,7 +118,7 @@ class LayerImage:
     # Resize
     # ------------------------------------------------------------------
 
-    def resize(self, width, height):
+    def resize(self, width: int, height: int) -> LayerImage:
         """Resize the image to (width, height) using high-quality Lanczos resampling."""
         uint_data = convert_float_to_uint(self.image_data)
         mode = "RGBA" if self._has_alpha() else "RGB"
@@ -105,35 +131,35 @@ class LayerImage:
     # Adjustments
     # ------------------------------------------------------------------
 
-    def grayscale(self):
+    def grayscale(self) -> LayerImage:
         gray = np.dot(self._rgb(), [0.2989, 0.5870, 0.1140])
         rgb_result = np.stack((gray,) * 3, axis=-1)
         self.image_data = self._reattach_alpha(rgb_result)
         return self
 
-    def brightness(self, factor):
+    def brightness(self, factor: float) -> LayerImage:
         rgb_result = np.clip(self._rgb() * (1 + factor), 0, 1)
         self.image_data = self._reattach_alpha(rgb_result)
         return self
 
-    def contrast(self, factor):
+    def contrast(self, factor: float) -> LayerImage:
         rgb_result = np.clip(factor * (self._rgb() - 0.5) + 0.5, 0, 1)
         self.image_data = self._reattach_alpha(rgb_result)
         return self
 
-    def hue(self, target_hue):
+    def hue(self, target_hue: float) -> LayerImage:
         hsv = matplotlib.colors.rgb_to_hsv(self._rgb())
         hsv[:, :, 0] = target_hue
         self.image_data = self._reattach_alpha(matplotlib.colors.hsv_to_rgb(hsv))
         return self
 
-    def saturation(self, factor):
+    def saturation(self, factor: float) -> LayerImage:
         hsv = matplotlib.colors.rgb_to_hsv(self._rgb())
         hsv = np.clip(hsv + hsv * [0, factor, 0], 0, 1)
         self.image_data = self._reattach_alpha(matplotlib.colors.hsv_to_rgb(hsv))
         return self
 
-    def lightness(self, factor):
+    def lightness(self, factor: float) -> LayerImage:
         rgb = self._rgb()
         if factor > 0:
             rgb_result = rgb + (1 - rgb) * factor
@@ -144,7 +170,9 @@ class LayerImage:
         self.image_data = self._reattach_alpha(rgb_result)
         return self
 
-    def curve(self, channels="rgb", curve_points=None):
+    def curve(
+        self, channels: str = "rgb", curve_points: list[float] | None = None
+    ) -> LayerImage:
         if curve_points is None:
             curve_points = [0, 1]
         r, g, b = split_image_into_channels(self._rgb())
@@ -161,21 +189,27 @@ class LayerImage:
     # Blend modes (darken group)
     # ------------------------------------------------------------------
 
-    def darken(self, blend_data, opacity=1.0):
+    def darken(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         result = np.minimum(A, blend_data)
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def multiply(self, blend_data, opacity=1.0):
+    def multiply(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         result = A * blend_data
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def color_burn(self, blend_data, opacity=1.0):
+    def color_burn(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         B = blend_data
@@ -184,7 +218,9 @@ class LayerImage:
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def linear_burn(self, blend_data, opacity=1.0):
+    def linear_burn(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         result = np.clip(A + blend_data - 1, 0, 1)
@@ -195,14 +231,18 @@ class LayerImage:
     # Blend modes (lighten group)
     # ------------------------------------------------------------------
 
-    def lighten(self, blend_data, opacity=1.0):
+    def lighten(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         result = np.maximum(A, blend_data)
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def screen(self, blend_data, opacity=1.0):
+    def screen(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         B = blend_data
@@ -210,7 +250,9 @@ class LayerImage:
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def color_dodge(self, blend_data, opacity=1.0):
+    def color_dodge(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         B = blend_data
@@ -219,7 +261,9 @@ class LayerImage:
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def linear_dodge(self, blend_data, opacity=1.0):
+    def linear_dodge(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         result = np.clip(A + blend_data, 0, 1)
@@ -230,7 +274,9 @@ class LayerImage:
     # Blend modes (contrast group)
     # ------------------------------------------------------------------
 
-    def overlay(self, blend_data, opacity=1.0):
+    def overlay(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         B = blend_data
@@ -238,7 +284,9 @@ class LayerImage:
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def soft_light(self, blend_data, opacity=1.0):
+    def soft_light(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         B = blend_data
@@ -248,7 +296,9 @@ class LayerImage:
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def hard_light(self, blend_data, opacity=1.0):
+    def hard_light(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         B = blend_data
@@ -256,7 +306,9 @@ class LayerImage:
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def vivid_light(self, blend_data, opacity=1.0):
+    def vivid_light(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         B = blend_data
@@ -267,14 +319,18 @@ class LayerImage:
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def linear_light(self, blend_data, opacity=1.0):
+    def linear_light(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         result = np.clip(A + 2 * blend_data - 1, 0, 1)
         self.image_data = self._reattach_alpha(mix(A, result, opacity))
         return self
 
-    def pin_light(self, blend_data, opacity=1.0):
+    def pin_light(
+        self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
+    ) -> LayerImage:
         blend_data = get_rgb_float_if_hex(blend_data)
         A = self._rgb()
         B = blend_data
@@ -290,17 +346,17 @@ class LayerImage:
     # Utility
     # ------------------------------------------------------------------
 
-    def clone(self):
+    def clone(self) -> LayerImage:
         return LayerImage.from_array(self.image_data.copy())
 
-    def get_image_as_array(self):
+    def get_image_as_array(self) -> NDArray[np.float64]:
         return self.image_data
 
     # ------------------------------------------------------------------
     # JSON / dict operation sequencing
     # ------------------------------------------------------------------
 
-    def apply_from_dict(self, data):
+    def apply_from_dict(self, data: dict[str, Any]) -> LayerImage:
         """Apply a sequence of operations defined in a Python dictionary.
 
         Expected format::
@@ -345,40 +401,14 @@ class LayerImage:
             elif op_type == "curve":
                 if "channels" in op and "curve_points" in op:
                     self.curve(op["channels"], op["curve_points"])
-            elif op_type == "darken" and hex_string is not None:
-                self.darken(hex_string, opacity)
-            elif op_type == "multiply" and hex_string is not None:
-                self.multiply(hex_string, opacity)
-            elif op_type == "color_burn" and hex_string is not None:
-                self.color_burn(hex_string, opacity)
-            elif op_type == "linear_burn" and hex_string is not None:
-                self.linear_burn(hex_string, opacity)
-            elif op_type == "lighten" and hex_string is not None:
-                self.lighten(hex_string, opacity)
-            elif op_type == "screen" and hex_string is not None:
-                self.screen(hex_string, opacity)
-            elif op_type == "color_dodge" and hex_string is not None:
-                self.color_dodge(hex_string, opacity)
-            elif op_type == "linear_dodge" and hex_string is not None:
-                self.linear_dodge(hex_string, opacity)
-            elif op_type == "overlay" and hex_string is not None:
-                self.overlay(hex_string, opacity)
-            elif op_type == "soft_light" and hex_string is not None:
-                self.soft_light(hex_string, opacity)
-            elif op_type == "hard_light" and hex_string is not None:
-                self.hard_light(hex_string, opacity)
-            elif op_type == "vivid_light" and hex_string is not None:
-                self.vivid_light(hex_string, opacity)
-            elif op_type == "linear_light" and hex_string is not None:
-                self.linear_light(hex_string, opacity)
-            elif op_type == "pin_light" and hex_string is not None:
-                self.pin_light(hex_string, opacity)
+            elif op_type in _BLEND_MODES and hex_string is not None:
+                getattr(self, op_type)(hex_string, opacity)
 
         return self
 
-    def apply_from_json(self, filepath):
+    def apply_from_json(self, filepath: str | Path) -> LayerImage:
         """Load a JSON file and apply the operation sequence it defines."""
-        with open(filepath, "r") as f:
+        with open(filepath) as f:
             data = json.load(f)
         return self.apply_from_dict(data)
 
@@ -386,7 +416,7 @@ class LayerImage:
     # Save
     # ------------------------------------------------------------------
 
-    def save(self, filename, quality=95):
+    def save(self, filename: str | Path, quality: int = 95) -> LayerImage:
         """Save the image to *filename*.
 
         Supported formats are determined by the file extension (JPEG, PNG,
