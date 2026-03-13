@@ -3,8 +3,8 @@
 import numpy as np
 import pytest
 
-from layeris.utils.channels import channel_adjust, merge_channels, split_image_into_channels
-from layeris.utils.conversions import (
+from layeris.channels import channel_adjust, merge_channels, split_image_into_channels
+from layeris.color.conversions import (
     get_array_from_hex,
     get_rgb_float_if_hex,
     hex_to_rgb,
@@ -13,8 +13,8 @@ from layeris.utils.conversions import (
     convert_uint_to_float,
     round_to_uint,
 )
-from layeris.utils.hsl import hsl_to_rgb, hsl_to_rgb_arr, rgb_to_hsl, rgb_to_hsl_arr
-from layeris.utils.layers import mix
+from layeris.color.hsl import hsl_to_rgb, hsl_to_rgb_arr, rgb_to_hsl, rgb_to_hsl_arr
+from layeris.blend import mix
 
 
 # ---------------------------------------------------------------------------

@@ -29,13 +29,16 @@ dependencies = [
 ]
 
 [tool.hatch.version]
-path = "layeris/__about__.py"
+path = "src/layeris/__about__.py"
 
 [project.urls]
 Homepage = "https://github.com/subwaymatch/layer-is-python"
 
 [tool.hatch.build.targets.wheel]
-packages = ["layeris"]
+packages = ["src/layeris"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/layeris"]
 
 [tool.hatch.envs.default]
 dependencies = [

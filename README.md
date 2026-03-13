@@ -36,7 +36,7 @@ pip install layeris
 ```sh
 git clone https://github.com/subwaymatch/layer-is-python.git
 cd layer-is-python
-pip install .
+pip install -e .
 ```
 
 To install with development dependencies (includes pytest):
@@ -46,6 +46,8 @@ pip install -e ".[dev]"
 # or, using hatch:
 hatch env create
 ```
+
+> **Contributor note:** The package uses a `src/` layout — the importable package lives under `src/layeris/`. Run `pip install -e .` from the repo root for an editable install that picks up changes automatically. Tests live in `tests/` and are discovered by pytest automatically.
 
 ## Quick Start
 
@@ -231,6 +233,8 @@ pytest tests/test_layer_image.py
 pytest tests/test_utils.py
 pytest tests/test_layer_image.py::TestBlendModes::test_multiply_by_white_no_change -v
 ```
+
+Test images used by the suite are stored in `tests/images/`.
 
 ---
 

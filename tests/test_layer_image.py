@@ -9,7 +9,7 @@ from PIL import Image
 
 from layeris import LayerImage
 
-TEST_IMAGES_DIR = pathlib.Path(__file__).parent.parent / "layeris" / "test"
+TEST_IMAGES_DIR = pathlib.Path(__file__).parent / "images"
 
 
 # ---------------------------------------------------------------------------
