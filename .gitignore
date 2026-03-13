@@ -126,3 +126,6 @@ dmypy.json
 
 # Test output directory
 test_output/
+
+.vscode
+.ipynb_checkpoints/
