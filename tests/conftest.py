@@ -6,7 +6,7 @@ import pytest
 from layeris import LayerImage
 
 # Directory that contains the bundled test images.
-TEST_IMAGES_DIR = pathlib.Path(__file__).parent.parent / "layeris" / "test"
+TEST_IMAGES_DIR = pathlib.Path(__file__).parent / "images"
 
 
 @pytest.fixture

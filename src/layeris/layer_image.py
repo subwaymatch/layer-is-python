@@ -11,13 +11,13 @@ import requests
 from numpy.typing import NDArray
 from PIL import Image
 
-from .utils.channels import channel_adjust, merge_channels, split_image_into_channels
-from .utils.conversions import (
+from .channels import channel_adjust, merge_channels, split_image_into_channels
+from .color.conversions import (
     convert_float_to_uint,
     convert_uint_to_float,
     get_rgb_float_if_hex,
 )
-from .utils.layers import mix
+from .blend import mix
 
 # Blend mode operation names that accept a hex colour and opacity parameter.
 _BLEND_MODES: frozenset[str] = frozenset(
