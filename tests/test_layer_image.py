@@ -2,9 +2,10 @@
 
 import json
 import pathlib
+from io import BytesIO
 
 import numpy as np
-import pytest
+from PIL import Image
 
 from layeris import LayerImage
 
@@ -109,6 +110,19 @@ class TestResize:
     def test_resize_returns_self(self, gray_image: LayerImage) -> None:
         result = gray_image.resize(2, 2)
         assert result is gray_image
+
+
+class TestNotebookDisplay:
+    def test_repr_png_returns_png_bytes(self) -> None:
+        img = LayerImage.from_array(np.full((3, 4, 3), 0.5, dtype=np.float64))
+        png_bytes = img._repr_png_()
+        assert isinstance(png_bytes, bytes)
+        assert png_bytes.startswith(b"\x89PNG\r\n\x1a\n")
+
+    def test_repr_png_preserves_image_size(self) -> None:
+        img = LayerImage.from_array(np.zeros((7, 5, 3), dtype=np.float64))
+        rendered = Image.open(BytesIO(img._repr_png_()))
+        assert rendered.size == (5, 7)
 
 
 # ---------------------------------------------------------------------------
@@ -249,12 +263,16 @@ class TestCurve:
     def test_identity_curve(self, sample_image: LayerImage) -> None:
         original = sample_image.get_image_as_array().copy()
         sample_image.curve("rgb", [0.0, 1.0])
-        np.testing.assert_allclose(sample_image.get_image_as_array(), original, atol=1e-10)
+        np.testing.assert_allclose(
+            sample_image.get_image_as_array(), original, atol=1e-10
+        )
 
     def test_default_curve_points_identity(self, sample_image: LayerImage) -> None:
         original = sample_image.get_image_as_array().copy()
         sample_image.curve()
-        np.testing.assert_allclose(sample_image.get_image_as_array(), original, atol=1e-10)
+        np.testing.assert_allclose(
+            sample_image.get_image_as_array(), original, atol=1e-10
+        )
 
     def test_invert_all_channels(self) -> None:
         img = LayerImage.from_array(np.full((2, 2, 3), 0.3))
@@ -318,7 +336,9 @@ class TestColorBurn:
     def test_blend_with_white_no_change(self, sample_image: LayerImage) -> None:
         original = sample_image.get_image_as_array().copy()
         sample_image.color_burn("#ffffff")
-        np.testing.assert_allclose(sample_image.get_image_as_array(), original, atol=1e-10)
+        np.testing.assert_allclose(
+            sample_image.get_image_as_array(), original, atol=1e-10
+        )
 
     def test_values_in_range(self, sample_image: LayerImage) -> None:
         sample_image.color_burn("#7fe3f8")
@@ -388,7 +408,9 @@ class TestColorDodge:
     def test_blend_with_black_no_change(self, sample_image: LayerImage) -> None:
         original = sample_image.get_image_as_array().copy()
         sample_image.color_dodge("#000000")
-        np.testing.assert_allclose(sample_image.get_image_as_array(), original, atol=1e-10)
+        np.testing.assert_allclose(
+            sample_image.get_image_as_array(), original, atol=1e-10
+        )
 
     def test_blend_with_white_gives_white(self, sample_image: LayerImage) -> None:
         sample_image.color_dodge("#ffffff")
@@ -550,10 +572,7 @@ class TestGetImageAsArray:
 class TestMethodChaining:
     def test_chain_returns_self(self, sample_image: LayerImage) -> None:
         result = (
-            sample_image.grayscale()
-            .brightness(0.1)
-            .contrast(1.1)
-            .multiply("#aaaaaa")
+            sample_image.grayscale().brightness(0.1).contrast(1.1).multiply("#aaaaaa")
         )
         assert result is sample_image
 
@@ -606,7 +625,11 @@ class TestApplyFromDict:
     def test_curve_op(self, sample_image: LayerImage) -> None:
         original = sample_image.get_image_as_array().copy()
         sample_image.apply_from_dict(
-            {"operations": [{"type": "curve", "channels": "rgb", "curve_points": [0, 1]}]}
+            {
+                "operations": [
+                    {"type": "curve", "channels": "rgb", "curve_points": [0, 1]}
+                ]
+            }
         )
         np.testing.assert_allclose(
             sample_image.get_image_as_array(), original, atol=1e-10
@@ -627,10 +650,20 @@ class TestApplyFromDict:
 
     def test_all_blend_modes_via_dict(self, sample_image: LayerImage) -> None:
         blend_modes = [
-            "darken", "multiply", "color_burn", "linear_burn",
-            "lighten", "screen", "color_dodge", "linear_dodge",
-            "overlay", "soft_light", "hard_light", "vivid_light",
-            "linear_light", "pin_light",
+            "darken",
+            "multiply",
+            "color_burn",
+            "linear_burn",
+            "lighten",
+            "screen",
+            "color_dodge",
+            "linear_dodge",
+            "overlay",
+            "soft_light",
+            "hard_light",
+            "vivid_light",
+            "linear_light",
+            "pin_light",
         ]
         for mode in blend_modes:
             clone = sample_image.clone()
@@ -668,8 +701,12 @@ class TestApplyFromDict:
 
 
 class TestApplyFromJson:
-    def test_apply_from_json(self, tmp_path: pathlib.Path, sample_image: LayerImage) -> None:
-        ops = {"operations": [{"type": "grayscale"}, {"type": "brightness", "factor": 0.1}]}
+    def test_apply_from_json(
+        self, tmp_path: pathlib.Path, sample_image: LayerImage
+    ) -> None:
+        ops = {
+            "operations": [{"type": "grayscale"}, {"type": "brightness", "factor": 0.1}]
+        }
         json_file = tmp_path / "ops.json"
         json_file.write_text(json.dumps(ops))
         sample_image.apply_from_json(json_file)

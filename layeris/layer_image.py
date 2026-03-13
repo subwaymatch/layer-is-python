@@ -124,7 +124,9 @@ class LayerImage:
         mode = "RGBA" if self._has_alpha() else "RGB"
         pil_image = Image.fromarray(uint_data, mode=mode)
         pil_image = pil_image.resize((width, height), Image.LANCZOS)
-        self.image_data = convert_uint_to_float(np.asarray(pil_image)).astype(np.float64)
+        self.image_data = convert_uint_to_float(np.asarray(pil_image)).astype(
+            np.float64
+        )
         return self
 
     # ------------------------------------------------------------------
@@ -352,6 +354,18 @@ class LayerImage:
     def get_image_as_array(self) -> NDArray[np.float64]:
         return self.image_data
 
+    def _to_pil_image(self) -> Image.Image:
+        """Build a PIL image from current float data for rendering/saving paths."""
+        uint_data = convert_float_to_uint(self.image_data)
+        mode = "RGBA" if self._has_alpha() else "RGB"
+        return Image.fromarray(uint_data, mode=mode)
+
+    def _repr_png_(self) -> bytes:
+        """Return PNG bytes so Jupyter displays the actual image preview."""
+        buffer = BytesIO()
+        self._to_pil_image().save(buffer, format="PNG")
+        return buffer.getvalue()
+
     # ------------------------------------------------------------------
     # JSON / dict operation sequencing
     # ------------------------------------------------------------------
@@ -434,11 +448,8 @@ class LayerImage:
             uint_data = convert_float_to_uint(composited)
             Image.fromarray(uint_data, mode="RGB").save(filename, quality=quality)
         elif is_jpeg:
-            uint_data = convert_float_to_uint(self.image_data)
-            Image.fromarray(uint_data, mode="RGB").save(filename, quality=quality)
+            self._to_pil_image().convert("RGB").save(filename, quality=quality)
         else:
-            uint_data = convert_float_to_uint(self.image_data)
-            mode = "RGBA" if self._has_alpha() else "RGB"
-            Image.fromarray(uint_data, mode=mode).save(filename)
+            self._to_pil_image().save(filename)
 
         return self
