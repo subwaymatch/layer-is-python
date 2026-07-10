@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Layer.is — operation gallery</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0 auto; padding: 2rem 1rem 4rem; max-width: 1080px;
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1f2328; background: #ffffff;
+  }
+  header p { color: #59636e; max-width: 60ch; }
+  h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+  h2 { margin-top: 3rem; padding-bottom: 0.4rem; border-bottom: 1px solid #d1d9e0; }
+  .card { margin: 2rem 0; }
+  .card h3 { margin: 0 0 0.25rem; }
+  .card p { margin: 0 0 0.75rem; color: #59636e; max-width: 72ch; }
+  .card img { width: 100%; height: auto; border-radius: 6px; }
+  pre {
+    background: #f6f8fa; padding: 0.6rem 0.9rem; border-radius: 6px;
+    overflow-x: auto; font-size: 0.875rem;
+  }
+  a { color: #0969da; }
+  footer { margin-top: 4rem; font-size: 0.875rem; color: #59636e; }
+  @media (prefers-color-scheme: dark) {
+    body { color: #f0f6fc; background: #0d1117; }
+    header p, .card p, footer { color: #9198a1; }
+    h2 { border-color: #3d444d; }
+    pre { background: #151b23; }
+    a { color: #4493f8; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Layer.is</h1>
+    <p>Photoshop-style blend modes, adjustments and curves for Python.
+       Each preview shows the input on the left and the result of the snippet
+       on the right — all generated with
+       <a href="https://github.com/subwaymatch/layer-is-python">layeris</a> itself.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Basic adjustments</h2>
+      <figure class="card" id="grayscale">
+        <figcaption>
+          <h3>Grayscale</h3>
+          <p>Convert to grayscale using the ITU-R 601 luminance weights.</p>
+          <pre><code>image.grayscale()</code></pre>
+        </figcaption>
+        <img src="previews/grayscale.jpg" alt="Before/after preview of Grayscale" loading="lazy">
+      </figure>
+      <figure class="card" id="brightness">
+        <figcaption>
+          <h3>Brightness</h3>
+          <p>Scale pixel values: a factor above 0 brightens, below 0 darkens.</p>
+          <pre><code>image.brightness(0.2)</code></pre>
+        </figcaption>
+        <img src="previews/brightness.jpg" alt="Before/after preview of Brightness" loading="lazy">
+      </figure>
+      <figure class="card" id="contrast">
+        <figcaption>
+          <h3>Contrast</h3>
+          <p>Expand or compress the range around mid-gray: a factor above 1 increases contrast, between 0 and 1 decreases it.</p>
+          <pre><code>image.contrast(1.5)</code></pre>
+        </figcaption>
+        <img src="previews/contrast.jpg" alt="Before/after preview of Contrast" loading="lazy">
+      </figure>
+      <figure class="card" id="hue">
+        <figcaption>
+          <h3>Hue</h3>
+          <p>Set every pixel&#x27;s hue to the target value in [0, 1] while keeping saturation and value — a colorize-style adjustment.</p>
+          <pre><code>image.hue(0.3)</code></pre>
+        </figcaption>
+        <img src="previews/hue.jpg" alt="Before/after preview of Hue" loading="lazy">
+      </figure>
+      <figure class="card" id="saturation">
+        <figcaption>
+          <h3>Saturation</h3>
+          <p>Scale color intensity: a factor above 0 boosts saturation, below 0 mutes it (-1 fully desaturates).</p>
+          <pre><code>image.saturation(-0.5)</code></pre>
+        </figcaption>
+        <img src="previews/saturation.jpg" alt="Before/after preview of Saturation" loading="lazy">
+      </figure>
+      <figure class="card" id="lightness">
+        <figcaption>
+          <h3>Lightness</h3>
+          <p>Blend toward white (factor above 0) or black (factor below 0).</p>
+          <pre><code>image.lightness(0.4)</code></pre>
+        </figcaption>
+        <img src="previews/lightness.jpg" alt="Before/after preview of Lightness" loading="lazy">
+      </figure>
+      <figure class="card" id="curve_rgb">
+        <figcaption>
+          <h3>Curve (all channels)</h3>
+          <p>Remap tones through control points spaced evenly across [0, 1] — here an S-curve that deepens shadows and lifts highlights.</p>
+          <pre><code>image.curve(&#x27;rgb&#x27;, [0, 0.1, 0.4, 0.65, 0.9, 1])</code></pre>
+        </figcaption>
+        <img src="previews/curve_rgb.jpg" alt="Before/after preview of Curve (all channels)" loading="lazy">
+      </figure>
+      <figure class="card" id="curve_red">
+        <figcaption>
+          <h3>Curve (single channel)</h3>
+          <p>The same curve machinery applied to the red channel only.</p>
+          <pre><code>image.curve(&#x27;r&#x27;, [0, 0.2, 0.8, 1])</code></pre>
+        </figcaption>
+        <img src="previews/curve_red.jpg" alt="Before/after preview of Curve (single channel)" loading="lazy">
+      </figure>
+      <figure class="card" id="resize">
+        <figcaption>
+          <h3>Resize</h3>
+          <p>Resize with high-quality Lanczos resampling.</p>
+          <pre><code>image.resize(width=240, height=160)</code></pre>
+        </figcaption>
+        <img src="previews/resize.jpg" alt="Before/after preview of Resize" loading="lazy">
+      </figure>
+    </section>
+    <section>
+      <h2>Blend modes — darken</h2>
+      <figure class="card" id="darken">
+        <figcaption>
+          <h3>Darken</h3>
+          <p>Looks at the color information in each channel and selects the base or blend color — whichever is darker — as the result color.</p>
+          <pre><code>grayscale_image.darken(&#x27;#3fe28f&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/darken.jpg" alt="Before/after preview of Darken" loading="lazy">
+      </figure>
+      <figure class="card" id="multiply">
+        <figcaption>
+          <h3>Multiply</h3>
+          <p>Multiplies the base color by the blend color. The result is always darker; multiplying with white leaves the color unchanged.</p>
+          <pre><code>grayscale_image.multiply(&#x27;#3fe28f&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/multiply.jpg" alt="Before/after preview of Multiply" loading="lazy">
+      </figure>
+      <figure class="card" id="color_burn">
+        <figcaption>
+          <h3>Color Burn</h3>
+          <p>Darkens the base color to reflect the blend color by increasing the contrast between the two. Blending with white produces no change.</p>
+          <pre><code>grayscale_image.color_burn(&#x27;#7fe3f8&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/color_burn.jpg" alt="Before/after preview of Color Burn" loading="lazy">
+      </figure>
+      <figure class="card" id="linear_burn">
+        <figcaption>
+          <h3>Linear Burn</h3>
+          <p>Darkens the base color to reflect the blend color by decreasing the brightness. Blending with white produces no change.</p>
+          <pre><code>grayscale_image.linear_burn(&#x27;#e1a8ff&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/linear_burn.jpg" alt="Before/after preview of Linear Burn" loading="lazy">
+      </figure>
+    </section>
+    <section>
+      <h2>Blend modes — lighten</h2>
+      <figure class="card" id="lighten">
+        <figcaption>
+          <h3>Lighten</h3>
+          <p>Selects the base or blend color — whichever is lighter — as the result color.</p>
+          <pre><code>image.lighten(&#x27;#ff3ce1&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/lighten.jpg" alt="Before/after preview of Lighten" loading="lazy">
+      </figure>
+      <figure class="card" id="screen">
+        <figcaption>
+          <h3>Screen</h3>
+          <p>Multiplies the inverse of the blend and base colors. The result is always lighter — like projecting multiple slides on top of each other.</p>
+          <pre><code>image.screen(&#x27;#e633ba&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/screen.jpg" alt="Before/after preview of Screen" loading="lazy">
+      </figure>
+      <figure class="card" id="color_dodge">
+        <figcaption>
+          <h3>Color Dodge</h3>
+          <p>Brightens the base color to reflect the blend color by decreasing contrast between the two. Blending with black produces no change.</p>
+          <pre><code>image.color_dodge(&#x27;#490cc7&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/color_dodge.jpg" alt="Before/after preview of Color Dodge" loading="lazy">
+      </figure>
+      <figure class="card" id="linear_dodge">
+        <figcaption>
+          <h3>Linear Dodge</h3>
+          <p>Brightens the base color to reflect the blend color by increasing the brightness. Blending with black produces no change.</p>
+          <pre><code>image.linear_dodge(&#x27;#490cc7&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/linear_dodge.jpg" alt="Before/after preview of Linear Dodge" loading="lazy">
+      </figure>
+    </section>
+    <section>
+      <h2>Blend modes — contrast</h2>
+      <figure class="card" id="overlay">
+        <figcaption>
+          <h3>Overlay</h3>
+          <p>Multiplies or screens the colors depending on the base color, preserving its highlights and shadows.</p>
+          <pre><code>image.overlay(&#x27;#ffb956&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/overlay.jpg" alt="Before/after preview of Overlay" loading="lazy">
+      </figure>
+      <figure class="card" id="soft_light">
+        <figcaption>
+          <h3>Soft Light</h3>
+          <p>Darkens or lightens depending on the blend color — like shining a diffused spotlight on the image.</p>
+          <pre><code>image.soft_light(&#x27;#ff3cbc&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/soft_light.jpg" alt="Before/after preview of Soft Light" loading="lazy">
+      </figure>
+      <figure class="card" id="hard_light">
+        <figcaption>
+          <h3>Hard Light</h3>
+          <p>Multiplies or screens depending on the blend color — like shining a harsh spotlight on the image.</p>
+          <pre><code>image.hard_light(&#x27;#df5dff&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/hard_light.jpg" alt="Before/after preview of Hard Light" loading="lazy">
+      </figure>
+      <figure class="card" id="vivid_light">
+        <figcaption>
+          <h3>Vivid Light</h3>
+          <p>Burns or dodges by increasing or decreasing the contrast, depending on the blend color.</p>
+          <pre><code>image.vivid_light(&#x27;#ac5b7f&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/vivid_light.jpg" alt="Before/after preview of Vivid Light" loading="lazy">
+      </figure>
+      <figure class="card" id="linear_light">
+        <figcaption>
+          <h3>Linear Light</h3>
+          <p>Burns or dodges by decreasing or increasing the brightness, depending on the blend color.</p>
+          <pre><code>image.linear_light(&#x27;#9fa500&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/linear_light.jpg" alt="Before/after preview of Linear Light" loading="lazy">
+      </figure>
+      <figure class="card" id="pin_light">
+        <figcaption>
+          <h3>Pin Light</h3>
+          <p>Replaces colors depending on the blend color — useful for adding special effects to an image.</p>
+          <pre><code>image.pin_light(&#x27;#005546&#x27;)</code></pre>
+        </figcaption>
+        <img src="previews/pin_light.jpg" alt="Before/after preview of Pin Light" loading="lazy">
+      </figure>
+    </section>
+    <section>
+      <h2>Putting it together</h2>
+      <figure class="card" id="chaining">
+        <figcaption>
+          <h3>Method chaining</h3>
+          <p>Every operation returns the LayerImage itself, so a whole look can be built as one chained pipeline.</p>
+          <pre><code>(image.grayscale()
+      .brightness(0.1)
+      .multiply(&#x27;#3fe28f&#x27;, opacity=0.7)
+      .curve(&#x27;rgb&#x27;, [0, 0.1, 0.4, 0.65, 0.9, 1]))</code></pre>
+        </figcaption>
+        <img src="previews/chaining.jpg" alt="Before/after preview of Method chaining" loading="lazy">
+      </figure>
+    </section>
+  </main>
+  <footer>Generated by <code>scripts/generate_previews.py</code> · layeris v0.4.0</footer>
+</body>
+</html>

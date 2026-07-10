@@ -1,4 +1,5 @@
-numpy==1.17.2
-matplotlib==3.1.1
-Pillow==6.2.0
-requests==2.22.0
+# Runtime dependencies. pyproject.toml is the authoritative list —
+# prefer `pip install -e .` (or `pip install -e ".[dev]"` for development).
+numpy>=1.20
+Pillow>=9.1
+requests>=2.22

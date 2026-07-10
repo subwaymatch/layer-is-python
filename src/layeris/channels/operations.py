@@ -30,8 +30,13 @@ def merge_channels(
 def channel_adjust(
     channel: NDArray[np.float64], values: list[float]
 ) -> NDArray[np.float64]:
-    """Apply a curve adjustment to a single channel using linear interpolation."""
-    orig_size = channel.shape
-    flat_channel = channel.flatten()
-    adjusted = np.interp(flat_channel, np.linspace(0, 1, len(values)), values)
-    return adjusted.reshape(orig_size)
+    """Apply a curve adjustment to a single channel using linear interpolation.
+
+    *values* are the curve's control points, spaced evenly across the [0, 1]
+    input range; at least two points are required.
+    """
+    if len(values) < 2:
+        raise ValueError(
+            f"curve requires at least two control points, got {len(values)}"
+        )
+    return np.interp(channel, np.linspace(0, 1, len(values)), values)

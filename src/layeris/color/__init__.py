@@ -1,5 +1,5 @@
 """
-Color conversion utilities (RGB↔float, hex parsing, HSL).
+Color conversion utilities (RGB↔float, hex parsing, HSV, HSL).
 """
 
 from .conversions import (
@@ -12,6 +12,7 @@ from .conversions import (
     round_to_uint,
 )
 from .hsl import hsl_to_rgb, hsl_to_rgb_arr, rgb_to_hsl, rgb_to_hsl_arr
+from .hsv import hsv_to_rgb, rgb_to_hsv
 
 __all__ = [
     "convert_float_to_uint",
@@ -25,4 +26,6 @@ __all__ = [
     "hsl_to_rgb_arr",
     "rgb_to_hsl",
     "rgb_to_hsl_arr",
+    "hsv_to_rgb",
+    "rgb_to_hsv",
 ]

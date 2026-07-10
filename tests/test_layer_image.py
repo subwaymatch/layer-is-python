@@ -5,6 +5,7 @@ import pathlib
 from io import BytesIO
 
 import numpy as np
+import pytest
 from PIL import Image
 
 from layeris import LayerImage
@@ -58,6 +59,16 @@ class TestFactoryMethods:
         img = LayerImage.from_file(str(TEST_IMAGES_DIR / "office.jpg"))
         assert img.get_image_as_array().ndim == 3
 
+    def test_from_array_integer_dtype_raises(self) -> None:
+        data = np.zeros((4, 4, 3), dtype=np.uint8)
+        with pytest.raises(TypeError, match="float"):
+            LayerImage.from_array(data)
+
+    @pytest.mark.parametrize("shape", [(4, 4), (4, 4, 2), (4, 4, 5), (2, 4, 4, 3)])
+    def test_from_array_bad_shape_raises(self, shape: tuple[int, ...]) -> None:
+        with pytest.raises(ValueError, match="shape"):
+            LayerImage.from_array(np.zeros(shape, dtype=np.float64))
+
 
 # ---------------------------------------------------------------------------
 # Alpha helpers
@@ -110,6 +121,17 @@ class TestResize:
     def test_resize_returns_self(self, gray_image: LayerImage) -> None:
         result = gray_image.resize(2, 2)
         assert result is gray_image
+
+    def test_resize_rgba_preserves_alpha_channel(self, rgba_image: LayerImage) -> None:
+        rgba_image.resize(2, 2)
+        assert rgba_image.get_image_as_array().shape == (2, 2, 4)
+
+    @pytest.mark.parametrize("size", [(0, 10), (10, 0), (-1, 10)])
+    def test_resize_invalid_size_raises(
+        self, gray_image: LayerImage, size: tuple[int, int]
+    ) -> None:
+        with pytest.raises(ValueError, match="width and height"):
+            gray_image.resize(*size)
 
 
 class TestNotebookDisplay:
@@ -288,6 +310,13 @@ class TestCurve:
         np.testing.assert_allclose(arr[0, 0, 1], 0.5)  # green unchanged
         np.testing.assert_allclose(arr[0, 0, 2], 0.5)  # blue unchanged
 
+    @pytest.mark.parametrize("channels", ["", "x", "rgba", "rx"])
+    def test_invalid_channels_raises(
+        self, sample_image: LayerImage, channels: str
+    ) -> None:
+        with pytest.raises(ValueError, match="channels"):
+            sample_image.curve(channels, [0.0, 1.0])
+
 
 # ---------------------------------------------------------------------------
 # Blend modes — darken group
@@ -314,6 +343,15 @@ class TestDarken:
         img.darken("#000000", opacity=0.5)
         # blend result = min(0.6, 0) = 0; mixed at 50%: 0.6*0.5 + 0*0.5 = 0.3
         np.testing.assert_allclose(img.get_image_as_array(), 0.3)
+
+    def test_shorthand_hex_accepted(self) -> None:
+        img = LayerImage.from_array(np.full((1, 1, 3), 0.6))
+        img.darken("#000")
+        np.testing.assert_allclose(img.get_image_as_array(), 0.0)
+
+    def test_invalid_opacity_raises(self, sample_image: LayerImage) -> None:
+        with pytest.raises(ValueError, match="opacity"):
+            sample_image.darken("#000000", opacity=1.5)
 
 
 class TestMultiply:
@@ -562,6 +600,14 @@ class TestGetImageAsArray:
         arr = sample_image.get_image_as_array()
         assert arr.ndim == 3
         assert arr.shape[2] == 3
+
+
+class TestRepr:
+    def test_repr_rgb(self, sample_image: LayerImage) -> None:
+        assert repr(sample_image) == "<LayerImage RGB 4x4>"
+
+    def test_repr_rgba(self, rgba_image: LayerImage) -> None:
+        assert repr(rgba_image) == "<LayerImage RGBA 4x4>"
 
 
 # ---------------------------------------------------------------------------
