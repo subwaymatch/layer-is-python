@@ -23,9 +23,14 @@ classifiers = [
 ]
 dependencies = [
     "numpy>=1.20",
-    "matplotlib>=3.3",
-    "Pillow>=9.0",
+    "Pillow>=9.1",
     "requests>=2.22",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
 ]
 
 [tool.hatch.version]

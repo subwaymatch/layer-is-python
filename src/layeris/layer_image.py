@@ -5,11 +5,10 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any
 
-import matplotlib.colors
 import numpy as np
 import requests
 from numpy.typing import NDArray
-from PIL import Image
+from PIL import Image, ImageOps
 
 from .channels import channel_adjust, merge_channels, split_image_into_channels
 from .color.conversions import (
@@ -17,6 +16,7 @@ from .color.conversions import (
     convert_uint_to_float,
     get_rgb_float_if_hex,
 )
+from .color.hsv import hsv_to_rgb, rgb_to_hsv
 from .blend import mix
 
 # Blend mode operation names that accept a hex colour and opacity parameter.
@@ -46,8 +46,14 @@ class LayerImage:
     # ------------------------------------------------------------------
 
     @staticmethod
-    def from_url(url: str) -> LayerImage:
-        response = requests.get(url)
+    def from_url(url: str, timeout: float = 30.0) -> LayerImage:
+        """Download an image over HTTP(S) and wrap it in a LayerImage.
+
+        Raises requests.HTTPError for non-2xx responses instead of failing
+        later with a cryptic image-decoding error.
+        """
+        response = requests.get(url, timeout=timeout)
+        response.raise_for_status()
         image = Image.open(BytesIO(response.content))
         image = LayerImage._normalize_pil_image(image)
         return LayerImage(convert_uint_to_float(np.asarray(image)))
@@ -60,6 +66,7 @@ class LayerImage:
 
     @staticmethod
     def from_array(image_data: NDArray[np.float64]) -> LayerImage:
+        """Wrap a float array of shape (H, W, 3|4) with values in [0, 1]."""
         return LayerImage(image_data)
 
     # ------------------------------------------------------------------
@@ -69,6 +76,8 @@ class LayerImage:
     @staticmethod
     def _normalize_pil_image(image: Image.Image) -> Image.Image:
         """Convert any PIL image mode to RGB or RGBA for consistent processing."""
+        # Apply EXIF orientation so photos from cameras/phones load upright.
+        image = ImageOps.exif_transpose(image)
         if image.mode == "RGBA":
             return image
         if image.mode == "RGB":
@@ -86,8 +95,20 @@ class LayerImage:
     # ------------------------------------------------------------------
 
     def __init__(self, image_data: NDArray[np.float64]) -> None:
-        # image_data is always a float32/float64 array in [0, 1]
-        # shape is (H, W, 3) for RGB or (H, W, 4) for RGBA
+        # image_data is always a float array in [0, 1],
+        # shape (H, W, 3) for RGB or (H, W, 4) for RGBA
+        image_data = np.asarray(image_data)
+        if not np.issubdtype(image_data.dtype, np.floating):
+            raise TypeError(
+                f"image_data must be a float array with values in [0, 1], "
+                f"got dtype {image_data.dtype}. Use LayerImage.from_file() / "
+                "from_url() to load 8-bit images, or divide the array by 255."
+            )
+        if image_data.ndim != 3 or image_data.shape[2] not in (3, 4):
+            raise ValueError(
+                "image_data must have shape (height, width, 3) for RGB or "
+                f"(height, width, 4) for RGBA, got {image_data.shape}"
+            )
         self.image_data: NDArray[np.float64] = image_data.astype(np.float64)
 
     # ------------------------------------------------------------------
@@ -120,10 +141,12 @@ class LayerImage:
 
     def resize(self, width: int, height: int) -> LayerImage:
         """Resize the image to (width, height) using high-quality Lanczos resampling."""
+        if width < 1 or height < 1:
+            raise ValueError(f"width and height must be >= 1, got ({width}, {height})")
         uint_data = convert_float_to_uint(self.image_data)
         mode = "RGBA" if self._has_alpha() else "RGB"
         pil_image = Image.fromarray(uint_data, mode=mode)
-        pil_image = pil_image.resize((width, height), Image.LANCZOS)
+        pil_image = pil_image.resize((width, height), Image.Resampling.LANCZOS)
         self.image_data = convert_uint_to_float(np.asarray(pil_image)).astype(
             np.float64
         )
@@ -150,15 +173,17 @@ class LayerImage:
         return self
 
     def hue(self, target_hue: float) -> LayerImage:
-        hsv = matplotlib.colors.rgb_to_hsv(self._rgb())
+        """Set every pixel's hue to *target_hue* (in [0, 1]), keeping
+        saturation and value — a colorize-style adjustment."""
+        hsv = rgb_to_hsv(self._rgb())
         hsv[:, :, 0] = target_hue
-        self.image_data = self._reattach_alpha(matplotlib.colors.hsv_to_rgb(hsv))
+        self.image_data = self._reattach_alpha(hsv_to_rgb(hsv))
         return self
 
     def saturation(self, factor: float) -> LayerImage:
-        hsv = matplotlib.colors.rgb_to_hsv(self._rgb())
-        hsv = np.clip(hsv + hsv * [0, factor, 0], 0, 1)
-        self.image_data = self._reattach_alpha(matplotlib.colors.hsv_to_rgb(hsv))
+        hsv = rgb_to_hsv(self._rgb())
+        hsv[:, :, 1] = np.clip(hsv[:, :, 1] * (1 + factor), 0, 1)
+        self.image_data = self._reattach_alpha(hsv_to_rgb(hsv))
         return self
 
     def lightness(self, factor: float) -> LayerImage:
@@ -175,6 +200,11 @@ class LayerImage:
     def curve(
         self, channels: str = "rgb", curve_points: list[float] | None = None
     ) -> LayerImage:
+        if not channels or set(channels) - set("rgb"):
+            raise ValueError(
+                f"channels must be a non-empty combination of 'r', 'g' and 'b' "
+                f"(e.g. 'rgb' or 'rg'), got {channels!r}"
+            )
         if curve_points is None:
             curve_points = [0, 1]
         r, g, b = split_image_into_channels(self._rgb())
@@ -352,7 +382,13 @@ class LayerImage:
         return LayerImage.from_array(self.image_data.copy())
 
     def get_image_as_array(self) -> NDArray[np.float64]:
+        """Return the underlying float64 array (not a copy)."""
         return self.image_data
+
+    def __repr__(self) -> str:
+        height, width = self.image_data.shape[:2]
+        mode = "RGBA" if self._has_alpha() else "RGB"
+        return f"<LayerImage {mode} {width}x{height}>"
 
     def _to_pil_image(self) -> Image.Image:
         """Build a PIL image from current float data for rendering/saving paths."""
