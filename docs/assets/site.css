@@ -116,10 +116,8 @@ h3 { font-size: 1.2rem; margin: 0 0 0.4rem; }
 .eyebrow {
   margin: 0 0 0.5rem;
   color: var(--accent);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .lede { color: var(--muted); font-size: 1.1rem; max-width: 70ch; }
@@ -363,10 +361,8 @@ a.chip:hover { border-color: var(--accent); color: var(--accent); }
   border-radius: 999px;
   background: rgb(0 0 0 / 55%);
   color: #fff;
-  font-size: 0.72rem;
-  font-weight: 650;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
   pointer-events: none;
 }
 .compare__tag--before { left: 10px; }
@@ -552,10 +548,8 @@ a.chip:hover { border-color: var(--accent); color: var(--accent); }
   grid-template-columns: 1fr 1fr;
   margin-bottom: 6px;
   color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 650;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 @media (max-width: 900px) {
   .op { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 24px 0; }
