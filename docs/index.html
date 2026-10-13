@@ -3,257 +3,166 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Layer.is — operation gallery</title>
-<style>
-  :root { color-scheme: light dark; }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0 auto; padding: 2rem 1rem 4rem; max-width: 1080px;
-    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: #1f2328; background: #ffffff;
-  }
-  header p { color: #59636e; max-width: 60ch; }
-  h1 { font-size: 2rem; margin-bottom: 0.25rem; }
-  h2 { margin-top: 3rem; padding-bottom: 0.4rem; border-bottom: 1px solid #d1d9e0; }
-  .card { margin: 2rem 0; }
-  .card h3 { margin: 0 0 0.25rem; }
-  .card p { margin: 0 0 0.75rem; color: #59636e; max-width: 72ch; }
-  .card img { width: 100%; height: auto; border-radius: 6px; }
-  pre {
-    background: #f6f8fa; padding: 0.6rem 0.9rem; border-radius: 6px;
-    overflow-x: auto; font-size: 0.875rem;
-  }
-  a { color: #0969da; }
-  footer { margin-top: 4rem; font-size: 0.875rem; color: #59636e; }
-  @media (prefers-color-scheme: dark) {
-    body { color: #f0f6fc; background: #0d1117; }
-    header p, .card p, footer { color: #9198a1; }
-    h2 { border-color: #3d444d; }
-    pre { background: #151b23; }
-    a { color: #4493f8; }
-  }
-</style>
+<title>Layer.is</title>
+<meta name="description" content="Photoshop-style blend modes, adjustments and curves for Python.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='18' height='18' rx='4' fill='%23ff8a4c'/%3E%3Crect x='11' y='11' width='18' height='18' rx='4' fill='%234f6bed' fill-opacity='.85'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>Layer.is</h1>
-    <p>Photoshop-style blend modes, adjustments and curves for Python.
-       Each preview shows the input on the left and the result of the snippet
-       on the right — all generated with
-       <a href="https://github.com/subwaymatch/layer-is-python">layeris</a> itself.</p>
-  </header>
-  <main>
-    <section>
-      <h2>Basic adjustments</h2>
-      <figure class="card" id="grayscale">
-        <figcaption>
-          <h3>Grayscale</h3>
-          <p>Convert to grayscale using the ITU-R 601 luminance weights.</p>
-          <pre><code>image.grayscale()</code></pre>
-        </figcaption>
-        <img src="previews/grayscale.jpg" alt="Before/after preview of Grayscale" loading="lazy">
-      </figure>
-      <figure class="card" id="brightness">
-        <figcaption>
-          <h3>Brightness</h3>
-          <p>Scale pixel values: a factor above 0 brightens, below 0 darkens.</p>
-          <pre><code>image.brightness(0.2)</code></pre>
-        </figcaption>
-        <img src="previews/brightness.jpg" alt="Before/after preview of Brightness" loading="lazy">
-      </figure>
-      <figure class="card" id="contrast">
-        <figcaption>
-          <h3>Contrast</h3>
-          <p>Expand or compress the range around mid-gray: a factor above 1 increases contrast, between 0 and 1 decreases it.</p>
-          <pre><code>image.contrast(1.5)</code></pre>
-        </figcaption>
-        <img src="previews/contrast.jpg" alt="Before/after preview of Contrast" loading="lazy">
-      </figure>
-      <figure class="card" id="hue">
-        <figcaption>
-          <h3>Hue</h3>
-          <p>Set every pixel&#x27;s hue to the target value in [0, 1] while keeping saturation and value — a colorize-style adjustment.</p>
-          <pre><code>image.hue(0.3)</code></pre>
-        </figcaption>
-        <img src="previews/hue.jpg" alt="Before/after preview of Hue" loading="lazy">
-      </figure>
-      <figure class="card" id="saturation">
-        <figcaption>
-          <h3>Saturation</h3>
-          <p>Scale color intensity: a factor above 0 boosts saturation, below 0 mutes it (-1 fully desaturates).</p>
-          <pre><code>image.saturation(-0.5)</code></pre>
-        </figcaption>
-        <img src="previews/saturation.jpg" alt="Before/after preview of Saturation" loading="lazy">
-      </figure>
-      <figure class="card" id="lightness">
-        <figcaption>
-          <h3>Lightness</h3>
-          <p>Blend toward white (factor above 0) or black (factor below 0).</p>
-          <pre><code>image.lightness(0.4)</code></pre>
-        </figcaption>
-        <img src="previews/lightness.jpg" alt="Before/after preview of Lightness" loading="lazy">
-      </figure>
-      <figure class="card" id="curve_rgb">
-        <figcaption>
-          <h3>Curve (all channels)</h3>
-          <p>Remap tones through control points spaced evenly across [0, 1] — here an S-curve that deepens shadows and lifts highlights.</p>
-          <pre><code>image.curve(&#x27;rgb&#x27;, [0, 0.1, 0.4, 0.65, 0.9, 1])</code></pre>
-        </figcaption>
-        <img src="previews/curve_rgb.jpg" alt="Before/after preview of Curve (all channels)" loading="lazy">
-      </figure>
-      <figure class="card" id="curve_red">
-        <figcaption>
-          <h3>Curve (single channel)</h3>
-          <p>The same curve machinery applied to the red channel only.</p>
-          <pre><code>image.curve(&#x27;r&#x27;, [0, 0.2, 0.8, 1])</code></pre>
-        </figcaption>
-        <img src="previews/curve_red.jpg" alt="Before/after preview of Curve (single channel)" loading="lazy">
-      </figure>
-      <figure class="card" id="resize">
-        <figcaption>
-          <h3>Resize</h3>
-          <p>Resize with high-quality Lanczos resampling.</p>
-          <pre><code>image.resize(width=240, height=160)</code></pre>
-        </figcaption>
-        <img src="previews/resize.jpg" alt="Before/after preview of Resize" loading="lazy">
-      </figure>
-    </section>
-    <section>
-      <h2>Blend modes — darken</h2>
-      <figure class="card" id="darken">
-        <figcaption>
-          <h3>Darken</h3>
-          <p>Looks at the color information in each channel and selects the base or blend color — whichever is darker — as the result color.</p>
-          <pre><code>grayscale_image.darken(&#x27;#3fe28f&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/darken.jpg" alt="Before/after preview of Darken" loading="lazy">
-      </figure>
-      <figure class="card" id="multiply">
-        <figcaption>
-          <h3>Multiply</h3>
-          <p>Multiplies the base color by the blend color. The result is always darker; multiplying with white leaves the color unchanged.</p>
-          <pre><code>grayscale_image.multiply(&#x27;#3fe28f&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/multiply.jpg" alt="Before/after preview of Multiply" loading="lazy">
-      </figure>
-      <figure class="card" id="color_burn">
-        <figcaption>
-          <h3>Color Burn</h3>
-          <p>Darkens the base color to reflect the blend color by increasing the contrast between the two. Blending with white produces no change.</p>
-          <pre><code>grayscale_image.color_burn(&#x27;#7fe3f8&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/color_burn.jpg" alt="Before/after preview of Color Burn" loading="lazy">
-      </figure>
-      <figure class="card" id="linear_burn">
-        <figcaption>
-          <h3>Linear Burn</h3>
-          <p>Darkens the base color to reflect the blend color by decreasing the brightness. Blending with white produces no change.</p>
-          <pre><code>grayscale_image.linear_burn(&#x27;#e1a8ff&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/linear_burn.jpg" alt="Before/after preview of Linear Burn" loading="lazy">
-      </figure>
-    </section>
-    <section>
-      <h2>Blend modes — lighten</h2>
-      <figure class="card" id="lighten">
-        <figcaption>
-          <h3>Lighten</h3>
-          <p>Selects the base or blend color — whichever is lighter — as the result color.</p>
-          <pre><code>image.lighten(&#x27;#ff3ce1&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/lighten.jpg" alt="Before/after preview of Lighten" loading="lazy">
-      </figure>
-      <figure class="card" id="screen">
-        <figcaption>
-          <h3>Screen</h3>
-          <p>Multiplies the inverse of the blend and base colors. The result is always lighter — like projecting multiple slides on top of each other.</p>
-          <pre><code>image.screen(&#x27;#e633ba&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/screen.jpg" alt="Before/after preview of Screen" loading="lazy">
-      </figure>
-      <figure class="card" id="color_dodge">
-        <figcaption>
-          <h3>Color Dodge</h3>
-          <p>Brightens the base color to reflect the blend color by decreasing contrast between the two. Blending with black produces no change.</p>
-          <pre><code>image.color_dodge(&#x27;#490cc7&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/color_dodge.jpg" alt="Before/after preview of Color Dodge" loading="lazy">
-      </figure>
-      <figure class="card" id="linear_dodge">
-        <figcaption>
-          <h3>Linear Dodge</h3>
-          <p>Brightens the base color to reflect the blend color by increasing the brightness. Blending with black produces no change.</p>
-          <pre><code>image.linear_dodge(&#x27;#490cc7&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/linear_dodge.jpg" alt="Before/after preview of Linear Dodge" loading="lazy">
-      </figure>
-    </section>
-    <section>
-      <h2>Blend modes — contrast</h2>
-      <figure class="card" id="overlay">
-        <figcaption>
-          <h3>Overlay</h3>
-          <p>Multiplies or screens the colors depending on the base color, preserving its highlights and shadows.</p>
-          <pre><code>image.overlay(&#x27;#ffb956&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/overlay.jpg" alt="Before/after preview of Overlay" loading="lazy">
-      </figure>
-      <figure class="card" id="soft_light">
-        <figcaption>
-          <h3>Soft Light</h3>
-          <p>Darkens or lightens depending on the blend color — like shining a diffused spotlight on the image.</p>
-          <pre><code>image.soft_light(&#x27;#ff3cbc&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/soft_light.jpg" alt="Before/after preview of Soft Light" loading="lazy">
-      </figure>
-      <figure class="card" id="hard_light">
-        <figcaption>
-          <h3>Hard Light</h3>
-          <p>Multiplies or screens depending on the blend color — like shining a harsh spotlight on the image.</p>
-          <pre><code>image.hard_light(&#x27;#df5dff&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/hard_light.jpg" alt="Before/after preview of Hard Light" loading="lazy">
-      </figure>
-      <figure class="card" id="vivid_light">
-        <figcaption>
-          <h3>Vivid Light</h3>
-          <p>Burns or dodges by increasing or decreasing the contrast, depending on the blend color.</p>
-          <pre><code>image.vivid_light(&#x27;#ac5b7f&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/vivid_light.jpg" alt="Before/after preview of Vivid Light" loading="lazy">
-      </figure>
-      <figure class="card" id="linear_light">
-        <figcaption>
-          <h3>Linear Light</h3>
-          <p>Burns or dodges by decreasing or increasing the brightness, depending on the blend color.</p>
-          <pre><code>image.linear_light(&#x27;#9fa500&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/linear_light.jpg" alt="Before/after preview of Linear Light" loading="lazy">
-      </figure>
-      <figure class="card" id="pin_light">
-        <figcaption>
-          <h3>Pin Light</h3>
-          <p>Replaces colors depending on the blend color — useful for adding special effects to an image.</p>
-          <pre><code>image.pin_light(&#x27;#005546&#x27;)</code></pre>
-        </figcaption>
-        <img src="previews/pin_light.jpg" alt="Before/after preview of Pin Light" loading="lazy">
-      </figure>
-    </section>
-    <section>
-      <h2>Putting it together</h2>
-      <figure class="card" id="chaining">
-        <figcaption>
-          <h3>Method chaining</h3>
-          <p>Every operation returns the LayerImage itself, so a whole look can be built as one chained pipeline.</p>
-          <pre><code>(image.grayscale()
-      .brightness(0.1)
-      .multiply(&#x27;#3fe28f&#x27;, opacity=0.7)
-      .curve(&#x27;rgb&#x27;, [0, 0.1, 0.4, 0.65, 0.9, 1]))</code></pre>
-        </figcaption>
-        <img src="previews/chaining.jpg" alt="Before/after preview of Method chaining" loading="lazy">
-      </figure>
-    </section>
-  </main>
-  <footer>Generated by <code>scripts/generate_previews.py</code> · layeris v0.4.0</footer>
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <a class="brand" href="index.html"><svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><g style="isolation:isolate"><rect x="3" y="3" width="18" height="18" rx="4" fill="#ff8a4c"/><rect x="11" y="11" width="18" height="18" rx="4" fill="#4f6bed" style="mix-blend-mode:multiply"/></g></svg><span>Layer.is</span></a>
+    <nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="examples.html">Examples</a><a href="blend-modes.html">Blend modes</a><a href="operations.html">Operations</a></nav>
+    <a href="https://github.com/subwaymatch/layer-is-python" class="gh-link">GitHub</a>
+  </div>
+</header>
+<main>
+<div class="wrap">
+  <section class="hero">
+    <div class="hero__text">
+      <p class="eyebrow">Image processing for Python</p>
+      <h1>Photoshop-style blend modes and adjustments, in a few lines of Python.</h1>
+      <p class="lede">Layer.is gives you all the common blend modes, brightness, contrast,
+        hue, saturation and lightness controls, and per-channel curves — on top of NumPy,
+        with a chainable API.</p>
+      <div class="install"><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-shell">pip install layeris</code></pre></div></div>
+      <div class="cta">
+        <a class="button" href="examples.html">Browse 24 examples</a>
+        <a class="button button--ghost" href="blend-modes.html">Explore blend modes</a>
+      </div>
+    </div>
+    <div class="looks" data-looks>
+      <div class="looks__stage"><img data-look="original" class="looks__img" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses — Original" width="960" height="640"><img data-look="cross-process" hidden class="looks__img" src="examples/cross-process.jpg" alt="Turquoise 1960s car on a street of pastel houses — Cross-processed" width="960" height="640"><img data-look="pastel-dream" hidden class="looks__img" src="examples/pastel-dream.jpg" alt="Turquoise 1960s car on a street of pastel houses — Pastel dream" width="960" height="640"><img data-look="channel-swap" hidden class="looks__img" src="examples/channel-swap.jpg" alt="Turquoise 1960s car on a street of pastel houses — Channel swap" width="960" height="640"></div>
+      <div class="looks__tabs" role="group" aria-label="Pick a look"><button type="button" class="looks__tab" data-look="original" aria-pressed="true">Original</button><button type="button" class="looks__tab" data-look="cross-process" aria-pressed="false">Cross-processed</button><button type="button" class="looks__tab" data-look="pastel-dream" aria-pressed="false">Pastel dream</button><button type="button" class="looks__tab" data-look="channel-swap" aria-pressed="false">Channel swap</button></div>
+      <div class="looks__panel" data-look="original"><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)</code></pre></div></div><div class="looks__panel" data-look="cross-process" hidden><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
+(image.<span class="tok-call">curve</span>(<span class="tok-string">&quot;r&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.15</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>])
+      .<span class="tok-call">curve</span>(<span class="tok-string">&quot;g&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.2</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.85</span>, <span class="tok-number">1</span>])
+      .<span class="tok-call">curve</span>(<span class="tok-string">&quot;b&quot;</span>, [<span class="tok-number">0.22</span>, <span class="tok-number">0.35</span>, <span class="tok-number">0.48</span>, <span class="tok-number">0.6</span>, <span class="tok-number">0.72</span>]))</code></pre></div></div><div class="looks__panel" data-look="pastel-dream" hidden><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
+(image.<span class="tok-call">lightness</span>(<span class="tok-number">0.18</span>)
+      .<span class="tok-call">saturation</span>(-<span class="tok-number">0.2</span>)
+      .<span class="tok-call">screen</span>(<span class="tok-string">&quot;#ffc4d6&quot;</span>, opacity=<span class="tok-number">0.35</span>))</code></pre></div></div><div class="looks__panel" data-look="channel-swap" hidden><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
+pixels = image.<span class="tok-call">get_image_as_array</span>()
+image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_array</span>(pixels[..., [<span class="tok-number">1</span>, <span class="tok-number">0</span>, <span class="tok-number">2</span>]].<span class="tok-call">copy</span>())  <span class="tok-comment"># swap R and G</span>
+
+image.<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>)</code></pre></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Featured looks</h2>
+    <p class="section__intro">Hover or focus a card to see the original photo. Every image is
+      rendered by layeris from the snippet on the <a href="examples.html">examples page</a>.</p>
+    <div class="features">
+      <a class="feature" href="examples.html#teal-and-orange">
+        <span class="feature__media">
+          <img src="examples/teal-and-orange.jpg" alt="Teal &amp; orange applied to the beach photo" width="960" height="640" loading="lazy" decoding="async">
+          <img class="feature__before" src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower" width="960" height="640" loading="lazy" decoding="async">
+        </span>
+        <span class="feature__title">Teal &amp; orange</span>
+        <span class="feature__meta">Color grading</span>
+      </a>
+      <a class="feature" href="examples.html#double-exposure">
+        <span class="feature__media">
+          <img src="examples/double-exposure.jpg" alt="Double exposure applied to the silhouette photo" width="960" height="640" loading="lazy" decoding="async">
+          <img class="feature__before" src="examples/originals/silhouette.jpg" alt="Profile silhouette of a woman against a white sky" width="960" height="640" loading="lazy" decoding="async">
+        </span>
+        <span class="feature__title">Double exposure</span>
+        <span class="feature__meta">Creative effects</span>
+      </a>
+      <a class="feature" href="examples.html#neon-nights">
+        <span class="feature__media">
+          <img src="examples/neon-nights.jpg" alt="Neon nights applied to the city night photo" width="960" height="640" loading="lazy" decoding="async">
+          <img class="feature__before" src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections" width="960" height="640" loading="lazy" decoding="async">
+        </span>
+        <span class="feature__title">Neon nights</span>
+        <span class="feature__meta">Color grading</span>
+      </a>
+      <a class="feature" href="examples.html#cyanotype">
+        <span class="feature__media">
+          <img src="examples/cyanotype.jpg" alt="Cyanotype applied to the forest photo" width="960" height="640" loading="lazy" decoding="async">
+          <img class="feature__before" src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns" width="960" height="640" loading="lazy" decoding="async">
+        </span>
+        <span class="feature__title">Cyanotype</span>
+        <span class="feature__meta">Black &amp; white</span>
+      </a>
+      <a class="feature" href="examples.html#graduated-filter">
+        <span class="feature__media">
+          <img src="examples/graduated-filter.jpg" alt="Graduated sky filter applied to the mountain lake photo" width="960" height="640" loading="lazy" decoding="async">
+          <img class="feature__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water" width="960" height="640" loading="lazy" decoding="async">
+        </span>
+        <span class="feature__title">Graduated sky filter</span>
+        <span class="feature__meta">Creative effects</span>
+      </a>
+      <a class="feature" href="examples.html#duotone">
+        <span class="feature__media">
+          <img src="examples/duotone.jpg" alt="Duotone poster applied to the architecture photo" width="960" height="640" loading="lazy" decoding="async">
+          <img class="feature__before" src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky" width="960" height="640" loading="lazy" decoding="async">
+        </span>
+        <span class="feature__title">Duotone poster</span>
+        <span class="feature__meta">Creative effects</span>
+      </a>
+      <a class="feature" href="examples.html#sepia">
+        <span class="feature__media">
+          <img src="examples/sepia.jpg" alt="Sepia print applied to the portrait photo" width="960" height="640" loading="lazy" decoding="async">
+          <img class="feature__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window" width="960" height="640" loading="lazy" decoding="async">
+        </span>
+        <span class="feature__title">Sepia print</span>
+        <span class="feature__meta">Film &amp; vintage</span>
+      </a>
+      <a class="feature" href="examples.html#lomo">
+        <span class="feature__media">
+          <img src="examples/lomo.jpg" alt="Lomo applied to the flower market photo" width="960" height="640" loading="lazy" decoding="async">
+          <img class="feature__before" src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies" width="960" height="640" loading="lazy" decoding="async">
+        </span>
+        <span class="feature__title">Lomo</span>
+        <span class="feature__meta">Film &amp; vintage</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section split">
+    <div>
+      <h2>Quick start</h2>
+      <p>Load an image from a file, a URL or a NumPy array, chain operations, and save.
+        Every operation mutates the image in place and returns it, so a whole look reads
+        as one pipeline. Use <code>clone()</code> to branch off a copy.</p>
+      <p>Requires Python 3.10+. The only dependencies are NumPy, Pillow and Requests.</p>
+    </div>
+    <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python"><span class="tok-keyword">from</span> layeris <span class="tok-keyword">import</span> <span class="tok-name">LayerImage</span>
+
+image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photo.jpg&quot;</span>)
+(image.<span class="tok-call">grayscale</span>()
+      .<span class="tok-call">brightness</span>(<span class="tok-number">0.1</span>)
+      .<span class="tok-call">multiply</span>(<span class="tok-string">&quot;#3fe28f&quot;</span>, opacity=<span class="tok-number">0.7</span>)
+      .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.1</span>, <span class="tok-number">0.4</span>, <span class="tok-number">0.65</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>])
+      .<span class="tok-call">save</span>(<span class="tok-string">&quot;result.jpg&quot;</span>))</code></pre></div>
+  </section>
+
+  <section class="section">
+    <h2>Documentation</h2>
+    <div class="cards">
+      <a class="card" href="examples.html"><strong>Examples</strong>
+        <span>24 complete looks — fixes, color grades, film, black &amp; white and
+        creative effects — each with a before/after slider and copy-paste code.</span></a>
+      <a class="card" href="blend-modes.html"><strong>Blend modes</strong>
+        <span>All 14 blend modes side by side on three photos, plus how opacity
+        and the blend color change the result.</span></a>
+      <a class="card" href="operations.html"><strong>Operations</strong>
+        <span>A before/after reference for every LayerImage method, from
+        <code>grayscale()</code> to <code>pin_light()</code>.</span></a>
+    </div>
+  </section>
+</div>
+</main>
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p>layeris v0.4.0 · MIT License ·
+       <a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></p>
+    <p>Every result image on this site is rendered by layeris itself with
+       <code>scripts/build_docs.py</code>. Sample photos were generated with
+       OpenAI's <code>gpt-image-2.5</code> model (<code>scripts/generate_photos.py</code>).</p>
+  </div>
+</footer>
 </body>
 </html>

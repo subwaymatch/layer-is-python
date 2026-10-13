@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Layer.is — Operations</title>
+<meta name="description" content="Before/after previews of every layeris operation.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='18' height='18' rx='4' fill='%23ff8a4c'/%3E%3Crect x='11' y='11' width='18' height='18' rx='4' fill='%234f6bed' fill-opacity='.85'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <a class="brand" href="index.html"><svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><g style="isolation:isolate"><rect x="3" y="3" width="18" height="18" rx="4" fill="#ff8a4c"/><rect x="11" y="11" width="18" height="18" rx="4" fill="#4f6bed" style="mix-blend-mode:multiply"/></g></svg><span>Layer.is</span></a>
+    <nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="examples.html">Examples</a><a href="blend-modes.html">Blend modes</a><a href="operations.html" aria-current="page">Operations</a></nav>
+    <a href="https://github.com/subwaymatch/layer-is-python" class="gh-link">GitHub</a>
+  </div>
+</header>
+<main>
+<div class="wrap">
+  <header class="page-head">
+    <p class="eyebrow">Reference</p>
+    <h1>Operations</h1>
+    <p class="lede">Every LayerImage operation on a single photo — the input on the
+      left, the result of the snippet on the right. The darken-group blend modes run
+      on a grayscale copy (<code>grayscale_image = image.clone().grayscale()</code>),
+      as in the original demo. See <a href="examples.html">Examples</a> for complete
+      looks built from these operations.</p>
+    <nav class="toc" aria-label="Operations"><a class="chip" href="#grayscale">Grayscale</a><a class="chip" href="#brightness">Brightness</a><a class="chip" href="#contrast">Contrast</a><a class="chip" href="#hue">Hue</a><a class="chip" href="#saturation">Saturation</a><a class="chip" href="#lightness">Lightness</a><a class="chip" href="#curve_rgb">Curve (all channels)</a><a class="chip" href="#curve_red">Curve (single channel)</a><a class="chip" href="#resize">Resize</a><a class="chip" href="#darken">Darken</a><a class="chip" href="#multiply">Multiply</a><a class="chip" href="#color_burn">Color Burn</a><a class="chip" href="#linear_burn">Linear Burn</a><a class="chip" href="#lighten">Lighten</a><a class="chip" href="#screen">Screen</a><a class="chip" href="#color_dodge">Color Dodge</a><a class="chip" href="#linear_dodge">Linear Dodge</a><a class="chip" href="#overlay">Overlay</a><a class="chip" href="#soft_light">Soft Light</a><a class="chip" href="#hard_light">Hard Light</a><a class="chip" href="#vivid_light">Vivid Light</a><a class="chip" href="#linear_light">Linear Light</a><a class="chip" href="#pin_light">Pin Light</a><a class="chip" href="#chaining">Method chaining</a></nav>
+  </header>
+  <section class="section">
+    <h2>Basic adjustments</h2>
+    <article class="op" id="grayscale">
+      <div class="op__text">
+        <h3><a class="anchor" href="#grayscale">Grayscale</a></h3>
+        <p>Convert to grayscale using the ITU-R 601 luminance weights.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">grayscale</span>()</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/grayscale.jpg" alt="Before/after preview of Grayscale" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="brightness">
+      <div class="op__text">
+        <h3><a class="anchor" href="#brightness">Brightness</a></h3>
+        <p>Scale pixel values: a factor above 0 brightens, below 0 darkens.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">brightness</span>(<span class="tok-number">0.2</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/brightness.jpg" alt="Before/after preview of Brightness" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="contrast">
+      <div class="op__text">
+        <h3><a class="anchor" href="#contrast">Contrast</a></h3>
+        <p>Expand or compress the range around mid-gray: a factor above 1 increases contrast, between 0 and 1 decreases it.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">contrast</span>(<span class="tok-number">1.5</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/contrast.jpg" alt="Before/after preview of Contrast" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="hue">
+      <div class="op__text">
+        <h3><a class="anchor" href="#hue">Hue</a></h3>
+        <p>Set every pixel&#x27;s hue to the target value in [0, 1] while keeping saturation and value — a colorize-style adjustment.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">hue</span>(<span class="tok-number">0.3</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/hue.jpg" alt="Before/after preview of Hue" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="saturation">
+      <div class="op__text">
+        <h3><a class="anchor" href="#saturation">Saturation</a></h3>
+        <p>Scale color intensity: a factor above 0 boosts saturation, below 0 mutes it (-1 fully desaturates).</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">saturation</span>(-<span class="tok-number">0.5</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/saturation.jpg" alt="Before/after preview of Saturation" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="lightness">
+      <div class="op__text">
+        <h3><a class="anchor" href="#lightness">Lightness</a></h3>
+        <p>Blend toward white (factor above 0) or black (factor below 0).</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">lightness</span>(<span class="tok-number">0.4</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/lightness.jpg" alt="Before/after preview of Lightness" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="curve_rgb">
+      <div class="op__text">
+        <h3><a class="anchor" href="#curve_rgb">Curve (all channels)</a></h3>
+        <p>Remap tones through control points spaced evenly across [0, 1] — here an S-curve that deepens shadows and lifts highlights.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">curve</span>(<span class="tok-string">&#x27;rgb&#x27;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.1</span>, <span class="tok-number">0.4</span>, <span class="tok-number">0.65</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>])</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/curve_rgb.jpg" alt="Before/after preview of Curve (all channels)" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="curve_red">
+      <div class="op__text">
+        <h3><a class="anchor" href="#curve_red">Curve (single channel)</a></h3>
+        <p>The same curve machinery applied to the red channel only.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">curve</span>(<span class="tok-string">&#x27;r&#x27;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.2</span>, <span class="tok-number">0.8</span>, <span class="tok-number">1</span>])</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/curve_red.jpg" alt="Before/after preview of Curve (single channel)" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="resize">
+      <div class="op__text">
+        <h3><a class="anchor" href="#resize">Resize</a></h3>
+        <p>Resize with high-quality Lanczos resampling.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">resize</span>(width=<span class="tok-number">240</span>, height=<span class="tok-number">160</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/resize.jpg" alt="Before/after preview of Resize" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+  </section>
+  <section class="section">
+    <h2>Blend modes — darken</h2>
+    <article class="op" id="darken">
+      <div class="op__text">
+        <h3><a class="anchor" href="#darken">Darken</a></h3>
+        <p>Looks at the color information in each channel and selects the base or blend color — whichever is darker — as the result color.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">grayscale_image.<span class="tok-call">darken</span>(<span class="tok-string">&#x27;#3fe28f&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/darken.jpg" alt="Before/after preview of Darken" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="multiply">
+      <div class="op__text">
+        <h3><a class="anchor" href="#multiply">Multiply</a></h3>
+        <p>Multiplies the base color by the blend color. The result is always darker; multiplying with white leaves the color unchanged.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">grayscale_image.<span class="tok-call">multiply</span>(<span class="tok-string">&#x27;#3fe28f&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/multiply.jpg" alt="Before/after preview of Multiply" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="color_burn">
+      <div class="op__text">
+        <h3><a class="anchor" href="#color_burn">Color Burn</a></h3>
+        <p>Darkens the base color to reflect the blend color by increasing the contrast between the two. Blending with white produces no change.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">grayscale_image.<span class="tok-call">color_burn</span>(<span class="tok-string">&#x27;#7fe3f8&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/color_burn.jpg" alt="Before/after preview of Color Burn" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="linear_burn">
+      <div class="op__text">
+        <h3><a class="anchor" href="#linear_burn">Linear Burn</a></h3>
+        <p>Darkens the base color to reflect the blend color by decreasing the brightness. Blending with white produces no change.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">grayscale_image.<span class="tok-call">linear_burn</span>(<span class="tok-string">&#x27;#e1a8ff&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/linear_burn.jpg" alt="Before/after preview of Linear Burn" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+  </section>
+  <section class="section">
+    <h2>Blend modes — lighten</h2>
+    <article class="op" id="lighten">
+      <div class="op__text">
+        <h3><a class="anchor" href="#lighten">Lighten</a></h3>
+        <p>Selects the base or blend color — whichever is lighter — as the result color.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">lighten</span>(<span class="tok-string">&#x27;#ff3ce1&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/lighten.jpg" alt="Before/after preview of Lighten" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="screen">
+      <div class="op__text">
+        <h3><a class="anchor" href="#screen">Screen</a></h3>
+        <p>Multiplies the inverse of the blend and base colors. The result is always lighter — like projecting multiple slides on top of each other.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">screen</span>(<span class="tok-string">&#x27;#e633ba&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/screen.jpg" alt="Before/after preview of Screen" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="color_dodge">
+      <div class="op__text">
+        <h3><a class="anchor" href="#color_dodge">Color Dodge</a></h3>
+        <p>Brightens the base color to reflect the blend color by decreasing contrast between the two. Blending with black produces no change.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">color_dodge</span>(<span class="tok-string">&#x27;#490cc7&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/color_dodge.jpg" alt="Before/after preview of Color Dodge" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="linear_dodge">
+      <div class="op__text">
+        <h3><a class="anchor" href="#linear_dodge">Linear Dodge</a></h3>
+        <p>Brightens the base color to reflect the blend color by increasing the brightness. Blending with black produces no change.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">linear_dodge</span>(<span class="tok-string">&#x27;#490cc7&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/linear_dodge.jpg" alt="Before/after preview of Linear Dodge" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+  </section>
+  <section class="section">
+    <h2>Blend modes — contrast</h2>
+    <article class="op" id="overlay">
+      <div class="op__text">
+        <h3><a class="anchor" href="#overlay">Overlay</a></h3>
+        <p>Multiplies or screens the colors depending on the base color, preserving its highlights and shadows.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">overlay</span>(<span class="tok-string">&#x27;#ffb956&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/overlay.jpg" alt="Before/after preview of Overlay" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="soft_light">
+      <div class="op__text">
+        <h3><a class="anchor" href="#soft_light">Soft Light</a></h3>
+        <p>Darkens or lightens depending on the blend color — like shining a diffused spotlight on the image.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">soft_light</span>(<span class="tok-string">&#x27;#ff3cbc&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/soft_light.jpg" alt="Before/after preview of Soft Light" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="hard_light">
+      <div class="op__text">
+        <h3><a class="anchor" href="#hard_light">Hard Light</a></h3>
+        <p>Multiplies or screens depending on the blend color — like shining a harsh spotlight on the image.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">hard_light</span>(<span class="tok-string">&#x27;#df5dff&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/hard_light.jpg" alt="Before/after preview of Hard Light" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="vivid_light">
+      <div class="op__text">
+        <h3><a class="anchor" href="#vivid_light">Vivid Light</a></h3>
+        <p>Burns or dodges by increasing or decreasing the contrast, depending on the blend color.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">vivid_light</span>(<span class="tok-string">&#x27;#ac5b7f&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/vivid_light.jpg" alt="Before/after preview of Vivid Light" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="linear_light">
+      <div class="op__text">
+        <h3><a class="anchor" href="#linear_light">Linear Light</a></h3>
+        <p>Burns or dodges by decreasing or increasing the brightness, depending on the blend color.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">linear_light</span>(<span class="tok-string">&#x27;#9fa500&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/linear_light.jpg" alt="Before/after preview of Linear Light" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="op" id="pin_light">
+      <div class="op__text">
+        <h3><a class="anchor" href="#pin_light">Pin Light</a></h3>
+        <p>Replaces colors depending on the blend color — useful for adding special effects to an image.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">pin_light</span>(<span class="tok-string">&#x27;#005546&#x27;</span>)</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/pin_light.jpg" alt="Before/after preview of Pin Light" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+  </section>
+  <section class="section">
+    <h2>Putting it together</h2>
+    <article class="op" id="chaining">
+      <div class="op__text">
+        <h3><a class="anchor" href="#chaining">Method chaining</a></h3>
+        <p>Every operation returns the LayerImage itself, so a whole look can be built as one chained pipeline.</p>
+        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">(image.<span class="tok-call">grayscale</span>()
+      .<span class="tok-call">brightness</span>(<span class="tok-number">0.1</span>)
+      .<span class="tok-call">multiply</span>(<span class="tok-string">&#x27;#3fe28f&#x27;</span>, opacity=<span class="tok-number">0.7</span>)
+      .<span class="tok-call">curve</span>(<span class="tok-string">&#x27;rgb&#x27;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.1</span>, <span class="tok-number">0.4</span>, <span class="tok-number">0.65</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>]))</code></pre></div>
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        <img src="previews/chaining.jpg" alt="Before/after preview of Method chaining" width="964" height="320" loading="lazy" decoding="async">
+      </figure>
+    </article>
+  </section>
+</div>
+</main>
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p>layeris v0.4.0 · MIT License ·
+       <a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></p>
+    <p>Every result image on this site is rendered by layeris itself with
+       <code>scripts/build_docs.py</code>. Sample photos were generated with
+       OpenAI's <code>gpt-image-2.5</code> model (<code>scripts/generate_photos.py</code>).</p>
+  </div>
+</footer>
+</body>
+</html>

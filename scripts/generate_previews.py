@@ -5,8 +5,8 @@ This script is the single source of truth for the operation gallery. It
 produces, for each operation:
 
   * a side-by-side before/after JPEG in ``<output-dir>/previews/``
-  * a static HTML gallery at ``<output-dir>/index.html`` (GitHub Pages ready —
-    enable Pages with "Deploy from a branch" and the ``/docs`` folder)
+  * the docs site's operations page at ``<output-dir>/operations.html``
+    (``scripts/build_docs.py`` builds it together with the rest of the site)
 
 and can print the matching README markdown section with ``--markdown``.
 
@@ -20,7 +20,6 @@ Usage::
 from __future__ import annotations
 
 import argparse
-import html
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -33,6 +32,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from layeris import LayerImage, __version__  # noqa: E402
+
+import docs_layout as layout  # noqa: E402  (sibling module in scripts/)
 
 DEFAULT_SOURCE = REPO_ROOT / "test-images" / "piano-man-01.jpg"
 PANEL_WIDTH = 480  # width of each before/after panel
@@ -434,81 +435,57 @@ def render_markdown() -> str:
     return "\n".join(lines)
 
 
-def render_html() -> str:
-    """Static gallery page for GitHub Pages (docs/index.html)."""
+def render_operations_page(preview_size: tuple[int, int]) -> str:
+    """The docs site's operations page (docs/operations.html)."""
     groups: dict[str, list[Operation]] = {}
     for op in OPERATIONS:
         groups.setdefault(op.group, []).append(op)
 
+    toc = "".join(
+        f'<a class="chip" href="#{op.slug}">{layout.esc(op.title)}</a>' for op in OPERATIONS
+    )
     sections = []
     for group, ops in groups.items():
-        cards = []
-        for op in ops:
-            cards.append(f"""
-      <figure class="card" id="{op.slug}">
-        <figcaption>
-          <h3>{html.escape(op.title)}</h3>
-          <p>{html.escape(op.description)}</p>
-          <pre><code>{html.escape(op.code)}</code></pre>
-        </figcaption>
-        <img src="previews/{op.slug}.jpg" alt="Before/after preview of {html.escape(op.title)}" loading="lazy">
-      </figure>""")
+        cards = "".join(
+            f"""
+    <article class="op" id="{op.slug}">
+      <div class="op__text">
+        <h3><a class="anchor" href="#{op.slug}">{layout.esc(op.title)}</a></h3>
+        <p>{layout.esc(op.description)}</p>
+        {layout.code_block(op.code)}
+      </div>
+      <figure class="op__figure">
+        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+        {layout.img(f"previews/{op.slug}.jpg", f"Before/after preview of {op.title}",
+                    preview_size)}
+      </figure>
+    </article>"""
+            for op in ops
+        )
         sections.append(
-            f'    <section>\n      <h2>{html.escape(group)}</h2>{"".join(cards)}\n    </section>'
+            f'  <section class="section">\n    <h2>{layout.esc(group)}</h2>{cards}\n  </section>'
         )
 
-    body = "\n".join(sections)
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Layer.is — operation gallery</title>
-<style>
-  :root {{ color-scheme: light dark; }}
-  * {{ box-sizing: border-box; }}
-  body {{
-    margin: 0 auto; padding: 2rem 1rem 4rem; max-width: 1080px;
-    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: #1f2328; background: #ffffff;
-  }}
-  header p {{ color: #59636e; max-width: 60ch; }}
-  h1 {{ font-size: 2rem; margin-bottom: 0.25rem; }}
-  h2 {{ margin-top: 3rem; padding-bottom: 0.4rem; border-bottom: 1px solid #d1d9e0; }}
-  .card {{ margin: 2rem 0; }}
-  .card h3 {{ margin: 0 0 0.25rem; }}
-  .card p {{ margin: 0 0 0.75rem; color: #59636e; max-width: 72ch; }}
-  .card img {{ width: 100%; height: auto; border-radius: 6px; }}
-  pre {{
-    background: #f6f8fa; padding: 0.6rem 0.9rem; border-radius: 6px;
-    overflow-x: auto; font-size: 0.875rem;
-  }}
-  a {{ color: #0969da; }}
-  footer {{ margin-top: 4rem; font-size: 0.875rem; color: #59636e; }}
-  @media (prefers-color-scheme: dark) {{
-    body {{ color: #f0f6fc; background: #0d1117; }}
-    header p, .card p, footer {{ color: #9198a1; }}
-    h2 {{ border-color: #3d444d; }}
-    pre {{ background: #151b23; }}
-    a {{ color: #4493f8; }}
-  }}
-</style>
-</head>
-<body>
-  <header>
-    <h1>Layer.is</h1>
-    <p>Photoshop-style blend modes, adjustments and curves for Python.
-       Each preview shows the input on the left and the result of the snippet
-       on the right — all generated with
-       <a href="https://github.com/subwaymatch/layer-is-python">layeris</a> itself.</p>
+    body = f"""<div class="wrap">
+  <header class="page-head">
+    <p class="eyebrow">Reference</p>
+    <h1>Operations</h1>
+    <p class="lede">Every LayerImage operation on a single photo — the input on the
+      left, the result of the snippet on the right. The darken-group blend modes run
+      on a grayscale copy (<code>grayscale_image = image.clone().grayscale()</code>),
+      as in the original demo. See <a href="examples.html">Examples</a> for complete
+      looks built from these operations.</p>
+    <nav class="toc" aria-label="Operations">{toc}</nav>
   </header>
-  <main>
-{body}
-  </main>
-  <footer>Generated by <code>scripts/generate_previews.py</code> · layeris v{__version__}</footer>
-</body>
-</html>
-"""
+{chr(10).join(sections)}
+</div>"""
+    return layout.page(
+        filename="operations.html",
+        title="Operations",
+        description="Before/after previews of every layeris operation.",
+        body=body,
+        version=__version__,
+    )
 
 
 def main() -> None:
@@ -519,7 +496,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--output-dir", type=Path, default=REPO_ROOT / "docs",
-        help="directory receiving previews/ and index.html",
+        help="directory receiving previews/ and operations.html",
     )
     parser.add_argument(
         "--markdown", action="store_true",
@@ -528,11 +505,12 @@ def main() -> None:
     args = parser.parse_args()
 
     print(f"Generating previews from {args.source} into {args.output_dir}")
-    generate_previews(args.source, args.output_dir)
+    written = generate_previews(args.source, args.output_dir)
 
-    index_path = args.output_dir / "index.html"
-    index_path.write_text(render_html())
-    print(f"  wrote {index_path}")
+    page_path = args.output_dir / "operations.html"
+    preview_size = Image.open(written[0][1]).size
+    page_path.write_text(render_operations_page(preview_size), encoding="utf-8")
+    print(f"  wrote {page_path}")
 
     if args.markdown:
         print("\n" + render_markdown())

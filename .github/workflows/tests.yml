@@ -23,3 +23,5 @@ jobs:
         run: pytest
       - name: Smoke-test preview generation
         run: python scripts/generate_previews.py --output-dir /tmp/preview-smoke
+      - name: Smoke-test docs site build (runs every example snippet)
+        run: python scripts/build_docs.py --output-dir /tmp/docs-smoke

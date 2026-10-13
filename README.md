@@ -8,6 +8,7 @@ A library that supports all blend modes in Photoshop, brightness, contrast, hue,
 
 This project was a part of the 2019 Open Source Software Competition.
 
+- [Documentation and photo examples](https://subwaymatch.github.io/layer-is-python/)
 - [Introductory video](https://www.youtube.com/watch?v=PU_tEd8JgCw)
 - [OSS Project Link](https://www.oss.kr/dev_competition_activities/show/b6c44d4b-e557-4ff1-adcc-5625216fddc8?page=3)
 
@@ -105,7 +106,9 @@ copy.darken('#000000')  # original is unaffected
 ```
 
 Every available operation is shown with a before/after preview in the
-[operation gallery](#operation-gallery) below.
+[operation gallery](#operation-gallery) below. For complete looks — color
+grades, film emulation, black & white, double exposures and more — see the
+[examples on the docs site](https://subwaymatch.github.io/layer-is-python/examples.html).
 
 ## Operation gallery
 
@@ -468,12 +471,32 @@ All results are clamped to `[0, 1]`.
 
 ## Docs site (GitHub Pages)
 
-The preview generator also produces a standalone gallery page at
-[`docs/index.html`](docs/index.html). To publish it with GitHub Pages, enable
-**Settings → Pages → Deploy from a branch** and select the `main` branch with
-the `/docs` folder — no build step required. The page layout lives in
-[`scripts/generate_previews.py`](scripts/generate_previews.py) and can be
-customised freely.
+The [`docs/`](docs/) folder is a static site with four pages:
+
+| Page | Contents |
+|------|----------|
+| `index.html` | Landing page with a live "look switcher" and featured examples |
+| `examples.html` | 24 photo recipes (fixes, color grading, film, B&W, creative effects) with before/after sliders and copy-paste code |
+| `blend-modes.html` | All 14 blend modes on three photos, plus opacity and blend-color comparisons |
+| `operations.html` | The operation gallery above |
+
+Rebuild every page and image with:
+
+```sh
+python scripts/build_docs.py
+```
+
+Recipes live in [`scripts/docs_examples.py`](scripts/docs_examples.py). Each
+snippet is executed verbatim to render its image, so the code on the page is
+always exactly what produced the result. The sample photos in
+[`docs/photos/`](docs/photos/) were generated with OpenAI's
+`gpt-image-2.5-flare` model at low quality; the prompts are kept in
+[`scripts/generate_photos.py`](scripts/generate_photos.py), which can
+regenerate them (requires `OPENAI_API_KEY`).
+
+To publish, enable **Settings → Pages → Deploy from a branch** and select the
+`main` branch with the `/docs` folder — no build step is needed on GitHub's
+side.
 
 ---
 
