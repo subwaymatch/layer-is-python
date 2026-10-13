@@ -21,7 +21,7 @@
   --tok-builtin: #8250df;
   --tok-name: #953800;
   --tok-call: #0550ae;
-  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  --font: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
     monospace;
@@ -84,6 +84,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font: 16px/1.6 var(--font);
+  letter-spacing: -0.011em; /* Inter's recommended tracking at 16px, slightly tight */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -94,6 +95,8 @@ a { color: var(--accent); text-underline-offset: 2px; }
 a:hover { color: var(--accent-strong); }
 
 code, pre { font-family: var(--mono); }
+code, pre, .chip--code, .code__title, .photo-link { letter-spacing: 0; }
+button { letter-spacing: inherit; }
 :not(pre) > code {
   font-size: 0.875em;
   background: var(--bg-soft);
@@ -102,7 +105,7 @@ code, pre { font-family: var(--mono); }
   padding: 0.1em 0.35em;
 }
 
-h1, h2, h3 { line-height: 1.2; letter-spacing: -0.015em; }
+h1, h2, h3 { line-height: 1.2; letter-spacing: -0.022em; }
 h1 { font-size: clamp(2rem, 4.5vw, 3rem); margin: 0 0 1rem; }
 h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); margin: 0 0 0.5rem; }
 h3 { font-size: 1.2rem; margin: 0 0 0.4rem; }
@@ -113,10 +116,8 @@ h3 { font-size: 1.2rem; margin: 0 0 0.4rem; }
 .eyebrow {
   margin: 0 0 0.5rem;
   color: var(--accent);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .lede { color: var(--muted); font-size: 1.1rem; max-width: 70ch; }
@@ -174,6 +175,9 @@ h3 { font-size: 1.2rem; margin: 0 0 0.4rem; }
 .nav a:hover { color: var(--text); background: var(--bg-soft); }
 .nav a[aria-current="page"] { color: var(--text); background: var(--bg-soft); }
 .gh-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   flex-shrink: 0;
   padding: 5px 12px;
   border: 1px solid var(--border);
@@ -357,10 +361,8 @@ a.chip:hover { border-color: var(--accent); color: var(--accent); }
   border-radius: 999px;
   background: rgb(0 0 0 / 55%);
   color: #fff;
-  font-size: 0.72rem;
-  font-weight: 650;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
   pointer-events: none;
 }
 .compare__tag--before { left: 10px; }
@@ -546,10 +548,8 @@ a.chip:hover { border-color: var(--accent); color: var(--accent); }
   grid-template-columns: 1fr 1fr;
   margin-bottom: 6px;
   color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 650;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 @media (max-width: 900px) {
   .op { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 24px 0; }
