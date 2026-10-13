@@ -19,21 +19,8 @@ NAV: list[tuple[str, str]] = [
     ("operations.html", "Operations"),
 ]
 
-# Two overlapping layers — the second one multiplied onto the first.
-LOGO_SVG = (
-    '<svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">'
-    '<g style="isolation:isolate">'
-    '<rect x="3" y="3" width="18" height="18" rx="4" fill="#ff8a4c"/>'
-    '<rect x="11" y="11" width="18" height="18" rx="4" fill="#4f6bed" '
-    'style="mix-blend-mode:multiply"/></g></svg>'
-)
-FAVICON = (
-    "data:image/svg+xml,"
-    "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E"
-    "%3Crect x='3' y='3' width='18' height='18' rx='4' fill='%23ff8a4c'/%3E"
-    "%3Crect x='11' y='11' width='18' height='18' rx='4' fill='%234f6bed' "
-    "fill-opacity='.85'/%3E%3C/svg%3E"
-)
+# The Layer.is logo (docs/assets/logo.svg), used in the header and as favicon.
+LOGO = '<img class="brand__logo" src="assets/logo.svg" alt="" width="32" height="28">'
 
 
 def esc(text: str) -> str:
@@ -121,14 +108,14 @@ def page(*, filename: str, title: str, description: str, body: str, version: str
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(full_title)}</title>
 <meta name="description" content="{esc(description)}">
-<link rel="icon" href="{FAVICON}">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
 <body>
 <header class="topbar">
   <div class="wrap topbar__inner">
-    <a class="brand" href="index.html">{LOGO_SVG}<span>Layer.is</span></a>
+    <a class="brand" href="index.html">{LOGO}<span>Layer.is</span></a>
     <nav class="nav" aria-label="Main">{nav}</nav>
     <a href="{REPO_URL}" class="gh-link">GitHub</a>
   </div>
