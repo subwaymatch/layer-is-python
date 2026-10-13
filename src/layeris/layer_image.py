@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -40,7 +41,54 @@ _BLEND_MODES: frozenset[str] = frozenset(
 )
 
 
+_Array = NDArray[np.float64]
+# An operation applied to RGB data of shape (H, W, 3).
+_RGBFunc = Callable[[_Array], _Array]
+# A blend-mode formula: (base A, blend layer B) -> blended result.
+_BlendFunc = Callable[[_Array, _Array], _Array]
+
+
+def _identity_lut() -> NDArray[np.float64]:
+    """A 1x256 RGB "image" holding every 8-bit level once, as floats in [0, 1].
+
+    Running a per-channel operation on it yields that operation's lookup
+    table: entry ``[0, v, c]`` is the result for input level ``v`` in
+    channel ``c``. The levels are computed exactly as ``from_file`` would
+    convert 8-bit pixels (``v / 255``), so the table holds bit-identical
+    values to processing the full image in float64.
+    """
+    levels = np.arange(256) / 255
+    return np.repeat(levels[np.newaxis, :, np.newaxis], 3, axis=2)
+
+
+def _is_uniform(blend_data: NDArray[np.float64]) -> bool:
+    """True when a blend layer has the same value at every pixel.
+
+    That is the case for hex colours and for arrays that only vary by
+    channel, such as shape (3,) or (1, 1, 3).
+    """
+    shape = np.shape(blend_data)
+    return len(shape) <= 3 and all(n == 1 for n in shape[:-1])
+
+
 class LayerImage:
+    """An RGB or RGBA image with Photoshop-style adjustments and blend modes.
+
+    Every operation mutates the image in place and returns it, so calls can
+    be chained.
+
+    Photos loaded with :meth:`from_file` or :meth:`from_url` are kept as
+    8-bit Pillow images for as long as possible. Operations that change each
+    channel based only on that channel's own value (brightness, contrast,
+    lightness, curves and blend modes with a uniform colour) are folded into
+    a single 256-entry lookup table instead of being run on every pixel, and
+    Pillow applies the table in one pass when the image is resized or saved.
+    Operations that need float pixels (:meth:`get_image_as_array`,
+    grayscale, hue, saturation and blending with a per-pixel array) convert
+    the image to float64 once and continue from there. Results are identical
+    to processing every pixel in float64.
+    """
+
     # ------------------------------------------------------------------
     # Factory methods
     # ------------------------------------------------------------------
@@ -55,14 +103,12 @@ class LayerImage:
         response = requests.get(url, timeout=timeout)
         response.raise_for_status()
         image = Image.open(BytesIO(response.content))
-        image = LayerImage._normalize_pil_image(image)
-        return LayerImage(convert_uint_to_float(np.asarray(image)))
+        return LayerImage._from_pil(LayerImage._normalize_pil_image(image))
 
     @staticmethod
     def from_file(file_path: str | Path) -> LayerImage:
         image = Image.open(file_path)
-        image = LayerImage._normalize_pil_image(image)
-        return LayerImage(convert_uint_to_float(np.asarray(image)))
+        return LayerImage._from_pil(LayerImage._normalize_pil_image(image))
 
     @staticmethod
     def from_array(image_data: NDArray[np.float64]) -> LayerImage:
@@ -109,14 +155,112 @@ class LayerImage:
                 "image_data must have shape (height, width, 3) for RGB or "
                 f"(height, width, 4) for RGBA, got {image_data.shape}"
             )
-        self.image_data: NDArray[np.float64] = image_data.astype(np.float64)
+        # Pixels live in exactly one of two forms:
+        # - float mode: _data holds the float64 pixels;
+        # - 8-bit mode: _pil holds the photo as loaded and _lut the pending
+        #   per-channel operations (None when there are none).
+        self._data: NDArray[np.float64] | None = image_data.astype(np.float64)
+        self._pil: Image.Image | None = None
+        self._lut: NDArray[np.float64] | None = None
+
+    @staticmethod
+    def _from_pil(image: Image.Image) -> LayerImage:
+        """Wrap an 8-bit RGB or RGBA Pillow image without converting it to floats."""
+        image.load()
+        # Drop metadata (EXIF, DPI, ICC profile, PNG transparency key) so that
+        # saved files contain only the pixels, as they always have.
+        image.info = {}
+        layer = LayerImage.__new__(LayerImage)
+        layer._data = None
+        layer._pil = image
+        layer._lut = None
+        return layer
+
+    # ------------------------------------------------------------------
+    # Pixel storage (internal)
+    # ------------------------------------------------------------------
+
+    @property
+    def image_data(self) -> NDArray[np.float64]:
+        """The pixels as a float64 array in [0, 1], shape (H, W, 3) or (H, W, 4).
+
+        Reading it switches an 8-bit photo to float mode for good.
+        """
+        self._use_float_pixels()
+        assert self._data is not None
+        return self._data
+
+    @image_data.setter
+    def image_data(self, value: NDArray[np.float64]) -> None:
+        self._data = value
+        self._pil = None
+        self._lut = None
+
+    def _use_float_pixels(self) -> None:
+        """Switch an 8-bit photo to float64 pixels (no-op if already float)."""
+        if self._data is None:
+            self._data = self._float_pixels()
+            self._pil = None
+            self._lut = None
+
+    def _float_pixels(self) -> NDArray[np.float64]:
+        """Current pixels as float64 without changing how they are stored."""
+        if self._data is not None:
+            return self._data
+        assert self._pil is not None
+        pixels = np.asarray(self._pil)
+        if self._lut is None:
+            return convert_uint_to_float(pixels)
+        rgb = np.stack(
+            [self._lut[0, :, c][pixels[:, :, c]] for c in range(3)], axis=-1
+        )
+        if pixels.shape[2] == 4:
+            alpha = convert_uint_to_float(pixels[:, :, 3:4])
+            return np.concatenate([rgb, alpha], axis=2)
+        return rgb
+
+    def _point_table(self) -> list[int]:
+        """The pending lookup table in the form Pillow's ``Image.point`` takes."""
+        assert self._pil is not None and self._lut is not None
+        # Round exactly like the float path does when it converts to 8-bit.
+        table = convert_float_to_uint(self._lut[0])
+        bands = [table[:, c] for c in range(3)]
+        if self._pil.mode == "RGBA":
+            bands.append(np.arange(256, dtype=np.uint8))
+        return [int(v) for v in np.concatenate(bands)]
+
+    def _apply_per_channel(self, func: _RGBFunc) -> LayerImage:
+        """Apply *func*, where each output channel depends only on the same input
+        channel, so it can be folded into an 8-bit photo's lookup table."""
+        if self._pil is not None:
+            # 8-bit photo: fold the operation into the lookup table.
+            self._lut = func(self._lut if self._lut is not None else _identity_lut())
+        else:
+            self.image_data = self._reattach_alpha(func(self._rgb()))
+        return self
+
+    def _blend(
+        self,
+        blend_data: str | NDArray[np.float64],
+        opacity: float,
+        formula: _BlendFunc,
+    ) -> LayerImage:
+        B = get_rgb_float_if_hex(blend_data)
+        if not _is_uniform(B):
+            # A per-pixel layer (gradient, texture, another photo) cannot be
+            # expressed as a lookup table, so switch to float pixels first.
+            self._use_float_pixels()
+        return self._apply_per_channel(lambda A: mix(A, formula(A, B), opacity))
 
     # ------------------------------------------------------------------
     # Alpha helpers (internal)
     # ------------------------------------------------------------------
 
     def _has_alpha(self) -> bool:
-        return self.image_data.ndim == 3 and self.image_data.shape[2] == 4
+        if self._pil is not None:
+            return self._pil.mode == "RGBA"
+        assert self._data is not None
+        return self._data.ndim == 3 and self._data.shape[2] == 4
 
     def _get_alpha(self) -> NDArray[np.float64] | None:
         """Return the alpha channel as (H, W, 1) or None."""
@@ -143,6 +287,13 @@ class LayerImage:
         """Resize the image to (width, height) using high-quality Lanczos resampling."""
         if width < 1 or height < 1:
             raise ValueError(f"width and height must be >= 1, got ({width}, {height})")
+        if self._pil is not None:
+            # Resizing works on 8-bit pixels anyway, so an 8-bit photo stays one.
+            self._pil = self._to_pil_image().resize(
+                (width, height), Image.Resampling.LANCZOS
+            )
+            self._lut = None
+            return self
         uint_data = convert_float_to_uint(self.image_data)
         mode = "RGBA" if self._has_alpha() else "RGB"
         pil_image = Image.fromarray(uint_data, mode=mode)
@@ -163,14 +314,12 @@ class LayerImage:
         return self
 
     def brightness(self, factor: float) -> LayerImage:
-        rgb_result = np.clip(self._rgb() * (1 + factor), 0, 1)
-        self.image_data = self._reattach_alpha(rgb_result)
-        return self
+        return self._apply_per_channel(lambda rgb: np.clip(rgb * (1 + factor), 0, 1))
 
     def contrast(self, factor: float) -> LayerImage:
-        rgb_result = np.clip(factor * (self._rgb() - 0.5) + 0.5, 0, 1)
-        self.image_data = self._reattach_alpha(rgb_result)
-        return self
+        return self._apply_per_channel(
+            lambda rgb: np.clip(factor * (rgb - 0.5) + 0.5, 0, 1)
+        )
 
     def hue(self, target_hue: float) -> LayerImage:
         """Set every pixel's hue to *target_hue* (in [0, 1]), keeping
@@ -187,15 +336,14 @@ class LayerImage:
         return self
 
     def lightness(self, factor: float) -> LayerImage:
-        rgb = self._rgb()
-        if factor > 0:
-            rgb_result = rgb + (1 - rgb) * factor
-        elif factor < 0:
-            rgb_result = rgb + rgb * factor
-        else:
-            rgb_result = rgb.copy()
-        self.image_data = self._reattach_alpha(rgb_result)
-        return self
+        def adjust(rgb: _Array) -> _Array:
+            if factor > 0:
+                return rgb + (1 - rgb) * factor
+            if factor < 0:
+                return rgb + rgb * factor
+            return rgb.copy()
+
+        return self._apply_per_channel(adjust)
 
     def curve(
         self, channels: str = "rgb", curve_points: list[float] | None = None
@@ -205,17 +353,19 @@ class LayerImage:
                 f"channels must be a non-empty combination of 'r', 'g' and 'b' "
                 f"(e.g. 'rgb' or 'rg'), got {channels!r}"
             )
-        if curve_points is None:
-            curve_points = [0, 1]
-        r, g, b = split_image_into_channels(self._rgb())
-        if "r" in channels:
-            r = channel_adjust(r, curve_points)
-        if "g" in channels:
-            g = channel_adjust(g, curve_points)
-        if "b" in channels:
-            b = channel_adjust(b, curve_points)
-        self.image_data = self._reattach_alpha(merge_channels(r, g, b))
-        return self
+        points = [0.0, 1.0] if curve_points is None else curve_points
+
+        def adjust(rgb: _Array) -> _Array:
+            r, g, b = split_image_into_channels(rgb)
+            if "r" in channels:
+                r = channel_adjust(r, points)
+            if "g" in channels:
+                g = channel_adjust(g, points)
+            if "b" in channels:
+                b = channel_adjust(b, points)
+            return merge_channels(r, g, b)
+
+        return self._apply_per_channel(adjust)
 
     # ------------------------------------------------------------------
     # Blend modes (darken group)
@@ -224,40 +374,26 @@ class LayerImage:
     def darken(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        result = np.minimum(A, blend_data)
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        return self._blend(blend_data, opacity, np.minimum)
 
     def multiply(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        result = A * blend_data
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        return self._blend(blend_data, opacity, lambda A, B: A * B)
 
     def color_burn(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        B = blend_data
-        with np.errstate(divide="ignore", invalid="ignore"):
-            result = np.clip(np.where(B > 0, 1 - (1 - A) / B, 0), 0, 1)
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        def formula(A: _Array, B: _Array) -> _Array:
+            with np.errstate(divide="ignore", invalid="ignore"):
+                return np.clip(np.where(B > 0, 1 - (1 - A) / B, 0), 0, 1)
+
+        return self._blend(blend_data, opacity, formula)
 
     def linear_burn(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        result = np.clip(A + blend_data - 1, 0, 1)
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        return self._blend(blend_data, opacity, lambda A, B: np.clip(A + B - 1, 0, 1))
 
     # ------------------------------------------------------------------
     # Blend modes (lighten group)
@@ -266,41 +402,26 @@ class LayerImage:
     def lighten(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        result = np.maximum(A, blend_data)
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        return self._blend(blend_data, opacity, np.maximum)
 
     def screen(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        B = blend_data
-        result = 1 - (1 - A) * (1 - B)
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        return self._blend(blend_data, opacity, lambda A, B: 1 - (1 - A) * (1 - B))
 
     def color_dodge(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        B = blend_data
-        with np.errstate(divide="ignore", invalid="ignore"):
-            result = np.where(B == 1, B, np.clip(A / (1 - B), 0, 1))
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        def formula(A: _Array, B: _Array) -> _Array:
+            with np.errstate(divide="ignore", invalid="ignore"):
+                return np.where(B == 1, B, np.clip(A / (1 - B), 0, 1))
+
+        return self._blend(blend_data, opacity, formula)
 
     def linear_dodge(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        result = np.clip(A + blend_data, 0, 1)
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        return self._blend(blend_data, opacity, lambda A, B: np.clip(A + B, 0, 1))
 
     # ------------------------------------------------------------------
     # Blend modes (contrast group)
@@ -309,89 +430,95 @@ class LayerImage:
     def overlay(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        B = blend_data
-        result = np.where(A <= 0.5, 2 * A * B, 1 - 2 * (1 - A) * (1 - B))
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        return self._blend(
+            blend_data,
+            opacity,
+            lambda A, B: np.where(A <= 0.5, 2 * A * B, 1 - 2 * (1 - A) * (1 - B)),
+        )
 
     def soft_light(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        B = blend_data
-        data01 = 2 * A * B + np.square(A) * (1 - 2 * B)
-        data02 = np.sqrt(A) * (2 * B - 1) + 2 * A * (1 - B)
-        result = np.where(B <= 0.5, data01, data02)
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        def formula(A: _Array, B: _Array) -> _Array:
+            data01 = 2 * A * B + np.square(A) * (1 - 2 * B)
+            data02 = np.sqrt(A) * (2 * B - 1) + 2 * A * (1 - B)
+            return np.where(B <= 0.5, data01, data02)
+
+        return self._blend(blend_data, opacity, formula)
 
     def hard_light(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        B = blend_data
-        result = np.where(B <= 0.5, 2 * A * B, 1 - 2 * (1 - A) * (1 - B))
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        return self._blend(
+            blend_data,
+            opacity,
+            lambda A, B: np.where(B <= 0.5, 2 * A * B, 1 - 2 * (1 - A) * (1 - B)),
+        )
 
     def vivid_light(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        B = blend_data
-        with np.errstate(divide="ignore", invalid="ignore"):
-            color_burn = np.where(B > 0, 1 - (1 - A) / (2 * B), 0)
-            color_dodge = np.where(B < 1, A / (2 * (1 - B)), 1)
-        result = np.clip(np.where(B <= 0.5, color_burn, color_dodge), 0, 1)
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        def formula(A: _Array, B: _Array) -> _Array:
+            with np.errstate(divide="ignore", invalid="ignore"):
+                color_burn = np.where(B > 0, 1 - (1 - A) / (2 * B), 0)
+                color_dodge = np.where(B < 1, A / (2 * (1 - B)), 1)
+            return np.clip(np.where(B <= 0.5, color_burn, color_dodge), 0, 1)
+
+        return self._blend(blend_data, opacity, formula)
 
     def linear_light(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        result = np.clip(A + 2 * blend_data - 1, 0, 1)
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
+        return self._blend(
+            blend_data, opacity, lambda A, B: np.clip(A + 2 * B - 1, 0, 1)
+        )
 
     def pin_light(
         self, blend_data: str | NDArray[np.float64], opacity: float = 1.0
     ) -> LayerImage:
-        blend_data = get_rgb_float_if_hex(blend_data)
-        A = self._rgb()
-        B = blend_data
-        result = np.clip(
-            np.where(A < 2 * B - 1, 2 * B - 1, np.where(A > 2 * B, 2 * B, A)),
-            0,
-            1,
+        return self._blend(
+            blend_data,
+            opacity,
+            lambda A, B: np.clip(
+                np.where(A < 2 * B - 1, 2 * B - 1, np.where(A > 2 * B, 2 * B, A)),
+                0,
+                1,
+            ),
         )
-        self.image_data = self._reattach_alpha(mix(A, result, opacity))
-        return self
 
     # ------------------------------------------------------------------
     # Utility
     # ------------------------------------------------------------------
 
     def clone(self) -> LayerImage:
+        if self._pil is not None:
+            twin = LayerImage._from_pil(self._pil.copy())
+            twin._lut = None if self._lut is None else self._lut.copy()
+            return twin
         return LayerImage.from_array(self.image_data.copy())
 
     def get_image_as_array(self) -> NDArray[np.float64]:
-        """Return the underlying float64 array (not a copy)."""
+        """Return the underlying float64 array (not a copy).
+
+        For a photo loaded from a file or URL, this applies any pending
+        per-channel operations and keeps the image in float64 from then on.
+        """
         return self.image_data
 
     def __repr__(self) -> str:
-        height, width = self.image_data.shape[:2]
+        if self._pil is not None:
+            width, height = self._pil.size
+        else:
+            height, width = self.image_data.shape[:2]
         mode = "RGBA" if self._has_alpha() else "RGB"
         return f"<LayerImage {mode} {width}x{height}>"
 
     def _to_pil_image(self) -> Image.Image:
-        """Build a PIL image from current float data for rendering/saving paths."""
+        """Build an 8-bit PIL image of the current pixels (resize, save, display)."""
+        if self._pil is not None:
+            if self._lut is None:
+                return self._pil
+            return self._pil.point(self._point_table())
         uint_data = convert_float_to_uint(self.image_data)
         mode = "RGBA" if self._has_alpha() else "RGB"
         return Image.fromarray(uint_data, mode=mode)
@@ -478,8 +605,9 @@ class LayerImage:
 
         if is_jpeg and self._has_alpha():
             # Composite alpha onto white before saving as JPEG
-            rgb = self._rgb()
-            alpha = self.image_data[:, :, 3:4]
+            pixels = self._float_pixels()
+            rgb = pixels[:, :, :3]
+            alpha = pixels[:, :, 3:4]
             composited = rgb * alpha + (1 - alpha)
             uint_data = convert_float_to_uint(composited)
             Image.fromarray(uint_data, mode="RGB").save(filename, quality=quality)
