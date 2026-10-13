@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://user-images.githubusercontent.com/1064036/66263389-f9e12e00-e82c-11e9-87d4-1b792fb16c7b.png">
+<img src="https://raw.githubusercontent.com/subwaymatch/layer-is-python/main/docs/assets/logo.svg" alt="Layer.is logo" width="304" height="265">
 </p>
 
 # Layer.is
