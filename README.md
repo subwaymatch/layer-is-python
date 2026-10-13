@@ -6,7 +6,7 @@
 
 A library that supports all blend modes in Photoshop, brightness, contrast, hue, saturation, lightness adjustments, and curve adjustments on separate RGB channels.
 
-This project was a part of the 2019 Open Source Software Competition.
+Layer.is won 2nd place (the Gold Prize and NIPA President's Award) in the general division of the [2019 Open Source Software Developer Competition](https://www.nipa.kr/home/bsnsAll/1/nttDetail?tab=2&bbsNo=4&bsnsDtlsIemNo=58&nttNo=16815), the competition's 13th edition, in which over 100 teams took part. The competition was hosted by Korea's Ministry of Science and ICT and organized by NIPA (National IT Industry Promotion Agency).
 
 - [Documentation and photo examples](https://subwaymatch.github.io/layer-is-python/)
 - [Introductory video](https://www.youtube.com/watch?v=PU_tEd8JgCw)
