@@ -128,7 +128,7 @@ class TestHexConversions:
 
 class TestChannels:
     def setup_method(self) -> None:
-        # 2×2 RGB image
+        # 2x2 RGB image
         self.image = np.array(
             [[[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]], [[0.7, 0.8, 0.9], [1.0, 0.0, 0.5]]],
             dtype=np.float64,
@@ -245,7 +245,7 @@ class TestHslConversions:
         assert rgb.shape == (3, 3, 3)
 
     def test_hsl_roundtrip(self) -> None:
-        """Converting RGB→HSL→RGB should recover the original values."""
+        """Converting RGB->HSL->RGB should recover the original values."""
         original = np.array([[[0.2, 0.5, 0.8], [0.9, 0.1, 0.4]]])
         hsl = rgb_to_hsl_arr(original)
         recovered = hsl_to_rgb_arr(hsl)

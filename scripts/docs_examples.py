@@ -56,10 +56,10 @@ class Recipe:
 CATEGORIES: list[tuple[str, str]] = [
     ("Everyday fixes", "Small corrections that make a photo look the way it felt."),
     ("Color grading", "Shift the mood of a scene with curves and color layers."),
-    ("Film & vintage", "Lifted blacks, warm casts and soft contrast — the analog look."),
+    ("Film & vintage", "Lifted blacks, warm casts and soft contrast for an analog look."),
     ("Black & white", "Monochrome conversions, from classic to toned prints."),
-    ("Creative effects", "Gradients, vignettes, double exposures and false color — "
-                         "most of them mix in NumPy arrays as blend layers."),
+    ("Creative effects", "Gradients, vignettes, double exposures and false color. Most "
+                         "of them use NumPy arrays as blend layers."),
 ]
 
 RECIPES: list[Recipe] = [
@@ -78,7 +78,7 @@ RECIPES: list[Recipe] = [
             "colors back."
         ),
         code="""
-# Levels: map input 0.12 → black and 0.88 → white
+# Levels: map input 0.12 to black and 0.88 to white
 x = np.linspace(0, 1, 26)
 levels = np.clip((x - 0.12) / 0.76, 0, 1)
 
@@ -274,8 +274,8 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         photo="flower-market",
         description=(
             "Toy-camera look: high contrast, oversaturated color and dark "
-            "corners. The vignette is a NumPy array blended with Multiply — "
-            "white in the center leaves pixels untouched."
+            "corners. The vignette is a NumPy array blended with Multiply, "
+            "where white in the center leaves pixels untouched."
         ),
         code="""
 h, w, _ = image.get_image_as_array().shape
@@ -377,11 +377,11 @@ vignette = np.clip(1.2 - 0.6 * (x**2 + y**2), 0, 1)[..., np.newaxis]
         category="Creative effects",
         photo="architecture",
         description=(
-            "Map shadows to one color and highlights to another — a two-point "
-            "curve per channel is a gradient map."
+            "Map shadows to one color and highlights to another. A two-point "
+            "curve per channel acts as a gradient map."
         ),
         code="""
-shadow, highlight = (0.12, 0.08, 0.4), (1.0, 0.45, 0.42)  # indigo → coral
+shadow, highlight = (0.12, 0.08, 0.4), (1.0, 0.45, 0.42)  # indigo to coral
 
 image.grayscale().contrast(1.2)
 for channel, lo, hi in zip("rgb", shadow, highlight):
@@ -414,13 +414,13 @@ forest = LayerImage.from_file("photos/forest.jpg").get_image_as_array()
         photo="mountain-lake",
         description=(
             "A vertical gradient from warm tint to white, blended with Multiply, "
-            "deepens the sky while leaving the lake untouched — like a "
+            "deepens the sky while leaving the lake untouched, like a "
             "graduated filter on a lens."
         ),
         code="""
 h, w, _ = image.get_image_as_array().shape
 t = np.clip(np.linspace(0, 2.2, h), 0, 1)[:, np.newaxis, np.newaxis]
-gradient = (1 - t) * np.array([0.95, 0.55, 0.4]) + t  # tint at the top → white
+gradient = (1 - t) * np.array([0.95, 0.55, 0.4]) + t  # tint at the top fading to white
 
 image.multiply(gradient)
 """,
@@ -449,7 +449,7 @@ image.contrast(1.1)
         photo="flower-market",
         description=(
             "hue() sets every pixel to a single hue while keeping saturation "
-            "and value — the whole stall becomes shades of magenta."
+            "and value, so the whole stall becomes shades of magenta."
         ),
         code="""
 image.hue(0.88).contrast(1.1)
@@ -498,18 +498,18 @@ BLEND_PHOTOS: list[str] = ["portrait", "mountain-lake", "flower-market"]
 # (method, group, formula) in the order of Photoshop's blend-mode menu.
 BLEND_MODES: list[tuple[str, str, str]] = [
     ("darken", "Darken", "min(A, B)"),
-    ("multiply", "Darken", "A × B"),
-    ("color_burn", "Darken", "1 − (1 − A) / B"),
-    ("linear_burn", "Darken", "A + B − 1"),
+    ("multiply", "Darken", "A * B"),
+    ("color_burn", "Darken", "1 - (1 - A) / B"),
+    ("linear_burn", "Darken", "A + B - 1"),
     ("lighten", "Lighten", "max(A, B)"),
-    ("screen", "Lighten", "1 − (1 − A)(1 − B)"),
-    ("color_dodge", "Lighten", "A / (1 − B)"),
+    ("screen", "Lighten", "1 - (1 - A)(1 - B)"),
+    ("color_dodge", "Lighten", "A / (1 - B)"),
     ("linear_dodge", "Lighten", "A + B"),
-    ("overlay", "Contrast", "2AB if A ≤ ½, else 1 − 2(1 − A)(1 − B)"),
+    ("overlay", "Contrast", "2AB if A <= 0.5, else 1 - 2(1 - A)(1 - B)"),
     ("soft_light", "Contrast", "Pegtop soft light"),
-    ("hard_light", "Contrast", "2AB if B ≤ ½, else 1 − 2(1 − A)(1 − B)"),
-    ("vivid_light", "Contrast", "Color burn if B ≤ ½, else color dodge"),
-    ("linear_light", "Contrast", "A + 2B − 1"),
+    ("hard_light", "Contrast", "2AB if B <= 0.5, else 1 - 2(1 - A)(1 - B)"),
+    ("vivid_light", "Contrast", "Color burn if B <= 0.5, else color dodge"),
+    ("linear_light", "Contrast", "A + 2B - 1"),
     ("pin_light", "Contrast", "Replace A depending on B"),
 ]
 

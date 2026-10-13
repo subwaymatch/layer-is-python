@@ -19,7 +19,7 @@ TEST_IMAGES_DIR = pathlib.Path(__file__).parent / "images"
 
 
 def solid(value: float, channels: int = 3, size: int = 4) -> LayerImage:
-    """Return a *size*×*size* image with all pixels set to *value*."""
+    """Return a *size* x *size* image with all pixels set to *value*."""
     return LayerImage.from_array(
         np.full((size, size, channels), value, dtype=np.float64)
     )
@@ -160,7 +160,7 @@ class TestGrayscale:
         np.testing.assert_allclose(arr[:, :, 0], arr[:, :, 2])
 
     def test_luminance_formula(self) -> None:
-        # Single pixel: R=1, G=0, B=0  → luminance = 0.2989
+        # Single pixel: R=1, G=0, B=0  -> luminance = 0.2989
         img = LayerImage.from_array(np.array([[[1.0, 0.0, 0.0]]]))
         img.grayscale()
         np.testing.assert_allclose(img.get_image_as_array()[0, 0, 0], 0.2989, atol=1e-4)
@@ -319,7 +319,7 @@ class TestCurve:
 
 
 # ---------------------------------------------------------------------------
-# Blend modes — darken group
+# Blend modes: darken group
 # ---------------------------------------------------------------------------
 
 
@@ -385,7 +385,7 @@ class TestColorBurn:
         assert arr.max() <= 1.0
 
     def test_known_value(self) -> None:
-        # A=0.5, B=0.5 → 1 - (1-0.5)/0.5 = 1 - 1 = 0
+        # A=0.5, B=0.5 -> 1 - (1-0.5)/0.5 = 1 - 1 = 0
         img = LayerImage.from_array(np.full((1, 1, 3), 0.5))
         img.color_burn(np.array([0.5, 0.5, 0.5]))
         np.testing.assert_allclose(img.get_image_as_array(), 0.0, atol=1e-10)
@@ -399,14 +399,14 @@ class TestLinearBurn:
         assert arr.max() <= 1.0
 
     def test_known_value(self) -> None:
-        # A=0.8, B=0.8 → 0.8 + 0.8 - 1 = 0.6
+        # A=0.8, B=0.8 -> 0.8 + 0.8 - 1 = 0.6
         img = LayerImage.from_array(np.full((1, 1, 3), 0.8))
         img.linear_burn(np.array([0.8, 0.8, 0.8]))
         np.testing.assert_allclose(img.get_image_as_array(), 0.6, atol=1e-10)
 
 
 # ---------------------------------------------------------------------------
-# Blend modes — lighten group
+# Blend modes: lighten group
 # ---------------------------------------------------------------------------
 
 
@@ -436,7 +436,7 @@ class TestScreen:
         np.testing.assert_allclose(sample_image.get_image_as_array(), 1.0)
 
     def test_known_value(self) -> None:
-        # A=0.5, B=0.5 → 1 - 0.5 * 0.5 = 0.75
+        # A=0.5, B=0.5 -> 1 - 0.5 * 0.5 = 0.75
         img = LayerImage.from_array(np.full((1, 1, 3), 0.5))
         img.screen(np.array([0.5, 0.5, 0.5]))
         np.testing.assert_allclose(img.get_image_as_array(), 0.75)
@@ -472,14 +472,14 @@ class TestLinearDodge:
         np.testing.assert_allclose(sample_image.get_image_as_array(), original)
 
     def test_known_value(self) -> None:
-        # A=0.5, B=0.5 → clamped(1.0) = 1.0
+        # A=0.5, B=0.5 -> clamped(1.0) = 1.0
         img = LayerImage.from_array(np.full((1, 1, 3), 0.5))
         img.linear_dodge(np.array([0.5, 0.5, 0.5]))
         np.testing.assert_allclose(img.get_image_as_array(), 1.0)
 
 
 # ---------------------------------------------------------------------------
-# Blend modes — contrast group
+# Blend modes: contrast group
 # ---------------------------------------------------------------------------
 
 
@@ -491,13 +491,13 @@ class TestOverlay:
         assert arr.max() <= 1.0
 
     def test_dark_base_uses_multiply_branch(self) -> None:
-        # A=0.2, B=0.3, A<=0.5 → 2*0.2*0.3 = 0.12
+        # A=0.2, B=0.3, A<=0.5 -> 2*0.2*0.3 = 0.12
         img = LayerImage.from_array(np.full((1, 1, 3), 0.2))
         img.overlay(np.array([0.3, 0.3, 0.3]))
         np.testing.assert_allclose(img.get_image_as_array(), 0.12, atol=1e-10)
 
     def test_light_base_uses_screen_branch(self) -> None:
-        # A=0.8, B=0.3, A>0.5 → 1 - 2*(1-0.8)*(1-0.3) = 1 - 2*0.2*0.7 = 0.72
+        # A=0.8, B=0.3, A>0.5 -> 1 - 2*(1-0.8)*(1-0.3) = 1 - 2*0.2*0.7 = 0.72
         img = LayerImage.from_array(np.full((1, 1, 3), 0.8))
         img.overlay(np.array([0.3, 0.3, 0.3]))
         np.testing.assert_allclose(img.get_image_as_array(), 0.72, atol=1e-10)
@@ -525,7 +525,7 @@ class TestHardLight:
         assert arr.max() <= 1.0
 
     def test_dark_blend_uses_multiply_branch(self) -> None:
-        # A=0.5, B=0.3, B<=0.5 → 2*0.5*0.3 = 0.3
+        # A=0.5, B=0.3, B<=0.5 -> 2*0.5*0.3 = 0.3
         img = LayerImage.from_array(np.full((1, 1, 3), 0.5))
         img.hard_light(np.array([0.3, 0.3, 0.3]))
         np.testing.assert_allclose(img.get_image_as_array(), 0.3, atol=1e-10)
@@ -547,7 +547,7 @@ class TestLinearLight:
         assert arr.max() <= 1.0
 
     def test_known_value(self) -> None:
-        # A=0.5, B=0.3 → 0.5 + 2*0.3 - 1 = 0.1
+        # A=0.5, B=0.3 -> 0.5 + 2*0.3 - 1 = 0.1
         img = LayerImage.from_array(np.full((1, 1, 3), 0.5))
         img.linear_light(np.array([0.3, 0.3, 0.3]))
         np.testing.assert_allclose(img.get_image_as_array(), 0.1, atol=1e-10)
@@ -561,13 +561,13 @@ class TestPinLight:
         assert arr.max() <= 1.0
 
     def test_a_between_bounds_returns_a(self) -> None:
-        # A=0.5, B=0.3: 2B-1=-0.4, 2B=0.6; A not < -0.4 and not > 0.6 → result = A
+        # A=0.5, B=0.3: 2B-1=-0.4, 2B=0.6; A not < -0.4 and not > 0.6 -> result = A
         img = LayerImage.from_array(np.full((1, 1, 3), 0.5))
         img.pin_light(np.array([0.3, 0.3, 0.3]))
         np.testing.assert_allclose(img.get_image_as_array(), 0.5, atol=1e-10)
 
     def test_a_above_upper_bound(self) -> None:
-        # A=0.8, B=0.3: 2B=0.6; A > 0.6 → result = 2B = 0.6
+        # A=0.8, B=0.3: 2B=0.6; A > 0.6 -> result = 2B = 0.6
         img = LayerImage.from_array(np.full((1, 1, 3), 0.8))
         img.pin_light(np.array([0.3, 0.3, 0.3]))
         np.testing.assert_allclose(img.get_image_as_array(), 0.6, atol=1e-10)

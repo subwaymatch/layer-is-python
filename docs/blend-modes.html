@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Layer.is — Blend modes</title>
+<title>Blend modes | Layer.is</title>
 <meta name="description" content="Every layeris blend mode compared on the same photos.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='18' height='18' rx='4' fill='%23ff8a4c'/%3E%3Crect x='11' y='11' width='18' height='18' rx='4' fill='%234f6bed' fill-opacity='.85'/%3E%3C/svg%3E">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
 <body>
 <header class="topbar">
   <div class="wrap topbar__inner">
-    <a class="brand" href="index.html"><svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><g style="isolation:isolate"><rect x="3" y="3" width="18" height="18" rx="4" fill="#ff8a4c"/><rect x="11" y="11" width="18" height="18" rx="4" fill="#4f6bed" style="mix-blend-mode:multiply"/></g></svg><span>Layer.is</span></a>
+    <a class="brand" href="index.html"><img class="brand__logo" src="assets/logo.svg" alt="" width="32" height="28"><span>Layer.is</span></a>
     <nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="examples.html">Examples</a><a href="blend-modes.html" aria-current="page">Blend modes</a><a href="operations.html">Operations</a></nav>
     <a href="https://github.com/subwaymatch/layer-is-python" class="gh-link">GitHub</a>
   </div>
@@ -24,7 +24,7 @@
     <h1>Blend modes</h1>
     <p class="lede">A blend mode combines the image (the base, <em>A</em>) with a blend layer
       (<em>B</em>). The layer can be a hex color, a NumPy array the same size as the image
-      — a gradient, a texture, another photo — or anything that broadcasts to it. Every mode
+      (a gradient, a texture, another photo) or anything that broadcasts to it. Every mode
       takes an optional <code>opacity</code> from 0 to 1. Below, all 14 modes
       blend <span class="swatch" style="background:#e8743b"></span><code>#e8743b</code> into the same three photos.</p>
     <nav class="toc" aria-label="Blend modes"><a class="chip chip--code" href="#darken">darken</a><a class="chip chip--code" href="#multiply">multiply</a><a class="chip chip--code" href="#color_burn">color_burn</a><a class="chip chip--code" href="#linear_burn">linear_burn</a><a class="chip chip--code" href="#lighten">lighten</a><a class="chip chip--code" href="#screen">screen</a><a class="chip chip--code" href="#color_dodge">color_dodge</a><a class="chip chip--code" href="#linear_dodge">linear_dodge</a><a class="chip chip--code" href="#overlay">overlay</a><a class="chip chip--code" href="#soft_light">soft_light</a><a class="chip chip--code" href="#hard_light">hard_light</a><a class="chip chip--code" href="#vivid_light">vivid_light</a><a class="chip chip--code" href="#linear_light">linear_light</a><a class="chip chip--code" href="#pin_light">pin_light</a></nav>
@@ -51,7 +51,7 @@
       <article class="mode" id="multiply">
         <header class="mode__head">
           <h3><a class="anchor" href="#multiply">Multiply</a></h3>
-          <code class="formula">A × B</code>
+          <code class="formula">A * B</code>
         </header>
         <div class="mode__thumbs"><img src="blend-modes/portrait-multiply.jpg" alt="Multiply with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-multiply.jpg" alt="Multiply with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-multiply.jpg" alt="Multiply with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">multiply</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
@@ -59,7 +59,7 @@
       <article class="mode" id="color_burn">
         <header class="mode__head">
           <h3><a class="anchor" href="#color_burn">Color Burn</a></h3>
-          <code class="formula">1 − (1 − A) / B</code>
+          <code class="formula">1 - (1 - A) / B</code>
         </header>
         <div class="mode__thumbs"><img src="blend-modes/portrait-color_burn.jpg" alt="Color Burn with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-color_burn.jpg" alt="Color Burn with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-color_burn.jpg" alt="Color Burn with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">color_burn</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
@@ -67,7 +67,7 @@
       <article class="mode" id="linear_burn">
         <header class="mode__head">
           <h3><a class="anchor" href="#linear_burn">Linear Burn</a></h3>
-          <code class="formula">A + B − 1</code>
+          <code class="formula">A + B - 1</code>
         </header>
         <div class="mode__thumbs"><img src="blend-modes/portrait-linear_burn.jpg" alt="Linear Burn with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-linear_burn.jpg" alt="Linear Burn with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-linear_burn.jpg" alt="Linear Burn with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">linear_burn</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
@@ -89,7 +89,7 @@
       <article class="mode" id="screen">
         <header class="mode__head">
           <h3><a class="anchor" href="#screen">Screen</a></h3>
-          <code class="formula">1 − (1 − A)(1 − B)</code>
+          <code class="formula">1 - (1 - A)(1 - B)</code>
         </header>
         <div class="mode__thumbs"><img src="blend-modes/portrait-screen.jpg" alt="Screen with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-screen.jpg" alt="Screen with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-screen.jpg" alt="Screen with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">screen</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
@@ -97,7 +97,7 @@
       <article class="mode" id="color_dodge">
         <header class="mode__head">
           <h3><a class="anchor" href="#color_dodge">Color Dodge</a></h3>
-          <code class="formula">A / (1 − B)</code>
+          <code class="formula">A / (1 - B)</code>
         </header>
         <div class="mode__thumbs"><img src="blend-modes/portrait-color_dodge.jpg" alt="Color Dodge with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-color_dodge.jpg" alt="Color Dodge with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-color_dodge.jpg" alt="Color Dodge with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">color_dodge</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
@@ -119,7 +119,7 @@
       <article class="mode" id="overlay">
         <header class="mode__head">
           <h3><a class="anchor" href="#overlay">Overlay</a></h3>
-          <code class="formula">2AB if A ≤ ½, else 1 − 2(1 − A)(1 − B)</code>
+          <code class="formula">2AB if A &lt;= 0.5, else 1 - 2(1 - A)(1 - B)</code>
         </header>
         <div class="mode__thumbs"><img src="blend-modes/portrait-overlay.jpg" alt="Overlay with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-overlay.jpg" alt="Overlay with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-overlay.jpg" alt="Overlay with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">overlay</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
@@ -135,7 +135,7 @@
       <article class="mode" id="hard_light">
         <header class="mode__head">
           <h3><a class="anchor" href="#hard_light">Hard Light</a></h3>
-          <code class="formula">2AB if B ≤ ½, else 1 − 2(1 − A)(1 − B)</code>
+          <code class="formula">2AB if B &lt;= 0.5, else 1 - 2(1 - A)(1 - B)</code>
         </header>
         <div class="mode__thumbs"><img src="blend-modes/portrait-hard_light.jpg" alt="Hard Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-hard_light.jpg" alt="Hard Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-hard_light.jpg" alt="Hard Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">hard_light</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
@@ -143,7 +143,7 @@
       <article class="mode" id="vivid_light">
         <header class="mode__head">
           <h3><a class="anchor" href="#vivid_light">Vivid Light</a></h3>
-          <code class="formula">Color burn if B ≤ ½, else color dodge</code>
+          <code class="formula">Color burn if B &lt;= 0.5, else color dodge</code>
         </header>
         <div class="mode__thumbs"><img src="blend-modes/portrait-vivid_light.jpg" alt="Vivid Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-vivid_light.jpg" alt="Vivid Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-vivid_light.jpg" alt="Vivid Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">vivid_light</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
@@ -151,7 +151,7 @@
       <article class="mode" id="linear_light">
         <header class="mode__head">
           <h3><a class="anchor" href="#linear_light">Linear Light</a></h3>
-          <code class="formula">A + 2B − 1</code>
+          <code class="formula">A + 2B - 1</code>
         </header>
         <div class="mode__thumbs"><img src="blend-modes/portrait-linear_light.jpg" alt="Linear Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-linear_light.jpg" alt="Linear Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-linear_light.jpg" alt="Linear Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">linear_light</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
@@ -170,7 +170,7 @@
   <section class="section" id="opacity">
     <h2>Opacity</h2>
     <p class="section__intro">Opacity mixes the blended result back with the original:
-      <code>overlay("#ff4f8b", opacity=…)</code> on the mountain-lake photo.</p>
+      <code>overlay("#ff4f8b", opacity=...)</code> on the mountain-lake photo.</p>
     <div class="strip strip--5"><figure><img src="blend-modes/opacity-0.jpg" alt="Overlay at opacity 0" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=0</code></figcaption></figure><figure><img src="blend-modes/opacity-25.jpg" alt="Overlay at opacity 0.25" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=0.25</code></figcaption></figure><figure><img src="blend-modes/opacity-50.jpg" alt="Overlay at opacity 0.5" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=0.5</code></figcaption></figure><figure><img src="blend-modes/opacity-75.jpg" alt="Overlay at opacity 0.75" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=0.75</code></figcaption></figure><figure><img src="blend-modes/opacity-100.jpg" alt="Overlay at opacity 1" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=1</code></figcaption></figure></div>
   </section>
 
@@ -189,8 +189,8 @@
       <a href="examples.html#graduated-filter">graduated filter</a> and a
       <a href="examples.html#double-exposure">double exposure</a>.</p>
     <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">h, w, _ = image.<span class="tok-call">get_image_as_array</span>().shape
-t = <span class="tok-name">np</span>.<span class="tok-call">linspace</span>(<span class="tok-number">0</span>, <span class="tok-number">1</span>, h)[:, <span class="tok-name">np</span>.newaxis, <span class="tok-name">np</span>.newaxis]  <span class="tok-comment"># 0 at the top → 1 at the bottom</span>
-gradient = (<span class="tok-number">1</span> - t) * <span class="tok-name">np</span>.<span class="tok-call">array</span>([<span class="tok-number">1.0</span>, <span class="tok-number">0.6</span>, <span class="tok-number">0.3</span>]) + t    <span class="tok-comment"># orange → white</span>
+t = <span class="tok-name">np</span>.<span class="tok-call">linspace</span>(<span class="tok-number">0</span>, <span class="tok-number">1</span>, h)[:, <span class="tok-name">np</span>.newaxis, <span class="tok-name">np</span>.newaxis]  <span class="tok-comment"># 0 at the top, 1 at the bottom</span>
+gradient = (<span class="tok-number">1</span> - t) * <span class="tok-name">np</span>.<span class="tok-call">array</span>([<span class="tok-number">1.0</span>, <span class="tok-number">0.6</span>, <span class="tok-number">0.3</span>]) + t    <span class="tok-comment"># orange fading to white</span>
 
 image.<span class="tok-call">multiply</span>(gradient)  <span class="tok-comment"># white is neutral for multiply</span></code></pre></div>
   </section>
@@ -198,7 +198,7 @@ image.<span class="tok-call">multiply</span>(gradient)  <span class="tok-comment
 </main>
 <footer class="footer">
   <div class="wrap footer__inner">
-    <p>layeris v0.4.0 · MIT License ·
+    <p>layeris v0.4.0 | MIT License |
        <a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></p>
     <p>Every result image on this site is rendered by layeris itself with
        <code>scripts/build_docs.py</code>. Sample photos were generated with

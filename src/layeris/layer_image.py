@@ -174,7 +174,7 @@ class LayerImage:
 
     def hue(self, target_hue: float) -> LayerImage:
         """Set every pixel's hue to *target_hue* (in [0, 1]), keeping
-        saturation and value — a colorize-style adjustment."""
+        saturation and value (a colorize-style adjustment)."""
         hsv = rgb_to_hsv(self._rgb())
         hsv[:, :, 0] = target_hue
         self.image_data = self._reattach_alpha(hsv_to_rgb(hsv))
@@ -470,7 +470,7 @@ class LayerImage:
         """Save the image to *filename*.
 
         Supported formats are determined by the file extension (JPEG, PNG,
-        BMP, TIFF, WebP, …).  When saving an RGBA image as JPEG the alpha
+        BMP, TIFF, WebP, etc.).  When saving an RGBA image as JPEG the alpha
         channel is composited onto a white background automatically.
         """
         filename_str = str(filename)
