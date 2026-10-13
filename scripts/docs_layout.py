@@ -28,7 +28,7 @@ def esc(text: str) -> str:
 
 
 # ----------------------------------------------------------------------
-# Syntax highlighting — a tiny tokenizer that covers the snippets we show
+# Syntax highlighting: a tiny tokenizer that covers the snippets we show
 # ----------------------------------------------------------------------
 
 _TOKEN_RE = re.compile(
@@ -84,8 +84,8 @@ def compare(
 ) -> str:
     """Before/after slider: drag (or use the arrow keys) to move the divider."""
     return f"""<div class="compare" style="--pos: 50%">
-  {img(before, f"{alt} — before", size, "compare__before", lazy)}
-  <div class="compare__after">{img(after, f"{alt} — after applying {label}", size, "", lazy)}</div>
+  {img(before, f"{alt} (before)", size, "compare__before", lazy)}
+  <div class="compare__after">{img(after, f"{alt} (after applying {label})", size, "", lazy)}</div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -100,7 +100,7 @@ def page(*, filename: str, title: str, description: str, body: str, version: str
         f'<a href="{href}"{current if href == filename else ""}>{name}</a>'
         for href, name in NAV
     )
-    full_title = "Layer.is — " + title if title != "Layer.is" else "Layer.is"
+    full_title = f"{title} | Layer.is" if title != "Layer.is" else "Layer.is"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -125,7 +125,7 @@ def page(*, filename: str, title: str, description: str, body: str, version: str
 </main>
 <footer class="footer">
   <div class="wrap footer__inner">
-    <p>layeris v{esc(version)} · MIT License ·
+    <p>layeris v{esc(version)} | MIT License |
        <a href="{REPO_URL}">Source on GitHub</a></p>
     <p>Every result image on this site is rendered by layeris itself with
        <code>scripts/build_docs.py</code>. Sample photos were generated with

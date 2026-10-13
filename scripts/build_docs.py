@@ -6,14 +6,14 @@ sample photos in ``docs/photos/``. Recipe snippets are executed verbatim (see
 ``scripts/docs_examples.py``), so the code on each page is exactly the code
 that produced its image. The script writes:
 
-  * ``index.html``        — landing page
-  * ``examples.html``     — photo recipes with before/after sliders
-  * ``blend-modes.html``  — every blend mode on several photos
-  * ``operations.html``   — every operation (via ``generate_previews.py``)
+  * ``index.html``: landing page
+  * ``examples.html``: photo recipes with before/after sliders
+  * ``blend-modes.html``: every blend mode on several photos
+  * ``operations.html``: every operation (via ``generate_previews.py``)
 
 plus the images they reference. Styles and scripts live in ``docs/assets/``.
-To publish, enable **Settings → Pages → Deploy from a branch** with the
-``/docs`` folder — no build step is needed on GitHub's side.
+To publish, enable Settings > Pages > Deploy from a branch with the
+``/docs`` folder. No build step is needed on GitHub's side.
 
 Usage::
 
@@ -72,8 +72,8 @@ HERO_PHOTO = "vintage-car"
 HERO_LOOKS = ["cross-process", "pastel-dream", "channel-swap"]
 ARRAY_SNIPPET = """\
 h, w, _ = image.get_image_as_array().shape
-t = np.linspace(0, 1, h)[:, np.newaxis, np.newaxis]  # 0 at the top → 1 at the bottom
-gradient = (1 - t) * np.array([1.0, 0.6, 0.3]) + t    # orange → white
+t = np.linspace(0, 1, h)[:, np.newaxis, np.newaxis]  # 0 at the top, 1 at the bottom
+gradient = (1 - t) * np.array([1.0, 0.6, 0.3]) + t    # orange fading to white
 
 image.multiply(gradient)  # white is neutral for multiply"""
 FEATURED = [
@@ -110,7 +110,7 @@ def run_snippet(snippet: str) -> LayerImage:
     namespace = {"LayerImage": LayerImage, "np": np}
     # Snippets load "photos/<name>.jpg", relative to docs/.
     with working_directory(DOCS_DIR):
-        exec(snippet, namespace)  # noqa: S102 — trusted, repo-authored code
+        exec(snippet, namespace)  # noqa: S102 (trusted, repo-authored code)
     image = namespace.get("image")
     if not isinstance(image, LayerImage):
         raise TypeError("recipe snippets must leave a LayerImage in `image`")
@@ -250,7 +250,7 @@ def render_index(writer: ImageWriter) -> str:
     ]
     alt = PHOTOS[HERO_PHOTO].alt
     stage = "".join(
-        writer.img(src, f"{alt} — {title}", "looks__img", lazy=False).replace(
+        writer.img(src, f"{alt} ({title})", "looks__img", lazy=False).replace(
             "<img ", f'<img data-look="{key}"{" hidden" if i else ""} ', 1
         )
         for i, (key, title, src, _) in enumerate(looks)
@@ -294,7 +294,7 @@ image = LayerImage.from_file("photo.jpg")
       <p class="eyebrow">Image processing for Python</p>
       <h1>Photoshop-style blend modes and adjustments, in a few lines of Python.</h1>
       <p class="lede">Layer.is gives you all the common blend modes, brightness, contrast,
-        hue, saturation and lightness controls, and per-channel curves — on top of NumPy,
+        hue, saturation and lightness controls, and per-channel curves, built on NumPy
         with a chainable API.</p>
       <div class="install">{layout.code_block("pip install layeris", "shell")}</div>
       <div class="cta">
@@ -332,8 +332,8 @@ image = LayerImage.from_file("photo.jpg")
     <h2>Documentation</h2>
     <div class="cards">
       <a class="card" href="examples.html"><strong>Examples</strong>
-        <span>{len(RECIPES)} complete looks — fixes, color grades, film, black &amp; white and
-        creative effects — each with a before/after slider and copy-paste code.</span></a>
+        <span>{len(RECIPES)} complete looks (fixes, color grades, film, black &amp; white and
+        creative effects), each with a before/after slider and copy-paste code.</span></a>
       <a class="card" href="blend-modes.html"><strong>Blend modes</strong>
         <span>All {len(BLEND_MODES)} blend modes side by side on three photos, plus how opacity
         and the blend color change the result.</span></a>
@@ -430,7 +430,7 @@ for path in Path("photos").glob("*.jpg"):
     <h2>One preset, many photos</h2>
     <p class="section__intro">Operations can also be described as data. Save a look as JSON and
       apply it to a whole folder with <code>apply_from_dict()</code> (or
-      <code>apply_from_json()</code>) — here a warm, matte preset on four different photos.</p>
+      <code>apply_from_json()</code>). Here is a warm, matte preset on four different photos.</p>
     <div class="stack">
       {layout.code_block(preset_json, "json", "warm-matte.json")}
       {layout.code_block(batch_code, title="batch.py")}
@@ -441,7 +441,7 @@ for path in Path("photos").glob("*.jpg"):
 
   <section class="section" id="sample-photos">
     <h2>Sample photos</h2>
-    <p class="section__intro">Download the originals (1536 × 1024) to run the snippets yourself.
+    <p class="section__intro">Download the originals (1536 x 1024) to run the snippets yourself.
       They were generated for these docs with OpenAI's <code>gpt-image-2.5</code> model; the
       prompts are in <code>scripts/generate_photos.py</code>.</p>
     <div class="photos">{photo_links}</div>
@@ -525,7 +525,7 @@ def render_blend_modes_page(writer: ImageWriter) -> str:
     <h1>Blend modes</h1>
     <p class="lede">A blend mode combines the image (the base, <em>A</em>) with a blend layer
       (<em>B</em>). The layer can be a hex color, a NumPy array the same size as the image
-      — a gradient, a texture, another photo — or anything that broadcasts to it. Every mode
+      (a gradient, a texture, another photo) or anything that broadcasts to it. Every mode
       takes an optional <code>opacity</code> from 0 to 1. Below, all {len(BLEND_MODES)} modes
       blend {swatch} into the same three photos.</p>
     <nav class="toc" aria-label="Blend modes">{toc}</nav>
@@ -542,7 +542,7 @@ def render_blend_modes_page(writer: ImageWriter) -> str:
   <section class="section" id="opacity">
     <h2>Opacity</h2>
     <p class="section__intro">Opacity mixes the blended result back with the original:
-      <code>{OPACITY_MODE}("{OPACITY_COLOR}", opacity=…)</code> on the {OPACITY_PHOTO} photo.</p>
+      <code>{OPACITY_MODE}("{OPACITY_COLOR}", opacity=...)</code> on the {OPACITY_PHOTO} photo.</p>
     <div class="strip strip--5">{opacity_strip}</div>
   </section>
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Layer.is — Operations</title>
+<title>Operations | Layer.is</title>
 <meta name="description" content="Before/after previews of every layeris operation.">
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/site.css">
@@ -22,8 +22,8 @@
   <header class="page-head">
     <p class="eyebrow">Reference</p>
     <h1>Operations</h1>
-    <p class="lede">Every LayerImage operation on a single photo — the input on the
-      left, the result of the snippet on the right. The darken-group blend modes run
+    <p class="lede">Every LayerImage operation on a single photo, with the input on the
+      left and the result of the snippet on the right. The darken-group blend modes run
       on a grayscale copy (<code>grayscale_image = image.clone().grayscale()</code>),
       as in the original demo. See <a href="examples.html">Examples</a> for complete
       looks built from these operations.</p>
@@ -67,7 +67,7 @@
     <article class="op" id="hue">
       <div class="op__text">
         <h3><a class="anchor" href="#hue">Hue</a></h3>
-        <p>Set every pixel&#x27;s hue to the target value in [0, 1] while keeping saturation and value — a colorize-style adjustment.</p>
+        <p>Set every pixel&#x27;s hue to the target value in [0, 1] while keeping saturation and value. This is a colorize-style adjustment.</p>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">hue</span>(<span class="tok-number">0.3</span>)</code></pre></div>
       </div>
       <figure class="op__figure">
@@ -100,7 +100,7 @@
     <article class="op" id="curve_rgb">
       <div class="op__text">
         <h3><a class="anchor" href="#curve_rgb">Curve (all channels)</a></h3>
-        <p>Remap tones through control points spaced evenly across [0, 1] — here an S-curve that deepens shadows and lifts highlights.</p>
+        <p>Remap tones through control points spaced evenly across [0, 1]. Here, an S-curve deepens shadows and lifts highlights.</p>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">curve</span>(<span class="tok-string">&#x27;rgb&#x27;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.1</span>, <span class="tok-number">0.4</span>, <span class="tok-number">0.65</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>])</code></pre></div>
       </div>
       <figure class="op__figure">
@@ -132,11 +132,11 @@
     </article>
   </section>
   <section class="section">
-    <h2>Blend modes — darken</h2>
+    <h2>Blend modes: darken</h2>
     <article class="op" id="darken">
       <div class="op__text">
         <h3><a class="anchor" href="#darken">Darken</a></h3>
-        <p>Looks at the color information in each channel and selects the base or blend color — whichever is darker — as the result color.</p>
+        <p>Looks at the color information in each channel and selects the base or blend color, whichever is darker, as the result color.</p>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">grayscale_image.<span class="tok-call">darken</span>(<span class="tok-string">&#x27;#3fe28f&#x27;</span>)</code></pre></div>
       </div>
       <figure class="op__figure">
@@ -179,11 +179,11 @@
     </article>
   </section>
   <section class="section">
-    <h2>Blend modes — lighten</h2>
+    <h2>Blend modes: lighten</h2>
     <article class="op" id="lighten">
       <div class="op__text">
         <h3><a class="anchor" href="#lighten">Lighten</a></h3>
-        <p>Selects the base or blend color — whichever is lighter — as the result color.</p>
+        <p>Selects the base or blend color, whichever is lighter, as the result color.</p>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">lighten</span>(<span class="tok-string">&#x27;#ff3ce1&#x27;</span>)</code></pre></div>
       </div>
       <figure class="op__figure">
@@ -194,7 +194,7 @@
     <article class="op" id="screen">
       <div class="op__text">
         <h3><a class="anchor" href="#screen">Screen</a></h3>
-        <p>Multiplies the inverse of the blend and base colors. The result is always lighter — like projecting multiple slides on top of each other.</p>
+        <p>Multiplies the inverse of the blend and base colors. The result is always lighter, like projecting multiple slides on top of each other.</p>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">screen</span>(<span class="tok-string">&#x27;#e633ba&#x27;</span>)</code></pre></div>
       </div>
       <figure class="op__figure">
@@ -226,7 +226,7 @@
     </article>
   </section>
   <section class="section">
-    <h2>Blend modes — contrast</h2>
+    <h2>Blend modes: contrast</h2>
     <article class="op" id="overlay">
       <div class="op__text">
         <h3><a class="anchor" href="#overlay">Overlay</a></h3>
@@ -241,7 +241,7 @@
     <article class="op" id="soft_light">
       <div class="op__text">
         <h3><a class="anchor" href="#soft_light">Soft Light</a></h3>
-        <p>Darkens or lightens depending on the blend color — like shining a diffused spotlight on the image.</p>
+        <p>Darkens or lightens depending on the blend color, like shining a diffused spotlight on the image.</p>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">soft_light</span>(<span class="tok-string">&#x27;#ff3cbc&#x27;</span>)</code></pre></div>
       </div>
       <figure class="op__figure">
@@ -252,7 +252,7 @@
     <article class="op" id="hard_light">
       <div class="op__text">
         <h3><a class="anchor" href="#hard_light">Hard Light</a></h3>
-        <p>Multiplies or screens depending on the blend color — like shining a harsh spotlight on the image.</p>
+        <p>Multiplies or screens depending on the blend color, like shining a harsh spotlight on the image.</p>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">hard_light</span>(<span class="tok-string">&#x27;#df5dff&#x27;</span>)</code></pre></div>
       </div>
       <figure class="op__figure">
@@ -285,7 +285,7 @@
     <article class="op" id="pin_light">
       <div class="op__text">
         <h3><a class="anchor" href="#pin_light">Pin Light</a></h3>
-        <p>Replaces colors depending on the blend color — useful for adding special effects to an image.</p>
+        <p>Replaces colors depending on the blend color, which is useful for adding special effects to an image.</p>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">pin_light</span>(<span class="tok-string">&#x27;#005546&#x27;</span>)</code></pre></div>
       </div>
       <figure class="op__figure">
@@ -315,7 +315,7 @@
 </main>
 <footer class="footer">
   <div class="wrap footer__inner">
-    <p>layeris v0.4.0 · MIT License ·
+    <p>layeris v0.4.0 | MIT License |
        <a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></p>
     <p>Every result image on this site is rendered by layeris itself with
        <code>scripts/build_docs.py</code>. Sample photos were generated with

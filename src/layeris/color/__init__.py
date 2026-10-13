@@ -1,5 +1,5 @@
 """
-Color conversion utilities (RGB↔float, hex parsing, HSV, HSL).
+Color conversion utilities (RGB to/from float, hex parsing, HSV, HSL).
 """
 
 from .conversions import (

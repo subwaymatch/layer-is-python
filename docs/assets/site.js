@@ -1,4 +1,4 @@
-// Layer.is docs — before/after sliders, copy buttons and the look switcher.
+// Layer.is docs: before/after sliders, copy buttons and the look switcher.
 
 for (const slider of document.querySelectorAll(".compare")) {
   const range = slider.querySelector(".compare__range");

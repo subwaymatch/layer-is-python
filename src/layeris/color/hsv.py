@@ -1,5 +1,5 @@
 """
-Vectorised RGB ↔ HSV conversion.
+Vectorised conversion between RGB and HSV.
 
 These functions implement the same algorithm as matplotlib.colors.rgb_to_hsv
 and matplotlib.colors.hsv_to_rgb (matplotlib was previously a dependency of

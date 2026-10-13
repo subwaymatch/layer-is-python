@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Layer.is — Examples</title>
+<title>Examples | Layer.is</title>
 <meta name="description" content="24 photo recipes built with layeris, with before/after sliders.">
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/site.css">
@@ -34,8 +34,8 @@
     <p class="section__intro">Small corrections that make a photo look the way it felt.</p>
     <article class="recipe" id="rescue-flat-photo">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/harbor.jpg" alt="Fishing harbor on a hazy, overcast day — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/rescue-flat-photo.jpg" alt="Fishing harbor on a hazy, overcast day — after applying Rescue a flat photo" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/harbor.jpg" alt="Fishing harbor on a hazy, overcast day (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/rescue-flat-photo.jpg" alt="Fishing harbor on a hazy, overcast day (after applying Rescue a flat photo)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -47,7 +47,7 @@
         <p>A hazy, overcast shot has no true blacks or whites. Curve points computed with NumPy emulate a Levels adjustment that stretches the tones to the full range; saturation and a warm overlay bring the colors back.</p>
         <div class="chips"><a class="chip chip--code" href="operations.html#curve_rgb">curve()</a><a class="chip chip--code" href="operations.html#saturation">saturation()</a><a class="chip chip--code" href="blend-modes.html#overlay">overlay()</a><span class="chip">NumPy</span></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/harbor.jpg&quot;</span>)
-<span class="tok-comment"># Levels: map input 0.12 → black and 0.88 → white</span>
+<span class="tok-comment"># Levels: map input 0.12 to black and 0.88 to white</span>
 x = <span class="tok-name">np</span>.<span class="tok-call">linspace</span>(<span class="tok-number">0</span>, <span class="tok-number">1</span>, <span class="tok-number">26</span>)
 levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x - <span class="tok-number">0.12</span>) / <span class="tok-number">0.76</span>, <span class="tok-number">0</span>, <span class="tok-number">1</span>)
 
@@ -58,8 +58,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="food-pop">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/food-pop.jpg" alt="Overhead view of a breakfast table with avocado toast and berries — after applying Make food pop" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/food-pop.jpg" alt="Overhead view of a breakfast table with avocado toast and berries (after applying Make food pop)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -78,8 +78,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="warm-white-balance">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/warm-white-balance.jpg" alt="Older man with a grey beard and knitted cap by a workshop window — after applying Warm up skin tones" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/warm-white-balance.jpg" alt="Older man with a grey beard and knitted cap by a workshop window (after applying Warm up skin tones)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -102,8 +102,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     <p class="section__intro">Shift the mood of a scene with curves and color layers.</p>
     <article class="recipe" id="teal-and-orange">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/teal-and-orange.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower — after applying Teal &amp; orange" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/teal-and-orange.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower (after applying Teal &amp; orange)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -123,8 +123,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="neon-nights">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/neon-nights.jpg" alt="Rainy city street at night with neon reflections — after applying Neon nights" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/neon-nights.jpg" alt="Rainy city street at night with neon reflections (after applying Neon nights)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -144,8 +144,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="winter-blues">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/snowy-cabin.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/winter-blues.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney — after applying Winter blues" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/snowy-cabin.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/winter-blues.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney (after applying Winter blues)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -164,8 +164,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="moody-forest">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/moody-forest.jpg" alt="Misty pine forest with sun rays and ferns — after applying Moody forest" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/moody-forest.jpg" alt="Misty pine forest with sun rays and ferns (after applying Moody forest)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -185,8 +185,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="golden-glow">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/golden-glow.jpg" alt="Alpine lake at sunrise with mountains reflected in the water — after applying Golden glow" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/golden-glow.jpg" alt="Alpine lake at sunrise with mountains reflected in the water (after applying Golden glow)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -206,11 +206,11 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </section>
   <section class="section" id="film-vintage">
     <h2>Film &amp; vintage</h2>
-    <p class="section__intro">Lifted blacks, warm casts and soft contrast — the analog look.</p>
+    <p class="section__intro">Lifted blacks, warm casts and soft contrast for an analog look.</p>
     <article class="recipe" id="faded-film">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/faded-film.jpg" alt="Cozy cafe interior with a barista behind the counter — after applying Faded film" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/faded-film.jpg" alt="Cozy cafe interior with a barista behind the counter (after applying Faded film)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -229,8 +229,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="cross-process">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/cross-process.jpg" alt="Turquoise 1960s car on a street of pastel houses — after applying Cross-processed" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/cross-process.jpg" alt="Turquoise 1960s car on a street of pastel houses (after applying Cross-processed)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -249,8 +249,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="instant-film">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/instant-film.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower — after applying Instant film" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/instant-film.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower (after applying Instant film)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -270,8 +270,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="sepia">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/sepia.jpg" alt="Older man with a grey beard and knitted cap by a workshop window — after applying Sepia print" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/sepia.jpg" alt="Older man with a grey beard and knitted cap by a workshop window (after applying Sepia print)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -291,8 +291,8 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     </article>
     <article class="recipe" id="lomo">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/lomo.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies — after applying Lomo" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/lomo.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies (after applying Lomo)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -301,7 +301,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
 </div></div>
       <div class="recipe__body">
         <h3><a class="anchor" href="#lomo">Lomo</a></h3>
-        <p>Toy-camera look: high contrast, oversaturated color and dark corners. The vignette is a NumPy array blended with Multiply — white in the center leaves pixels untouched.</p>
+        <p>Toy-camera look: high contrast, oversaturated color and dark corners. The vignette is a NumPy array blended with Multiply, where white in the center leaves pixels untouched.</p>
         <div class="chips"><a class="chip chip--code" href="operations.html#contrast">contrast()</a><a class="chip chip--code" href="operations.html#saturation">saturation()</a><a class="chip chip--code" href="blend-modes.html#multiply">multiply()</a><span class="chip">NumPy</span></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/flower-market.jpg&quot;</span>)
 h, w, _ = image.<span class="tok-call">get_image_as_array</span>().shape
@@ -319,8 +319,8 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
     <p class="section__intro">Monochrome conversions, from classic to toned prints.</p>
     <article class="recipe" id="classic-bw">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/classic-bw.jpg" alt="Older man with a grey beard and knitted cap by a workshop window — after applying Classic black &amp; white" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/classic-bw.jpg" alt="Older man with a grey beard and knitted cap by a workshop window (after applying Classic black &amp; white)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -338,8 +338,8 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
     </article>
     <article class="recipe" id="red-filter-bw">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/red-filter-bw.jpg" alt="White building with curved balconies against a blue sky — after applying B&amp;W with a red filter" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/red-filter-bw.jpg" alt="White building with curved balconies against a blue sky (after applying B&amp;W with a red filter)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -359,8 +359,8 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
     </article>
     <article class="recipe" id="noir">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/noir.jpg" alt="Rainy city street at night with neon reflections — after applying Noir" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/noir.jpg" alt="Rainy city street at night with neon reflections (after applying Noir)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -379,8 +379,8 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
     </article>
     <article class="recipe" id="cyanotype">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/cyanotype.jpg" alt="Misty pine forest with sun rays and ferns — after applying Cyanotype" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/cyanotype.jpg" alt="Misty pine forest with sun rays and ferns (after applying Cyanotype)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -401,8 +401,8 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
     </article>
     <article class="recipe" id="high-key">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/snowy-cabin.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/high-key.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney — after applying High-key monochrome" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/snowy-cabin.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/high-key.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney (after applying High-key monochrome)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -422,11 +422,11 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
   </section>
   <section class="section" id="creative-effects">
     <h2>Creative effects</h2>
-    <p class="section__intro">Gradients, vignettes, double exposures and false color — most of them mix in NumPy arrays as blend layers.</p>
+    <p class="section__intro">Gradients, vignettes, double exposures and false color. Most of them use NumPy arrays as blend layers.</p>
     <article class="recipe" id="duotone">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/duotone.jpg" alt="White building with curved balconies against a blue sky — after applying Duotone poster" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/duotone.jpg" alt="White building with curved balconies against a blue sky (after applying Duotone poster)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -435,10 +435,10 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
 </div></div>
       <div class="recipe__body">
         <h3><a class="anchor" href="#duotone">Duotone poster</a></h3>
-        <p>Map shadows to one color and highlights to another — a two-point curve per channel is a gradient map.</p>
+        <p>Map shadows to one color and highlights to another. A two-point curve per channel acts as a gradient map.</p>
         <div class="chips"><a class="chip chip--code" href="operations.html#grayscale">grayscale()</a><a class="chip chip--code" href="operations.html#contrast">contrast()</a><a class="chip chip--code" href="operations.html#curve_rgb">curve()</a></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/architecture.jpg&quot;</span>)
-shadow, highlight = (<span class="tok-number">0.12</span>, <span class="tok-number">0.08</span>, <span class="tok-number">0.4</span>), (<span class="tok-number">1.0</span>, <span class="tok-number">0.45</span>, <span class="tok-number">0.42</span>)  <span class="tok-comment"># indigo → coral</span>
+shadow, highlight = (<span class="tok-number">0.12</span>, <span class="tok-number">0.08</span>, <span class="tok-number">0.4</span>), (<span class="tok-number">1.0</span>, <span class="tok-number">0.45</span>, <span class="tok-number">0.42</span>)  <span class="tok-comment"># indigo to coral</span>
 
 image.<span class="tok-call">grayscale</span>().<span class="tok-call">contrast</span>(<span class="tok-number">1.2</span>)
 <span class="tok-keyword">for</span> channel, lo, hi <span class="tok-keyword">in</span> <span class="tok-builtin">zip</span>(<span class="tok-string">&quot;rgb&quot;</span>, shadow, highlight):
@@ -447,8 +447,8 @@ image.<span class="tok-call">grayscale</span>().<span class="tok-call">contrast<
     </article>
     <article class="recipe" id="double-exposure">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/silhouette.jpg" alt="Profile silhouette of a woman against a white sky — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/double-exposure.jpg" alt="Profile silhouette of a woman against a white sky — after applying Double exposure" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/silhouette.jpg" alt="Profile silhouette of a woman against a white sky (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/double-exposure.jpg" alt="Profile silhouette of a woman against a white sky (after applying Double exposure)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -470,8 +470,8 @@ forest = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_fi
     </article>
     <article class="recipe" id="graduated-filter">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/graduated-filter.jpg" alt="Alpine lake at sunrise with mountains reflected in the water — after applying Graduated sky filter" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/graduated-filter.jpg" alt="Alpine lake at sunrise with mountains reflected in the water (after applying Graduated sky filter)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -480,20 +480,20 @@ forest = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_fi
 </div></div>
       <div class="recipe__body">
         <h3><a class="anchor" href="#graduated-filter">Graduated sky filter</a></h3>
-        <p>A vertical gradient from warm tint to white, blended with Multiply, deepens the sky while leaving the lake untouched — like a graduated filter on a lens.</p>
+        <p>A vertical gradient from warm tint to white, blended with Multiply, deepens the sky while leaving the lake untouched, like a graduated filter on a lens.</p>
         <div class="chips"><a class="chip chip--code" href="blend-modes.html#multiply">multiply()</a><span class="chip">NumPy</span></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/mountain-lake.jpg&quot;</span>)
 h, w, _ = image.<span class="tok-call">get_image_as_array</span>().shape
 t = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<span class="tok-name">np</span>.<span class="tok-call">linspace</span>(<span class="tok-number">0</span>, <span class="tok-number">2.2</span>, h), <span class="tok-number">0</span>, <span class="tok-number">1</span>)[:, <span class="tok-name">np</span>.newaxis, <span class="tok-name">np</span>.newaxis]
-gradient = (<span class="tok-number">1</span> - t) * <span class="tok-name">np</span>.<span class="tok-call">array</span>([<span class="tok-number">0.95</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.4</span>]) + t  <span class="tok-comment"># tint at the top → white</span>
+gradient = (<span class="tok-number">1</span> - t) * <span class="tok-name">np</span>.<span class="tok-call">array</span>([<span class="tok-number">0.95</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.4</span>]) + t  <span class="tok-comment"># tint at the top fading to white</span>
 
 image.<span class="tok-call">multiply</span>(gradient)</code></pre></div>
       </div>
     </article>
     <article class="recipe" id="channel-swap">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/channel-swap.jpg" alt="Turquoise 1960s car on a street of pastel houses — after applying Channel swap" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/channel-swap.jpg" alt="Turquoise 1960s car on a street of pastel houses (after applying Channel swap)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -513,8 +513,8 @@ image.<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>
     </article>
     <article class="recipe" id="colorize">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/colorize.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies — after applying Colorize" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/colorize.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies (after applying Colorize)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -523,7 +523,7 @@ image.<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>
 </div></div>
       <div class="recipe__body">
         <h3><a class="anchor" href="#colorize">Colorize</a></h3>
-        <p>hue() sets every pixel to a single hue while keeping saturation and value — the whole stall becomes shades of magenta.</p>
+        <p>hue() sets every pixel to a single hue while keeping saturation and value, so the whole stall becomes shades of magenta.</p>
         <div class="chips"><a class="chip chip--code" href="operations.html#hue">hue()</a><a class="chip chip--code" href="operations.html#contrast">contrast()</a></div>
         <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/flower-market.jpg&quot;</span>)
 image.<span class="tok-call">hue</span>(<span class="tok-number">0.88</span>).<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>)</code></pre></div>
@@ -531,8 +531,8 @@ image.<span class="tok-call">hue</span>(<span class="tok-number">0.88</span>).<s
     </article>
     <article class="recipe" id="pastel-dream">
       <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/pastel-dream.jpg" alt="Turquoise 1960s car on a street of pastel houses — after applying Pastel dream" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/pastel-dream.jpg" alt="Turquoise 1960s car on a street of pastel houses (after applying Pastel dream)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -555,7 +555,7 @@ image.<span class="tok-call">hue</span>(<span class="tok-number">0.88</span>).<s
     <h2>One preset, many photos</h2>
     <p class="section__intro">Operations can also be described as data. Save a look as JSON and
       apply it to a whole folder with <code>apply_from_dict()</code> (or
-      <code>apply_from_json()</code>) — here a warm, matte preset on four different photos.</p>
+      <code>apply_from_json()</code>). Here is a warm, matte preset on four different photos.</p>
     <div class="stack">
       <div class="code"><div class="code__title">warm-matte.json</div><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-json">{
   <span class="tok-string">&quot;operations&quot;</span>: [
@@ -578,8 +578,8 @@ preset = <span class="tok-builtin">json</span>.<span class="tok-call">loads</spa
     <div class="batch">
       <figure>
         <div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/batch/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water — after applying the warm matte preset" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/batch/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water (after applying the warm matte preset)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -589,8 +589,8 @@ preset = <span class="tok-builtin">json</span>.<span class="tok-call">loads</spa
       </figure>
       <figure>
         <div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/batch/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries — after applying the warm matte preset" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/batch/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries (after applying the warm matte preset)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -600,8 +600,8 @@ preset = <span class="tok-builtin">json</span>.<span class="tok-call">loads</spa
       </figure>
       <figure>
         <div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/harbor.jpg" alt="Fishing harbor on a hazy, overcast day — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/batch/harbor.jpg" alt="Fishing harbor on a hazy, overcast day — after applying the warm matte preset" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/harbor.jpg" alt="Fishing harbor on a hazy, overcast day (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/batch/harbor.jpg" alt="Fishing harbor on a hazy, overcast day (after applying the warm matte preset)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -611,8 +611,8 @@ preset = <span class="tok-builtin">json</span>.<span class="tok-call">loads</spa
       </figure>
       <figure>
         <div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter — before" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/batch/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter — after applying the warm matte preset" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter (before)" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/batch/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter (after applying the warm matte preset)" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
   <span class="compare__tag compare__tag--after">After</span>
@@ -625,7 +625,7 @@ preset = <span class="tok-builtin">json</span>.<span class="tok-call">loads</spa
 
   <section class="section" id="sample-photos">
     <h2>Sample photos</h2>
-    <p class="section__intro">Download the originals (1536 × 1024) to run the snippets yourself.
+    <p class="section__intro">Download the originals (1536 x 1024) to run the snippets yourself.
       They were generated for these docs with OpenAI's <code>gpt-image-2.5</code> model; the
       prompts are in <code>scripts/generate_photos.py</code>.</p>
     <div class="photos"><a class="photo-link" href="photos/mountain-lake.jpg" download><img src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water" width="960" height="640" loading="lazy" decoding="async"><span>mountain-lake.jpg</span></a><a class="photo-link" href="photos/portrait.jpg" download><img src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window" width="960" height="640" loading="lazy" decoding="async"><span>portrait.jpg</span></a><a class="photo-link" href="photos/city-night.jpg" download><img src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections" width="960" height="640" loading="lazy" decoding="async"><span>city-night.jpg</span></a><a class="photo-link" href="photos/breakfast.jpg" download><img src="examples/originals/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries" width="960" height="640" loading="lazy" decoding="async"><span>breakfast.jpg</span></a><a class="photo-link" href="photos/flower-market.jpg" download><img src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies" width="960" height="640" loading="lazy" decoding="async"><span>flower-market.jpg</span></a><a class="photo-link" href="photos/architecture.jpg" download><img src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky" width="960" height="640" loading="lazy" decoding="async"><span>architecture.jpg</span></a><a class="photo-link" href="photos/beach.jpg" download><img src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower" width="960" height="640" loading="lazy" decoding="async"><span>beach.jpg</span></a><a class="photo-link" href="photos/forest.jpg" download><img src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns" width="960" height="640" loading="lazy" decoding="async"><span>forest.jpg</span></a><a class="photo-link" href="photos/cafe.jpg" download><img src="examples/originals/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter" width="960" height="640" loading="lazy" decoding="async"><span>cafe.jpg</span></a><a class="photo-link" href="photos/vintage-car.jpg" download><img src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses" width="960" height="640" loading="lazy" decoding="async"><span>vintage-car.jpg</span></a><a class="photo-link" href="photos/harbor.jpg" download><img src="examples/originals/harbor.jpg" alt="Fishing harbor on a hazy, overcast day" width="960" height="640" loading="lazy" decoding="async"><span>harbor.jpg</span></a><a class="photo-link" href="photos/silhouette.jpg" download><img src="examples/originals/silhouette.jpg" alt="Profile silhouette of a woman against a white sky" width="960" height="640" loading="lazy" decoding="async"><span>silhouette.jpg</span></a><a class="photo-link" href="photos/snowy-cabin.jpg" download><img src="examples/originals/snowy-cabin.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney" width="960" height="640" loading="lazy" decoding="async"><span>snowy-cabin.jpg</span></a></div>
@@ -634,7 +634,7 @@ preset = <span class="tok-builtin">json</span>.<span class="tok-call">loads</spa
 </main>
 <footer class="footer">
   <div class="wrap footer__inner">
-    <p>layeris v0.4.0 · MIT License ·
+    <p>layeris v0.4.0 | MIT License |
        <a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></p>
     <p>Every result image on this site is rendered by layeris itself with
        <code>scripts/build_docs.py</code>. Sample photos were generated with

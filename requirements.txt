@@ -1,4 +1,4 @@
-# Runtime dependencies. pyproject.toml is the authoritative list —
+# Runtime dependencies. pyproject.toml is the authoritative list, so
 # prefer `pip install -e .` (or `pip install -e ".[dev]"` for development).
 numpy>=1.20
 Pillow>=9.1

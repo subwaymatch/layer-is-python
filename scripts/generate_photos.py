@@ -3,8 +3,8 @@
 
 Every photo in ``docs/photos/`` was created with OpenAI's Images API from the
 prompt listed in ``PHOTOS`` below, so the set can be reproduced or extended.
-The docs build (``scripts/build_docs.py``) only *reads* these files — it never
-calls the API — so this script is needed only when adding or replacing photos.
+The docs build (``scripts/build_docs.py``) only *reads* these files and never
+calls the API, so this script is needed only when adding or replacing photos.
 
 Usage::
 

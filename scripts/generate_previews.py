@@ -55,7 +55,7 @@ class Operation:
     code: str  # snippet shown in README / gallery
     apply: Callable[[LayerImage], LayerImage]
     description: str
-    base: str = "color"  # "color" or "gray" — which before-image to use
+    base: str = "color"  # "color" or "gray": which before-image to use
 
 
 OPERATIONS: list[Operation] = [
@@ -97,7 +97,7 @@ OPERATIONS: list[Operation] = [
         apply=lambda img: img.hue(0.3),
         description=(
             "Set every pixel's hue to the target value in [0, 1] while keeping "
-            "saturation and value — a colorize-style adjustment."
+            "saturation and value. This is a colorize-style adjustment."
         ),
     ),
     Operation(
@@ -128,8 +128,8 @@ OPERATIONS: list[Operation] = [
         code="image.curve('rgb', [0, 0.1, 0.4, 0.65, 0.9, 1])",
         apply=lambda img: img.curve("rgb", [0, 0.1, 0.4, 0.65, 0.9, 1]),
         description=(
-            "Remap tones through control points spaced evenly across [0, 1] — "
-            "here an S-curve that deepens shadows and lifts highlights."
+            "Remap tones through control points spaced evenly across [0, 1]. "
+            "Here, an S-curve deepens shadows and lifts highlights."
         ),
     ),
     Operation(
@@ -149,25 +149,25 @@ OPERATIONS: list[Operation] = [
         description="Resize with high-quality Lanczos resampling.",
     ),
     # ------------------------------------------------------------------
-    # Blend modes — darken group (applied to a grayscale base, as in the
+    # Blend modes: darken group (applied to a grayscale base, as in the
     # original demo).
     # ------------------------------------------------------------------
     Operation(
         slug="darken",
         title="Darken",
-        group="Blend modes — darken",
+        group="Blend modes: darken",
         code="grayscale_image.darken('#3fe28f')",
         apply=lambda img: img.darken("#3fe28f"),
         base="gray",
         description=(
             "Looks at the color information in each channel and selects the base "
-            "or blend color — whichever is darker — as the result color."
+            "or blend color, whichever is darker, as the result color."
         ),
     ),
     Operation(
         slug="multiply",
         title="Multiply",
-        group="Blend modes — darken",
+        group="Blend modes: darken",
         code="grayscale_image.multiply('#3fe28f')",
         apply=lambda img: img.multiply("#3fe28f"),
         base="gray",
@@ -179,7 +179,7 @@ OPERATIONS: list[Operation] = [
     Operation(
         slug="color_burn",
         title="Color Burn",
-        group="Blend modes — darken",
+        group="Blend modes: darken",
         code="grayscale_image.color_burn('#7fe3f8')",
         apply=lambda img: img.color_burn("#7fe3f8"),
         base="gray",
@@ -191,7 +191,7 @@ OPERATIONS: list[Operation] = [
     Operation(
         slug="linear_burn",
         title="Linear Burn",
-        group="Blend modes — darken",
+        group="Blend modes: darken",
         code="grayscale_image.linear_burn('#e1a8ff')",
         apply=lambda img: img.linear_burn("#e1a8ff"),
         base="gray",
@@ -201,34 +201,34 @@ OPERATIONS: list[Operation] = [
         ),
     ),
     # ------------------------------------------------------------------
-    # Blend modes — lighten group
+    # Blend modes: lighten group
     # ------------------------------------------------------------------
     Operation(
         slug="lighten",
         title="Lighten",
-        group="Blend modes — lighten",
+        group="Blend modes: lighten",
         code="image.lighten('#ff3ce1')",
         apply=lambda img: img.lighten("#ff3ce1"),
         description=(
-            "Selects the base or blend color — whichever is lighter — as the "
+            "Selects the base or blend color, whichever is lighter, as the "
             "result color."
         ),
     ),
     Operation(
         slug="screen",
         title="Screen",
-        group="Blend modes — lighten",
+        group="Blend modes: lighten",
         code="image.screen('#e633ba')",
         apply=lambda img: img.screen("#e633ba"),
         description=(
             "Multiplies the inverse of the blend and base colors. The result is "
-            "always lighter — like projecting multiple slides on top of each other."
+            "always lighter, like projecting multiple slides on top of each other."
         ),
     ),
     Operation(
         slug="color_dodge",
         title="Color Dodge",
-        group="Blend modes — lighten",
+        group="Blend modes: lighten",
         code="image.color_dodge('#490cc7')",
         apply=lambda img: img.color_dodge("#490cc7"),
         description=(
@@ -239,7 +239,7 @@ OPERATIONS: list[Operation] = [
     Operation(
         slug="linear_dodge",
         title="Linear Dodge",
-        group="Blend modes — lighten",
+        group="Blend modes: lighten",
         code="image.linear_dodge('#490cc7')",
         apply=lambda img: img.linear_dodge("#490cc7"),
         description=(
@@ -248,12 +248,12 @@ OPERATIONS: list[Operation] = [
         ),
     ),
     # ------------------------------------------------------------------
-    # Blend modes — contrast group
+    # Blend modes: contrast group
     # ------------------------------------------------------------------
     Operation(
         slug="overlay",
         title="Overlay",
-        group="Blend modes — contrast",
+        group="Blend modes: contrast",
         code="image.overlay('#ffb956')",
         apply=lambda img: img.overlay("#ffb956"),
         description=(
@@ -264,29 +264,29 @@ OPERATIONS: list[Operation] = [
     Operation(
         slug="soft_light",
         title="Soft Light",
-        group="Blend modes — contrast",
+        group="Blend modes: contrast",
         code="image.soft_light('#ff3cbc')",
         apply=lambda img: img.soft_light("#ff3cbc"),
         description=(
-            "Darkens or lightens depending on the blend color — like shining a "
+            "Darkens or lightens depending on the blend color, like shining a "
             "diffused spotlight on the image."
         ),
     ),
     Operation(
         slug="hard_light",
         title="Hard Light",
-        group="Blend modes — contrast",
+        group="Blend modes: contrast",
         code="image.hard_light('#df5dff')",
         apply=lambda img: img.hard_light("#df5dff"),
         description=(
-            "Multiplies or screens depending on the blend color — like shining a "
+            "Multiplies or screens depending on the blend color, like shining a "
             "harsh spotlight on the image."
         ),
     ),
     Operation(
         slug="vivid_light",
         title="Vivid Light",
-        group="Blend modes — contrast",
+        group="Blend modes: contrast",
         code="image.vivid_light('#ac5b7f')",
         apply=lambda img: img.vivid_light("#ac5b7f"),
         description=(
@@ -297,7 +297,7 @@ OPERATIONS: list[Operation] = [
     Operation(
         slug="linear_light",
         title="Linear Light",
-        group="Blend modes — contrast",
+        group="Blend modes: contrast",
         code="image.linear_light('#9fa500')",
         apply=lambda img: img.linear_light("#9fa500"),
         description=(
@@ -308,11 +308,11 @@ OPERATIONS: list[Operation] = [
     Operation(
         slug="pin_light",
         title="Pin Light",
-        group="Blend modes — contrast",
+        group="Blend modes: contrast",
         code="image.pin_light('#005546')",
         apply=lambda img: img.pin_light("#005546"),
         description=(
-            "Replaces colors depending on the blend color — useful for adding "
+            "Replaces colors depending on the blend color, which is useful for adding "
             "special effects to an image."
         ),
     ),
@@ -395,7 +395,7 @@ def render_markdown() -> str:
         "## Operation gallery",
         "",
         "Every image below is generated by [`scripts/generate_previews.py`]"
-        "(scripts/generate_previews.py) using layeris itself — the left half is "
+        "(scripts/generate_previews.py) using layeris itself. The left half is "
         "the input, the right half is the result of the snippet above it. "
         "Regenerate them all with:",
         "",
@@ -411,10 +411,10 @@ def render_markdown() -> str:
         if op.group != current_group:
             current_group = op.group
             lines += [f"### {current_group}", ""]
-            if current_group == "Blend modes — darken":
+            if current_group == "Blend modes: darken":
                 lines += [
                     "Blend modes accept a hex color string or a NumPy array, plus "
-                    "an optional `opacity` (0.0–1.0). The darken-group examples "
+                    "an optional `opacity` (0.0 to 1.0). The darken-group examples "
                     "are applied to a grayscale base "
                     "(`grayscale_image = image.clone().grayscale()`), as in the "
                     "original demo.",
@@ -470,8 +470,8 @@ def render_operations_page(preview_size: tuple[int, int]) -> str:
   <header class="page-head">
     <p class="eyebrow">Reference</p>
     <h1>Operations</h1>
-    <p class="lede">Every LayerImage operation on a single photo — the input on the
-      left, the result of the snippet on the right. The darken-group blend modes run
+    <p class="lede">Every LayerImage operation on a single photo, with the input on the
+      left and the result of the snippet on the right. The darken-group blend modes run
       on a grayscale copy (<code>grayscale_image = image.clone().grayscale()</code>),
       as in the original demo. See <a href="examples.html">Examples</a> for complete
       looks built from these operations.</p>
