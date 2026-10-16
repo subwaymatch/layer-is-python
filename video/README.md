@@ -1,6 +1,6 @@
 # layeris video
 
-A short, silent walkthrough of layeris (1920×1080, 30 fps, 76.4 seconds),
+A short, silent walkthrough of layeris (1920×1080, 30 fps, 71.9 seconds),
 built with [Remotion](https://www.remotion.dev/). The rendered file is
 [`out/layeris.mp4`](out/layeris.mp4).
 
@@ -12,7 +12,7 @@ layers draw in fanned out, then settle into place.
 | Scene | What it shows |
 | --- | --- |
 | Intro | The logo animation and the `layeris` wordmark |
-| 01 Install | `pip install layeris`, and installing from source |
+| 01 Install | `pip install layeris` |
 | 02 Chain operations | A chained edit, with each step's result wiping in as its line is typed |
 | 03 Blend modes | All 14 blend modes applied to one photo |
 | 04 Curves | Control points on the `r` and `b` channels moving, with the photo updating |
@@ -62,7 +62,7 @@ total length is their sum (see `src/Video.tsx`).
 
 ## Adding music later
 
-The video has no audio track. It runs 76.4 seconds (2,293 frames at 30 fps),
+The video has no audio track. It runs 71.9 seconds (2,158 frames at 30 fps),
 and the last half-second fades to white. To add a track, either put the file
 in `public/` and add `<Audio src={staticFile('music.mp3')} />` inside
 `LayerisVideo` in `src/Video.tsx` before rendering, or mux it into the

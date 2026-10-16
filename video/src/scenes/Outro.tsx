@@ -28,9 +28,9 @@ export const Outro: React.FC = () => {
 				<Logo width={LOGO_WIDTH} layers={assembleLogo(frame, SPEED)} />
 				<div
 					style={{
-						marginTop: 40,
+						marginTop: 34,
 						fontFamily: fonts.mono,
-						fontSize: 104,
+						fontSize: 76,
 						lineHeight: 1.05,
 						letterSpacing: '-0.03em',
 						color: colors.ink,
@@ -39,7 +39,7 @@ export const Outro: React.FC = () => {
 				>
 					layeris
 				</div>
-				<div style={{marginTop: 44, ...rise(frame, 52)}}>
+				<div style={{marginTop: 40, ...rise(frame, 52)}}>
 					<Code code="$ pip install layeris" lang="shell" fontSize={30} padding={[16, 28]} />
 				</div>
 				<div
@@ -67,7 +67,7 @@ export const Outro: React.FC = () => {
 						opacity: progress(frame, 84, 20),
 					}}
 				>
-					v0.4.0 · MIT License
+					MIT License
 				</div>
 			</div>
 		</Scene>

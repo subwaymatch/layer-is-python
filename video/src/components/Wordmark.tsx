@@ -2,7 +2,7 @@ import React from 'react';
 import {colors, fonts} from '../theme';
 
 const WORD = 'layeris';
-const FRAMES_PER_CHAR = 4;
+const FRAMES_PER_CHAR = 2;
 
 /**
  * The lowercase DM Mono wordmark from the docs home page, typed one letter at
@@ -14,13 +14,13 @@ export const Wordmark: React.FC<{
 	start: number;
 	/** Frames the caret keeps blinking after the last letter. */
 	caretHold?: number;
-}> = ({fontSize, frame, start, caretHold = 34}) => {
+}> = ({fontSize, frame, start, caretHold = 20}) => {
 	const typed = Math.max(0, Math.min(WORD.length, Math.floor((frame - start) / FRAMES_PER_CHAR) + 1));
 	const typingEnd = start + WORD.length * FRAMES_PER_CHAR;
 	const caretVisible =
 		frame >= start - 6 &&
 		frame < typingEnd + caretHold &&
-		(frame < typingEnd || Math.floor((frame - typingEnd) / 12) % 2 === 0);
+		(frame < typingEnd || Math.floor((frame - typingEnd) / 10) % 2 === 0);
 	return (
 		<div
 			style={{
