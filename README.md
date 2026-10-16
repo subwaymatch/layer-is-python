@@ -1,11 +1,11 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/subwaymatch/layer-is-python/main/docs/assets/logo.svg" alt="Layer.is logo" width="152" height="133">
+<img src="https://raw.githubusercontent.com/subwaymatch/layer-is-python/main/docs/assets/logo.svg" alt="Layer.is logo" width="152">
 </p>
 
 <h1 align="center">
 <picture>
 <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/subwaymatch/layer-is-python/main/docs/assets/wordmark-dark.svg">
-<img src="https://raw.githubusercontent.com/subwaymatch/layer-is-python/main/docs/assets/wordmark.svg" alt="layeris" width="177" height="43">
+<img src="https://raw.githubusercontent.com/subwaymatch/layer-is-python/main/docs/assets/wordmark.svg" alt="layeris" width="177">
 </picture>
 </h1>
 
