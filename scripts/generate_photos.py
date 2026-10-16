@@ -35,73 +35,81 @@ QUALITY = "low"
 SIZE = "1536x1024"
 JPEG_QUALITY = 85
 
-# Shared suffix that keeps the photos natural-looking: heavily stylised
-# source images would leave little room to show what each edit does.
+# Shared suffix: minimal, clean compositions that still look natural, since
+# heavily stylised source images would leave little room to show what each
+# edit does. Every photo shows something from Korea.
 STYLE = (
-    "Realistic documentary photograph, natural unedited colors, neutral color "
-    "grading, no text, no watermark."
+    "Minimal, clean composition with generous negative space. Realistic "
+    "documentary photograph, natural unedited colors, neutral color grading, "
+    "no text, no watermark."
 )
 
 PHOTOS: dict[str, str] = {
-    "mountain-lake": (
-        "An alpine lake at sunrise, pine trees on the rocky shore, snow-capped "
-        "mountains reflected in calm water, soft morning light."
+    "palace-pond": (
+        "Gyeonghoeru, the pavilion of Gyeongbokgung Palace in Seoul, reflected "
+        "in its calm pond at sunrise, soft pink and orange sky, mountains in "
+        "the distance."
     ),
-    "portrait": (
-        "Environmental portrait of a smiling older man with a grey beard and a "
-        "knitted wool cap, sitting by a window in a workshop, soft natural "
-        "window light from the side, shallow depth of field."
+    "hanbok-portrait": (
+        "Environmental portrait of a smiling older Korean man with a grey "
+        "beard, wearing a white hanbok and a traditional black horsehair gat "
+        "hat, sitting by a hanji paper window, soft cool daylight from the "
+        "side, shallow depth of field."
     ),
-    "city-night": (
-        "A rainy city street at night, wet asphalt reflecting neon shop signs "
-        "and street lights, a few pedestrians with umbrellas, taxis passing."
+    "seoul-night": (
+        "A narrow alley in Seoul at night after rain, glowing neon shop signs "
+        "and red paper lanterns reflected on the wet pavement, a few "
+        "pedestrians with umbrellas. The signs are blurred, with no legible "
+        "lettering."
     ),
-    "breakfast": (
-        "Overhead flat-lay of a breakfast table: avocado toast, a bowl of "
-        "berries and yogurt, a cup of coffee, orange juice, on a light wooden "
-        "table, daylight."
+    "bibimbap": (
+        "Overhead flat-lay of a Korean meal on a light wooden table: bibimbap "
+        "in a hot stone bowl topped with a fried egg, small dishes of banchan "
+        "and kimchi, a bowl of rice, metal chopsticks and a spoon, daylight."
     ),
-    "flower-market": (
-        "A colorful flower stall at an outdoor market with buckets of tulips, "
-        "roses, sunflowers and peonies, a vendor arranging bouquets in the "
-        "background, daylight."
+    "lotus-lanterns": (
+        "Rows of colorful lotus lanterns in pink, red, yellow, green and blue "
+        "hanging over a Korean temple courtyard for Buddha's Birthday, "
+        "daylight."
     ),
-    "architecture": (
-        "Modern white concrete building with repeating curved balconies, shot "
-        "from below against a clear blue sky, strong geometric shapes and "
-        "shadows, midday sun."
+    "palace-eaves": (
+        "The upturned eaves of a Korean palace roof painted with colorful "
+        "dancheong patterns, shot from below against a clear deep blue sky, "
+        "strong geometric shapes and shadows, midday sun."
     ),
-    "beach": (
-        "A wide sandy beach in the late afternoon, gentle waves, a lifeguard "
-        "tower, two people walking along the waterline, a few clouds."
+    "jeju-coast": (
+        "A beach on Jeju Island in the late afternoon, black volcanic rocks in "
+        "the foreground, turquoise water and gentle waves, two people walking "
+        "along the waterline, a few clouds."
     ),
-    "forest": (
-        "A misty pine forest in the early morning, tall straight trunks, light "
-        "fog between the trees, ferns and moss on the ground, sun rays."
+    "bamboo-forest": (
+        "A misty bamboo forest in the early morning, tall straight green "
+        "stalks, light fog between them, sun rays."
     ),
-    "cafe": (
-        "Interior of a cozy neighborhood cafe, a barista behind the counter "
-        "preparing coffee, wooden furniture, plants, warm pendant lights and "
-        "daylight from large windows."
+    "hanok-tea": (
+        "A pale green celadon tea set on a low wooden table inside a hanok "
+        "room, hanji paper sliding doors, warm wooden floor, soft daylight."
     ),
-    "vintage-car": (
-        "A classic 1960s turquoise car parked on a colorful old-town street "
-        "with pastel painted houses, cobblestones, sunny afternoon."
+    "gamcheon-village": (
+        "Brightly painted pastel houses in pink, turquoise, yellow and blue "
+        "stacked on a hillside in Gamcheon Culture Village, Busan, sunny "
+        "afternoon, clear sky."
     ),
-    "harbor": (
-        "A small fishing harbor on a hazy overcast day, wooden boats moored at "
-        "a pier, flat soft light, low contrast, muted colors, slightly washed "
-        "out."
+    "fishing-harbor": (
+        "A small fishing harbor on Korea's east coast on a hazy overcast day, "
+        "wooden fishing boats moored at a pier, flat soft light, low contrast, "
+        "muted colors, slightly washed out."
     ),
-    "silhouette": (
-        "Side profile of a young woman's head and shoulders, centered, a dark "
-        "silhouette against a plain bright white overcast sky, minimal, high "
-        "key background."
+    "hanbok-silhouette": (
+        "Side profile of a young woman's head and shoulders, wearing a hanbok, "
+        "her hair in a traditional low bun with a binyeo hairpin, centered, a "
+        "dark silhouette against a plain bright white overcast sky, minimal, "
+        "high key background."
     ),
-    "snowy-cabin": (
-        "A small wooden cabin in a snowy landscape on a winter morning, snow on "
-        "the roof and spruce trees, smoke rising from the chimney, footprints "
-        "in the snow."
+    "snowy-hanok": (
+        "A traditional hanok house with a curved tiled roof covered in snow on "
+        "a winter morning, a stone wall and pine trees, smoke rising from the "
+        "chimney, footprints in the snow."
     ),
 }
 

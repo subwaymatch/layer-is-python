@@ -45,7 +45,7 @@
     <p class="section__intro">Small corrections that make a photo look the way it felt.</p>
   <article class="recipe recipe--first" id="rescue-flat-photo" data-uses="curve saturation overlay numpy">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/harbor.jpg" alt="Fishing harbor on a hazy, overcast day" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/fishing-harbor.jpg" alt="Fishing harbor on Korea&#x27;s east coast on a hazy day" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/rescue-flat-photo.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -57,10 +57,10 @@
       <h3><a href="#rescue-flat-photo">Rescue a Flat Photo</a></h3>
       <p class="recipe__desc">A hazy, overcast shot has no true blacks or whites. Curve points computed with NumPy emulate a Levels adjustment that stretches the tones to the full range; saturation and a warm overlay bring the colors back.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="overlay" title="Show every example that uses overlay()">overlay<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="numpy" title="Show every example that uses NumPy">NumPy</button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/harbor.jpg&quot;</span>)
-<span class="tok-comment"># Levels: map input 0.12 to black and 0.88 to white</span>
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/fishing-harbor.jpg&quot;</span>)
+<span class="tok-comment"># Levels: map input 0.16 to black and 0.82 to white</span>
 x = <span class="tok-name">np</span>.<span class="tok-call">linspace</span>(<span class="tok-number">0</span>, <span class="tok-number">1</span>, <span class="tok-number">26</span>)
-levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x - <span class="tok-number">0.12</span>) / <span class="tok-number">0.76</span>, <span class="tok-number">0</span>, <span class="tok-number">1</span>)
+levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x - <span class="tok-number">0.16</span>) / <span class="tok-number">0.66</span>, <span class="tok-number">0</span>, <span class="tok-number">1</span>)
 
 (image.<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, levels.<span class="tok-call">tolist</span>())
       .<span class="tok-call">saturation</span>(<span class="tok-number">0.35</span>)
@@ -69,7 +69,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="food-pop" data-uses="saturation curve overlay">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/bibimbap.jpg" alt="Overhead view of bibimbap in a stone bowl with banchan side dishes" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/food-pop.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -81,7 +81,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#food-pop">Make Food Pop</a></h3>
       <p class="recipe__desc">Food photos benefit from rich color and a touch of warmth. A gentle S-curve adds contrast without crushing the shadows.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="overlay" title="Show every example that uses overlay()">overlay<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/breakfast.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/bibimbap.jpg&quot;</span>)
 (image.<span class="tok-call">saturation</span>(<span class="tok-number">0.4</span>)
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.2</span>, <span class="tok-number">0.52</span>, <span class="tok-number">0.8</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">overlay</span>(<span class="tok-string">&quot;#ffc670&quot;</span>, opacity=<span class="tok-number">0.3</span>))</code></pre></div>
@@ -89,7 +89,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="warm-white-balance" data-uses="curve saturation">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/hanbok-portrait.jpg" alt="Older man in a white hanbok and black gat hat by a paper window" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/warm-white-balance.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -101,7 +101,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#warm-white-balance">Warm Up Skin Tones</a></h3>
       <p class="recipe__desc">Per-channel curves act as a white-balance slider: raise the red midtones and lower the blue ones to warm up a cool, grey-lit portrait.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/portrait.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/hanbok-portrait.jpg&quot;</span>)
 (image.<span class="tok-call">curve</span>(<span class="tok-string">&quot;r&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.58</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;b&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.43</span>, <span class="tok-number">0.95</span>])
       .<span class="tok-call">saturation</span>(<span class="tok-number">0.1</span>))</code></pre></div>
@@ -113,7 +113,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     <p class="section__intro">Shift the mood of a scene with curves and color layers.</p>
   <article class="recipe recipe--first" id="teal-and-orange" data-uses="curve contrast saturation">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/jeju-coast.jpg" alt="Jeju beach with black volcanic rocks in late afternoon light" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/teal-and-orange.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -125,7 +125,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#teal-and-orange">Teal &amp; Orange</a></h3>
       <p class="recipe__desc">The blockbuster grade: an S-curve on red and an inverted S-curve on blue push the shadows toward teal and the highlights toward orange.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/beach.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/jeju-coast.jpg&quot;</span>)
 (image.<span class="tok-call">curve</span>(<span class="tok-string">&quot;r&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.1</span>, <span class="tok-number">0.5</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;b&quot;</span>, [<span class="tok-number">0.18</span>, <span class="tok-number">0.38</span>, <span class="tok-number">0.5</span>, <span class="tok-number">0.6</span>, <span class="tok-number">0.8</span>])
       .<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>)
@@ -134,7 +134,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="neon-nights" data-uses="curve soft_light saturation contrast">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/seoul-night.jpg" alt="Seoul alley at night with neon and lanterns reflected on wet pavement" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/neon-nights.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -146,7 +146,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#neon-nights">Neon Nights</a></h3>
       <p class="recipe__desc">Lift the blue in the shadows, wash the scene with magenta using Soft Light, and turn up saturation for a cyberpunk feel.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="soft_light" title="Show every example that uses soft_light()">soft_light<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/city-night.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/seoul-night.jpg&quot;</span>)
 (image.<span class="tok-call">curve</span>(<span class="tok-string">&quot;b&quot;</span>, [<span class="tok-number">0.12</span>, <span class="tok-number">0.45</span>, <span class="tok-number">0.75</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">soft_light</span>(<span class="tok-string">&quot;#ff2fb3&quot;</span>, opacity=<span class="tok-number">0.6</span>)
       .<span class="tok-call">saturation</span>(<span class="tok-number">0.3</span>)
@@ -155,7 +155,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="winter-blues" data-uses="soft_light curve lightness">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/snowy-cabin.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/snowy-hanok.jpg" alt="Hanok house with a snow-covered tiled roof" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/winter-blues.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -167,7 +167,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#winter-blues">Winter Blues</a></h3>
       <p class="recipe__desc">A blue Soft Light layer and a curve that lifts the blue shadows cool the whole scene; a small lightness lift keeps it airy.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="soft_light" title="Show every example that uses soft_light()">soft_light<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="lightness" title="Show every example that uses lightness()">lightness<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/snowy-cabin.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/snowy-hanok.jpg&quot;</span>)
 (image.<span class="tok-call">soft_light</span>(<span class="tok-string">&quot;#1f5fd1&quot;</span>, opacity=<span class="tok-number">0.8</span>)
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;b&quot;</span>, [<span class="tok-number">0.1</span>, <span class="tok-number">0.55</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">lightness</span>(<span class="tok-number">0.05</span>))</code></pre></div>
@@ -175,7 +175,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="moody-forest" data-uses="saturation curve multiply contrast">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/bamboo-forest.jpg" alt="Misty bamboo forest with sun rays" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/moody-forest.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -187,7 +187,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#moody-forest">Moody Forest</a></h3>
       <p class="recipe__desc">Muted greens and a deep teal cast: desaturate, crush the shadows with a curve, then multiply with a dark teal at low opacity.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="multiply" title="Show every example that uses multiply()">multiply<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/forest.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/bamboo-forest.jpg&quot;</span>)
 (image.<span class="tok-call">saturation</span>(-<span class="tok-number">0.35</span>)
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0.03</span>, <span class="tok-number">0.18</span>, <span class="tok-number">0.45</span>, <span class="tok-number">0.78</span>, <span class="tok-number">0.97</span>])
       .<span class="tok-call">multiply</span>(<span class="tok-string">&quot;#2f6f6a&quot;</span>, opacity=<span class="tok-number">0.35</span>)
@@ -196,7 +196,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="golden-glow" data-uses="screen overlay curve">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/palace-pond.jpg" alt="Gyeonghoeru pavilion reflected in its pond at sunrise" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/golden-glow.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -208,7 +208,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#golden-glow">Golden Glow</a></h3>
       <p class="recipe__desc">Exaggerate the sunrise: Screen a dark orange to lift and tint the shadows, Overlay a brighter one to warm the midtones, then restore contrast with an S-curve.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="screen" title="Show every example that uses screen()">screen<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="overlay" title="Show every example that uses overlay()">overlay<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/mountain-lake.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/palace-pond.jpg&quot;</span>)
 (image.<span class="tok-call">screen</span>(<span class="tok-string">&quot;#3a1800&quot;</span>, opacity=<span class="tok-number">0.7</span>)
       .<span class="tok-call">overlay</span>(<span class="tok-string">&quot;#ff9d3b&quot;</span>, opacity=<span class="tok-number">0.25</span>)
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.18</span>, <span class="tok-number">0.5</span>, <span class="tok-number">0.82</span>, <span class="tok-number">1</span>]))</code></pre></div>
@@ -220,7 +220,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
     <p class="section__intro">Lifted blacks, warm casts and soft contrast for an analog look.</p>
   <article class="recipe recipe--first" id="faded-film" data-uses="curve saturation soft_light">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/hanok-tea.jpg" alt="Celadon tea set on a low table in a hanok room" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/faded-film.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -232,7 +232,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#faded-film">Faded Film</a></h3>
       <p class="recipe__desc">Lifted blacks and softened whites give the matte look of expired film; a cream Soft Light layer warms the midtones.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="soft_light" title="Show every example that uses soft_light()">soft_light<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/cafe.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/hanok-tea.jpg&quot;</span>)
 (image.<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0.15</span>, <span class="tok-number">0.32</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.76</span>, <span class="tok-number">0.9</span>])
       .<span class="tok-call">saturation</span>(-<span class="tok-number">0.25</span>)
       .<span class="tok-call">soft_light</span>(<span class="tok-string">&quot;#f0cf9c&quot;</span>, opacity=<span class="tok-number">0.7</span>))</code></pre></div>
@@ -240,7 +240,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="cross-process" data-uses="curve">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/gamcheon-village.jpg" alt="Pastel houses on a hillside in Gamcheon Culture Village, Busan" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/cross-process.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -252,7 +252,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#cross-process">Cross-Processed</a></h3>
       <p class="recipe__desc">Developing slide film in negative chemistry gave punchy, yellow-green highlights and blue shadows. Opposing curves on each channel recreate it.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/gamcheon-village.jpg&quot;</span>)
 (image.<span class="tok-call">curve</span>(<span class="tok-string">&quot;r&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.15</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;g&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.2</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.85</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;b&quot;</span>, [<span class="tok-number">0.22</span>, <span class="tok-number">0.35</span>, <span class="tok-number">0.48</span>, <span class="tok-number">0.6</span>, <span class="tok-number">0.72</span>]))</code></pre></div>
@@ -260,7 +260,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="instant-film" data-uses="lighten overlay saturation curve">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/jeju-coast.jpg" alt="Jeju beach with black volcanic rocks in late afternoon light" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/instant-film.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -272,7 +272,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#instant-film">Instant Film</a></h3>
       <p class="recipe__desc">Lighten with a deep navy so no shadow goes below it, warm the image with Overlay and pull back saturation for a Polaroid feel.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="lighten" title="Show every example that uses lighten()">lighten<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="overlay" title="Show every example that uses overlay()">overlay<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/beach.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/jeju-coast.jpg&quot;</span>)
 (image.<span class="tok-call">lighten</span>(<span class="tok-string">&quot;#2b2d4a&quot;</span>)
       .<span class="tok-call">overlay</span>(<span class="tok-string">&quot;#ffb870&quot;</span>, opacity=<span class="tok-number">0.5</span>)
       .<span class="tok-call">saturation</span>(-<span class="tok-number">0.25</span>)
@@ -281,7 +281,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="sepia" data-uses="grayscale curve">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/hanbok-portrait.jpg" alt="Older man in a white hanbok and black gat hat by a paper window" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/sepia.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -293,7 +293,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#sepia">Sepia Print</a></h3>
       <p class="recipe__desc">Convert to grayscale, then use per-channel curves as a gradient map: black becomes dark brown and white becomes warm cream.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="grayscale" title="Show every example that uses grayscale()">grayscale<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/portrait.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/hanbok-portrait.jpg&quot;</span>)
 (image.<span class="tok-call">grayscale</span>()
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;r&quot;</span>, [<span class="tok-number">0.16</span>, <span class="tok-number">0.62</span>, <span class="tok-number">1.0</span>])
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;g&quot;</span>, [<span class="tok-number">0.1</span>, <span class="tok-number">0.5</span>, <span class="tok-number">0.92</span>])
@@ -302,7 +302,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
   </article>
   <article class="recipe" id="lomo" data-uses="contrast saturation multiply numpy">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/lotus-lanterns.jpg" alt="Rows of colorful lotus lanterns over a temple courtyard" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/lomo.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -314,7 +314,7 @@ levels = <span class="tok-name">np</span>.<span class="tok-call">clip</span>((x 
       <h3><a href="#lomo">Lomo</a></h3>
       <p class="recipe__desc">Toy-camera look: high contrast, oversaturated color and dark corners. The vignette is a NumPy array blended with Multiply, where white in the center leaves pixels untouched.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="multiply" title="Show every example that uses multiply()">multiply<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="numpy" title="Show every example that uses NumPy">NumPy</button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/flower-market.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/lotus-lanterns.jpg&quot;</span>)
 h, w, _ = image.<span class="tok-call">get_image_as_array</span>().shape
 y, x = <span class="tok-name">np</span>.ogrid[-<span class="tok-number">1</span>:<span class="tok-number">1</span>:h * 1j, -<span class="tok-number">1</span>:<span class="tok-number">1</span>:w * 1j]
 vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<span class="tok-number">1.2</span> - <span class="tok-number">0.6</span> * (x**<span class="tok-number">2</span> + y**<span class="tok-number">2</span>), <span class="tok-number">0</span>, <span class="tok-number">1</span>)[..., <span class="tok-name">np</span>.newaxis]
@@ -330,7 +330,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
     <p class="section__intro">Monochrome conversions, from classic to toned prints.</p>
   <article class="recipe recipe--first" id="classic-bw" data-uses="grayscale curve">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/hanbok-portrait.jpg" alt="Older man in a white hanbok and black gat hat by a paper window" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/classic-bw.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -340,16 +340,16 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
 </div></div>
     <div class="recipe__body">
       <h3><a href="#classic-bw">Classic Black &amp; White</a></h3>
-      <p class="recipe__desc">Grayscale alone is often flat. An S-curve restores depth and makes the textures of the beard and sweater stand out.</p>
+      <p class="recipe__desc">Grayscale alone is often flat. An S-curve restores depth and brings out the texture of the beard and the woven gat hat.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="grayscale" title="Show every example that uses grayscale()">grayscale<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/portrait.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/hanbok-portrait.jpg&quot;</span>)
 (image.<span class="tok-call">grayscale</span>()
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.15</span>, <span class="tok-number">0.48</span>, <span class="tok-number">0.85</span>, <span class="tok-number">1</span>]))</code></pre></div>
     </div>
   </article>
   <article class="recipe" id="red-filter-bw" data-uses="multiply grayscale curve contrast">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/jeju-coast.jpg" alt="Jeju beach with black volcanic rocks in late afternoon light" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/red-filter-bw.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -361,7 +361,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
       <h3><a href="#red-filter-bw">B&amp;W with a Red Filter</a></h3>
       <p class="recipe__desc">Film photographers used a red lens filter to turn blue skies almost black. Multiplying by red before converting to grayscale does the same thing.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="multiply" title="Show every example that uses multiply()">multiply<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="grayscale" title="Show every example that uses grayscale()">grayscale<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/architecture.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/jeju-coast.jpg&quot;</span>)
 (image.<span class="tok-call">multiply</span>(<span class="tok-string">&quot;#ff5a36&quot;</span>)
       .<span class="tok-call">grayscale</span>()
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.3</span>, <span class="tok-number">0.85</span>, <span class="tok-number">1</span>])
@@ -370,7 +370,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
   </article>
   <article class="recipe" id="noir" data-uses="grayscale curve contrast">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/seoul-night.jpg" alt="Seoul alley at night with neon and lanterns reflected on wet pavement" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/noir.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -382,7 +382,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
       <h3><a href="#noir">Noir</a></h3>
       <p class="recipe__desc">Crushed blacks and bright highlights for a film-noir street. The curve&#x27;s low second point drives most of the frame into shadow.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="grayscale" title="Show every example that uses grayscale()">grayscale<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/city-night.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/seoul-night.jpg&quot;</span>)
 (image.<span class="tok-call">grayscale</span>()
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.04</span>, <span class="tok-number">0.3</span>, <span class="tok-number">0.75</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">contrast</span>(<span class="tok-number">1.2</span>))</code></pre></div>
@@ -390,7 +390,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
   </article>
   <article class="recipe" id="cyanotype" data-uses="grayscale curve">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/bamboo-forest.jpg" alt="Misty bamboo forest with sun rays" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/cyanotype.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -402,7 +402,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
       <h3><a href="#cyanotype">Cyanotype</a></h3>
       <p class="recipe__desc">The 19th-century blueprint process, recreated with a gradient map from deep Prussian blue to pale cyan.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="grayscale" title="Show every example that uses grayscale()">grayscale<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/forest.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/bamboo-forest.jpg&quot;</span>)
 (image.<span class="tok-call">grayscale</span>()
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.1</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;r&quot;</span>, [<span class="tok-number">0.02</span>, <span class="tok-number">0.85</span>])
@@ -412,7 +412,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
   </article>
   <article class="recipe" id="high-key" data-uses="grayscale lightness contrast">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/snowy-cabin.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/snowy-hanok.jpg" alt="Hanok house with a snow-covered tiled roof" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/high-key.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -424,7 +424,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
       <h3><a href="#high-key">High-Key Monochrome</a></h3>
       <p class="recipe__desc">Bright, airy black and white: lighten toward white, then add contrast so the darkest details still read.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="grayscale" title="Show every example that uses grayscale()">grayscale<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="lightness" title="Show every example that uses lightness()">lightness<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/snowy-cabin.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/snowy-hanok.jpg&quot;</span>)
 (image.<span class="tok-call">grayscale</span>()
       .<span class="tok-call">lightness</span>(<span class="tok-number">0.3</span>)
       .<span class="tok-call">contrast</span>(<span class="tok-number">1.25</span>))</code></pre></div>
@@ -436,7 +436,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
     <p class="section__intro">Gradients, vignettes, double exposures and false color. Most of them use NumPy arrays as blend layers.</p>
   <article class="recipe recipe--first" id="duotone" data-uses="grayscale contrast curve">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/palace-eaves.jpg" alt="Painted palace eaves against a deep blue sky" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/duotone.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -448,7 +448,7 @@ vignette = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<
       <h3><a href="#duotone">Duotone Poster</a></h3>
       <p class="recipe__desc">Map shadows to one color and highlights to another. A two-point curve per channel acts as a gradient map.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="grayscale" title="Show every example that uses grayscale()">grayscale<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/architecture.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/palace-eaves.jpg&quot;</span>)
 shadow, highlight = (<span class="tok-number">0.12</span>, <span class="tok-number">0.08</span>, <span class="tok-number">0.4</span>), (<span class="tok-number">1.0</span>, <span class="tok-number">0.45</span>, <span class="tok-number">0.42</span>)  <span class="tok-comment"># indigo to coral</span>
 
 image.<span class="tok-call">grayscale</span>().<span class="tok-call">contrast</span>(<span class="tok-number">1.2</span>)
@@ -458,7 +458,7 @@ image.<span class="tok-call">grayscale</span>().<span class="tok-call">contrast<
   </article>
   <article class="recipe" id="double-exposure" data-uses="screen grayscale curve multiply">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/silhouette.jpg" alt="Profile silhouette of a woman against a white sky" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/hanbok-silhouette.jpg" alt="Profile silhouette of a woman in hanbok against a white sky" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/double-exposure.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -468,12 +468,12 @@ image.<span class="tok-call">grayscale</span>().<span class="tok-call">contrast<
 </div></div>
     <div class="recipe__body">
       <h3><a href="#double-exposure">Double Exposure</a></h3>
-      <p class="recipe__desc">Blend modes accept another photo&#x27;s pixels. Screen keeps the white sky white and fills the dark silhouette with the forest; a pale green Multiply tints the result.</p>
+      <p class="recipe__desc">Blend modes accept another photo&#x27;s pixels. Screen keeps the white sky white and fills the dark silhouette with the bamboo; a pale green Multiply tints the result.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="screen" title="Show every example that uses screen()">screen<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="grayscale" title="Show every example that uses grayscale()">grayscale<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="curve" title="Show every example that uses curve()">curve<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="multiply" title="Show every example that uses multiply()">multiply<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/silhouette.jpg&quot;</span>)
-forest = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/forest.jpg&quot;</span>).<span class="tok-call">get_image_as_array</span>()
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/hanbok-silhouette.jpg&quot;</span>)
+bamboo = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/bamboo-forest.jpg&quot;</span>).<span class="tok-call">get_image_as_array</span>()
 
-(image.<span class="tok-call">screen</span>(forest)
+(image.<span class="tok-call">screen</span>(bamboo)
       .<span class="tok-call">grayscale</span>()
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.12</span>, <span class="tok-number">0.5</span>, <span class="tok-number">0.88</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">multiply</span>(<span class="tok-string">&quot;#cfe3dc&quot;</span>))</code></pre></div>
@@ -481,7 +481,7 @@ forest = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_fi
   </article>
   <article class="recipe" id="graduated-filter" data-uses="multiply numpy">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/palace-pond.jpg" alt="Gyeonghoeru pavilion reflected in its pond at sunrise" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/graduated-filter.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -491,9 +491,9 @@ forest = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_fi
 </div></div>
     <div class="recipe__body">
       <h3><a href="#graduated-filter">Graduated Sky Filter</a></h3>
-      <p class="recipe__desc">A vertical gradient from warm tint to white, blended with Multiply, deepens the sky while leaving the lake untouched, like a graduated filter on a lens.</p>
+      <p class="recipe__desc">A vertical gradient from warm tint to white, blended with Multiply, deepens the sky while leaving the pond untouched, like a graduated filter on a lens.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="multiply" title="Show every example that uses multiply()">multiply<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="numpy" title="Show every example that uses NumPy">NumPy</button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/mountain-lake.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/palace-pond.jpg&quot;</span>)
 h, w, _ = image.<span class="tok-call">get_image_as_array</span>().shape
 t = <span class="tok-name">np</span>.<span class="tok-call">clip</span>(<span class="tok-name">np</span>.<span class="tok-call">linspace</span>(<span class="tok-number">0</span>, <span class="tok-number">2.2</span>, h), <span class="tok-number">0</span>, <span class="tok-number">1</span>)[:, <span class="tok-name">np</span>.newaxis, <span class="tok-name">np</span>.newaxis]
 gradient = (<span class="tok-number">1</span> - t) * <span class="tok-name">np</span>.<span class="tok-call">array</span>([<span class="tok-number">0.95</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.4</span>]) + t  <span class="tok-comment"># tint at the top fading to white</span>
@@ -503,7 +503,7 @@ image.<span class="tok-call">multiply</span>(gradient)</code></pre></div>
   </article>
   <article class="recipe" id="channel-swap" data-uses="contrast">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/gamcheon-village.jpg" alt="Pastel houses on a hillside in Gamcheon Culture Village, Busan" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/channel-swap.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -513,9 +513,9 @@ image.<span class="tok-call">multiply</span>(gradient)</code></pre></div>
 </div></div>
     <div class="recipe__body">
       <h3><a href="#channel-swap">Channel Swap</a></h3>
-      <p class="recipe__desc">LayerImage works on plain NumPy arrays, so anything NumPy can do is fair game. Swapping the red and green channels turns the turquoise car violet and the pink house lime.</p>
+      <p class="recipe__desc">LayerImage works on plain NumPy arrays, so anything NumPy can do is fair game. Swapping the red and green channels turns the turquoise houses violet and the pink ones lime.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/gamcheon-village.jpg&quot;</span>)
 pixels = image.<span class="tok-call">get_image_as_array</span>()
 image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_array</span>(pixels[..., [<span class="tok-number">1</span>, <span class="tok-number">0</span>, <span class="tok-number">2</span>]].<span class="tok-call">copy</span>())  <span class="tok-comment"># swap R and G</span>
 
@@ -524,7 +524,7 @@ image.<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>
   </article>
   <article class="recipe" id="colorize" data-uses="hue contrast">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/lotus-lanterns.jpg" alt="Rows of colorful lotus lanterns over a temple courtyard" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/colorize.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -534,15 +534,15 @@ image.<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>
 </div></div>
     <div class="recipe__body">
       <h3><a href="#colorize">Colorize</a></h3>
-      <p class="recipe__desc">hue() sets every pixel to a single hue while keeping saturation and value, so the whole stall becomes shades of magenta.</p>
+      <p class="recipe__desc">hue() sets every pixel to a single hue while keeping saturation and value, so every lantern becomes a shade of magenta.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="hue" title="Show every example that uses hue()">hue<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="contrast" title="Show every example that uses contrast()">contrast<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/flower-market.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/lotus-lanterns.jpg&quot;</span>)
 image.<span class="tok-call">hue</span>(<span class="tok-number">0.88</span>).<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>)</code></pre></div>
     </div>
   </article>
   <article class="recipe" id="pastel-dream" data-uses="lightness saturation screen">
     <div class="recipe__media"><div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses" width="960" height="640" loading="lazy" decoding="async">
+  <img class="compare__before" src="examples/originals/gamcheon-village.jpg" alt="Pastel houses on a hillside in Gamcheon Culture Village, Busan" width="960" height="640" loading="lazy" decoding="async">
   <div class="compare__after"><img src="examples/pastel-dream.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <span class="compare__tag compare__tag--before">Before</span>
@@ -554,7 +554,7 @@ image.<span class="tok-call">hue</span>(<span class="tok-number">0.88</span>).<s
       <h3><a href="#pastel-dream">Pastel Dream</a></h3>
       <p class="recipe__desc">Soft and airy: lighten toward white, mute the colors and Screen a pale pink over everything.</p>
       <div class="uses"><span class="uses__label">Uses</span><button type="button" class="uses__btn" data-filter-key="lightness" title="Show every example that uses lightness()">lightness<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="saturation" title="Show every example that uses saturation()">saturation<span class="paren">()</span></button><button type="button" class="uses__btn" data-filter-key="screen" title="Show every example that uses screen()">screen<span class="paren">()</span></button></div>
-      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/gamcheon-village.jpg&quot;</span>)
 (image.<span class="tok-call">lightness</span>(<span class="tok-number">0.18</span>)
       .<span class="tok-call">saturation</span>(-<span class="tok-number">0.2</span>)
       .<span class="tok-call">screen</span>(<span class="tok-string">&quot;#ffc4d6&quot;</span>, opacity=<span class="tok-number">0.35</span>))</code></pre></div>
@@ -587,43 +587,43 @@ preset = <span class="tok-builtin">json</span>.<span class="tok-call">loads</spa
   <div class="batch">
     <figure>
       <div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/batch/mountain-lake.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/palace-pond.jpg" alt="Gyeonghoeru pavilion reflected in its pond at sunrise" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/batch/palace-pond.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <input class="compare__range" type="range" min="0" max="100" step="5" value="50"
-         aria-label="Compare the warm matte preset on mountain-lake with the original photo">
+         aria-label="Compare the warm matte preset on palace-pond with the original photo">
 </div>
-      <figcaption>mountain-lake.jpg</figcaption>
+      <figcaption>palace-pond.jpg</figcaption>
     </figure>
     <figure>
       <div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/batch/breakfast.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/bibimbap.jpg" alt="Overhead view of bibimbap in a stone bowl with banchan side dishes" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/batch/bibimbap.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <input class="compare__range" type="range" min="0" max="100" step="5" value="50"
-         aria-label="Compare the warm matte preset on breakfast with the original photo">
+         aria-label="Compare the warm matte preset on bibimbap with the original photo">
 </div>
-      <figcaption>breakfast.jpg</figcaption>
+      <figcaption>bibimbap.jpg</figcaption>
     </figure>
     <figure>
       <div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/harbor.jpg" alt="Fishing harbor on a hazy, overcast day" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/batch/harbor.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/fishing-harbor.jpg" alt="Fishing harbor on Korea&#x27;s east coast on a hazy day" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/batch/fishing-harbor.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <input class="compare__range" type="range" min="0" max="100" step="5" value="50"
-         aria-label="Compare the warm matte preset on harbor with the original photo">
+         aria-label="Compare the warm matte preset on fishing-harbor with the original photo">
 </div>
-      <figcaption>harbor.jpg</figcaption>
+      <figcaption>fishing-harbor.jpg</figcaption>
     </figure>
     <figure>
       <div class="compare" style="--pos: 50%">
-  <img class="compare__before" src="examples/originals/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter" width="960" height="640" loading="lazy" decoding="async">
-  <div class="compare__after"><img src="examples/batch/cafe.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
+  <img class="compare__before" src="examples/originals/hanok-tea.jpg" alt="Celadon tea set on a low table in a hanok room" width="960" height="640" loading="lazy" decoding="async">
+  <div class="compare__after"><img src="examples/batch/hanok-tea.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></div>
   <span class="compare__handle" aria-hidden="true"></span>
   <input class="compare__range" type="range" min="0" max="100" step="5" value="50"
-         aria-label="Compare the warm matte preset on cafe with the original photo">
+         aria-label="Compare the warm matte preset on hanok-tea with the original photo">
 </div>
-      <figcaption>cafe.jpg</figcaption>
+      <figcaption>hanok-tea.jpg</figcaption>
     </figure>
   </div>
 </section>
@@ -632,19 +632,19 @@ preset = <span class="tok-builtin">json</span>.<span class="tok-call">loads</spa
   <h2>Sample Photos</h2>
     <p class="section__intro">Download the originals (1536 x 1024) to run the snippets yourself. They were generated for these docs with OpenAI's <code>gpt-image-2.5</code> model; the prompts are in <code>scripts/generate_photos.py</code>.</p>
   <div class="photos">
-    <a class="photo-link" href="photos/mountain-lake.jpg" download><img src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water" width="960" height="640" loading="lazy" decoding="async"><span>mountain-lake.jpg</span></a>
-    <a class="photo-link" href="photos/portrait.jpg" download><img src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window" width="960" height="640" loading="lazy" decoding="async"><span>portrait.jpg</span></a>
-    <a class="photo-link" href="photos/city-night.jpg" download><img src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections" width="960" height="640" loading="lazy" decoding="async"><span>city-night.jpg</span></a>
-    <a class="photo-link" href="photos/breakfast.jpg" download><img src="examples/originals/breakfast.jpg" alt="Overhead view of a breakfast table with avocado toast and berries" width="960" height="640" loading="lazy" decoding="async"><span>breakfast.jpg</span></a>
-    <a class="photo-link" href="photos/flower-market.jpg" download><img src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies" width="960" height="640" loading="lazy" decoding="async"><span>flower-market.jpg</span></a>
-    <a class="photo-link" href="photos/architecture.jpg" download><img src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky" width="960" height="640" loading="lazy" decoding="async"><span>architecture.jpg</span></a>
-    <a class="photo-link" href="photos/beach.jpg" download><img src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower" width="960" height="640" loading="lazy" decoding="async"><span>beach.jpg</span></a>
-    <a class="photo-link" href="photos/forest.jpg" download><img src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns" width="960" height="640" loading="lazy" decoding="async"><span>forest.jpg</span></a>
-    <a class="photo-link" href="photos/cafe.jpg" download><img src="examples/originals/cafe.jpg" alt="Cozy cafe interior with a barista behind the counter" width="960" height="640" loading="lazy" decoding="async"><span>cafe.jpg</span></a>
-    <a class="photo-link" href="photos/vintage-car.jpg" download><img src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses" width="960" height="640" loading="lazy" decoding="async"><span>vintage-car.jpg</span></a>
-    <a class="photo-link" href="photos/harbor.jpg" download><img src="examples/originals/harbor.jpg" alt="Fishing harbor on a hazy, overcast day" width="960" height="640" loading="lazy" decoding="async"><span>harbor.jpg</span></a>
-    <a class="photo-link" href="photos/silhouette.jpg" download><img src="examples/originals/silhouette.jpg" alt="Profile silhouette of a woman against a white sky" width="960" height="640" loading="lazy" decoding="async"><span>silhouette.jpg</span></a>
-    <a class="photo-link" href="photos/snowy-cabin.jpg" download><img src="examples/originals/snowy-cabin.jpg" alt="Wooden cabin in a snowy landscape with smoke from the chimney" width="960" height="640" loading="lazy" decoding="async"><span>snowy-cabin.jpg</span></a>
+    <a class="photo-link" href="photos/palace-pond.jpg" download><img src="examples/originals/palace-pond.jpg" alt="Gyeonghoeru pavilion reflected in its pond at sunrise" width="960" height="640" loading="lazy" decoding="async"><span>palace-pond.jpg</span></a>
+    <a class="photo-link" href="photos/hanbok-portrait.jpg" download><img src="examples/originals/hanbok-portrait.jpg" alt="Older man in a white hanbok and black gat hat by a paper window" width="960" height="640" loading="lazy" decoding="async"><span>hanbok-portrait.jpg</span></a>
+    <a class="photo-link" href="photos/seoul-night.jpg" download><img src="examples/originals/seoul-night.jpg" alt="Seoul alley at night with neon and lanterns reflected on wet pavement" width="960" height="640" loading="lazy" decoding="async"><span>seoul-night.jpg</span></a>
+    <a class="photo-link" href="photos/bibimbap.jpg" download><img src="examples/originals/bibimbap.jpg" alt="Overhead view of bibimbap in a stone bowl with banchan side dishes" width="960" height="640" loading="lazy" decoding="async"><span>bibimbap.jpg</span></a>
+    <a class="photo-link" href="photos/lotus-lanterns.jpg" download><img src="examples/originals/lotus-lanterns.jpg" alt="Rows of colorful lotus lanterns over a temple courtyard" width="960" height="640" loading="lazy" decoding="async"><span>lotus-lanterns.jpg</span></a>
+    <a class="photo-link" href="photos/palace-eaves.jpg" download><img src="examples/originals/palace-eaves.jpg" alt="Painted palace eaves against a deep blue sky" width="960" height="640" loading="lazy" decoding="async"><span>palace-eaves.jpg</span></a>
+    <a class="photo-link" href="photos/jeju-coast.jpg" download><img src="examples/originals/jeju-coast.jpg" alt="Jeju beach with black volcanic rocks in late afternoon light" width="960" height="640" loading="lazy" decoding="async"><span>jeju-coast.jpg</span></a>
+    <a class="photo-link" href="photos/bamboo-forest.jpg" download><img src="examples/originals/bamboo-forest.jpg" alt="Misty bamboo forest with sun rays" width="960" height="640" loading="lazy" decoding="async"><span>bamboo-forest.jpg</span></a>
+    <a class="photo-link" href="photos/hanok-tea.jpg" download><img src="examples/originals/hanok-tea.jpg" alt="Celadon tea set on a low table in a hanok room" width="960" height="640" loading="lazy" decoding="async"><span>hanok-tea.jpg</span></a>
+    <a class="photo-link" href="photos/gamcheon-village.jpg" download><img src="examples/originals/gamcheon-village.jpg" alt="Pastel houses on a hillside in Gamcheon Culture Village, Busan" width="960" height="640" loading="lazy" decoding="async"><span>gamcheon-village.jpg</span></a>
+    <a class="photo-link" href="photos/fishing-harbor.jpg" download><img src="examples/originals/fishing-harbor.jpg" alt="Fishing harbor on Korea&#x27;s east coast on a hazy day" width="960" height="640" loading="lazy" decoding="async"><span>fishing-harbor.jpg</span></a>
+    <a class="photo-link" href="photos/hanbok-silhouette.jpg" download><img src="examples/originals/hanbok-silhouette.jpg" alt="Profile silhouette of a woman in hanbok against a white sky" width="960" height="640" loading="lazy" decoding="async"><span>hanbok-silhouette.jpg</span></a>
+    <a class="photo-link" href="photos/snowy-hanok.jpg" download><img src="examples/originals/snowy-hanok.jpg" alt="Hanok house with a snow-covered tiled roof" width="960" height="640" loading="lazy" decoding="async"><span>snowy-hanok.jpg</span></a>
   </div>
 </section>
 <nav class="pager" aria-label="Pages"><div class="pager__prev"><a href="index.html"><span class="pager__label">Previous</span><span class="pager__title">Overview</span></a></div><div class="pager__next"><a href="blend-modes.html"><span class="pager__label">Next</span><span class="pager__title">Blend Modes</span></a></div></nav>
