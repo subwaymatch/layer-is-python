@@ -407,6 +407,16 @@ code {
 /* Overview                                                            */
 /* ------------------------------------------------------------------ */
 
+/* Walkthrough video on the overview page */
+.video { margin: 0; }
+.video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+  background: var(--code);
+}
+
 .looks {
   margin-top: 48px;
   display: flex;

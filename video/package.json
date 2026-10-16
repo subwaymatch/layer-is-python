@@ -6,9 +6,10 @@
   "scripts": {
     "assets": "python3 scripts/build_assets.py",
     "start": "remotion studio",
-    "render": "remotion render LayerisVideo out/layeris.mp4",
+    "render": "remotion render LayerisVideo ../docs/video/layeris.mp4",
     "still": "remotion still LayerisVideo out/still.png",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "poster": "remotion still LayerisVideo ../docs/video/poster.jpg --frame=120 --image-format=jpeg --jpeg-quality=85"
   },
   "dependencies": {
     "@fontsource/besley": "5.2.8",

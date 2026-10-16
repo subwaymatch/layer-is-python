@@ -22,7 +22,7 @@
 <div class="layout">
 <aside class="sidebar" id="sidebar">
   <a class="sidebar__logo" href="index.html" aria-label="layeris overview"><img src="assets/logo.svg" alt="" width="68" height="59"></a>
-  <nav class="sidenav" aria-label="Docs"><div class="sidenav__group"><a class="sidenav__page" href="index.html" aria-current="page">Overview</a><div class="sidenav__sections"><a href="#install">Install</a><a href="#quick-start">Quick start</a><a href="#load-and-save">Load and save</a><a href="#performance">Performance</a><a href="#contents">In these docs</a></div></div><div class="sidenav__group"><a class="sidenav__page" href="examples.html">Examples</a></div><div class="sidenav__group"><a class="sidenav__page" href="blend-modes.html">Blend modes</a></div><div class="sidenav__group"><a class="sidenav__page" href="operations.html">Operations</a></div><div class="sidenav__group"><a class="sidenav__page" href="api.html">API reference</a></div></nav>
+  <nav class="sidenav" aria-label="Docs"><div class="sidenav__group"><a class="sidenav__page" href="index.html" aria-current="page">Overview</a><div class="sidenav__sections"><a href="#video">Video</a><a href="#install">Install</a><a href="#quick-start">Quick start</a><a href="#load-and-save">Load and save</a><a href="#performance">Performance</a><a href="#contents">In these docs</a></div></div><div class="sidenav__group"><a class="sidenav__page" href="examples.html">Examples</a></div><div class="sidenav__group"><a class="sidenav__page" href="blend-modes.html">Blend modes</a></div><div class="sidenav__group"><a class="sidenav__page" href="operations.html">Operations</a></div><div class="sidenav__group"><a class="sidenav__page" href="api.html">API reference</a></div></nav>
   <div class="sidebar__foot">
     <a class="gh-link" href="https://github.com/subwaymatch/layer-is-python"><svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg><span>GitHub</span></a>
     <div class="sidebar__meta"><button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme"><svg class="icon-moon" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M16.2 12.4A6.6 6.6 0 0 1 7.6 3.8a6.6 6.6 0 1 0 8.6 8.6Z"/></svg><svg class="icon-sun" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.3"/><path d="M10 2.6v1.7M10 15.7v1.7M2.6 10h1.7M15.7 10h1.7M4.8 4.8L6 6M14 14l1.2 1.2M4.8 15.2L6 14M14 6l1.2-1.2"/></svg></button><span class="version">v0.4.0</span></div>
@@ -56,6 +56,19 @@ image.<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>
   </div>
   <div class="looks__stage"><img data-look="original" hidden src="examples/originals/gamcheon-village.jpg" alt="Pastel houses on a hillside in Gamcheon Culture Village, Busan (Original)" width="960" height="640"><img data-look="cross-process" src="examples/cross-process.jpg" alt="Pastel houses on a hillside in Gamcheon Culture Village, Busan (Cross-processed)" width="960" height="640"><img data-look="pastel-dream" hidden src="examples/pastel-dream.jpg" alt="Pastel houses on a hillside in Gamcheon Culture Village, Busan (Pastel dream)" width="960" height="640"><img data-look="channel-swap" hidden src="examples/channel-swap.jpg" alt="Pastel houses on a hillside in Gamcheon Culture Village, Busan (Channel swap)" width="960" height="640"></div>
 </div>
+
+<section class="section" id="video">
+  <h2>Video</h2>
+  <p class="section__intro">A short walkthrough: installing, chaining operations, the blend
+    modes, curves and a few looks. Every edit in it is rendered by layeris.</p>
+  <figure class="video">
+    <video controls playsinline preload="metadata" width="1920" height="1080"
+        poster="video/poster.jpg">
+      <source src="video/layeris.mp4" type="video/mp4">
+      <a href="video/layeris.mp4">Download the video</a> (MP4).
+    </video>
+  </figure>
+</section>
 
 <section class="section section--roomy" id="install">
   <h2>Install</h2>

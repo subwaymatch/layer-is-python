@@ -82,6 +82,11 @@ gradient = (1 - t) * np.array([1.0, 0.6, 0.3]) + t    # orange fading to white
 
 image.multiply(gradient)  # white is neutral for multiply"""
 
+# The walkthrough video on the overview page, rendered by the Remotion project
+# in video/ (`npm run render` and `npm run poster` write these files).
+VIDEO_SRC = "video/layeris.mp4"
+VIDEO_POSTER = "video/poster.jpg"
+
 # Thumbnails beside each page in the overview's "In these docs" list.
 CONTENTS_EXAMPLES = ["teal-and-orange", "double-exposure", "cyanotype"]
 CONTENTS_BLEND_MODES = [
@@ -406,6 +411,19 @@ pip install -e ."""
   <div class="looks__stage">{stage}</div>
 </div>
 
+<section class="section" id="video">
+  <h2>Video</h2>
+  <p class="section__intro">A short walkthrough: installing, chaining operations, the blend
+    modes, curves and a few looks. Every edit in it is rendered by layeris.</p>
+  <figure class="video">
+    <video controls playsinline preload="metadata" width="1920" height="1080"
+        poster="{VIDEO_POSTER}">
+      <source src="{VIDEO_SRC}" type="video/mp4">
+      <a href="{VIDEO_SRC}">Download the video</a> (MP4).
+    </video>
+  </figure>
+</section>
+
 <section class="section section--roomy" id="install">
   <h2>Install</h2>
   <div class="cols">
@@ -477,7 +495,7 @@ pip install -e ."""
         body=body,
         version=__version__,
         sections=[
-            ("install", "Install", 1), ("quick-start", "Quick start", 1),
+            ("video", "Video", 1), ("install", "Install", 1), ("quick-start", "Quick start", 1),
             ("load-and-save", "Load and save", 1), ("performance", "Performance", 1),
             ("contents", "In these docs", 1),
         ],
