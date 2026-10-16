@@ -66,8 +66,10 @@ total length is their sum (see `src/Video.tsx`).
 
 ## Sound
 
-The intro is quiet except for a short shimmer as the logo appears
-(`public/logo.mp3`, from `scripts/generate_sound_effect.py`).
+The intro has no music: a short shimmer plays as the logo appears
+(`public/logo.mp3`), and a soft keystroke (`public/key.mp3`) plays on each
+letter as the wordmark is typed. Both come from
+`scripts/generate_sound_effect.py`.
 
 The music, `public/music.mp3`, starts as the logo fades out at the end of the
 intro. It is a mellow lo-fi instrumental: Rhodes chords over a laid-back beat
@@ -82,7 +84,7 @@ sizes new takes to the 47.8 seconds exactly. Both scripts need
 
 ```sh
 python3 scripts/generate_music.py           # "lofi" style, writes public/music.mp3
-python3 scripts/generate_sound_effect.py    # writes public/logo.mp3
+python3 scripts/generate_sound_effect.py key    # or logo; writes public/<name>.mp3
 ```
 
 Every run gives a different take. If the video's length changes, update

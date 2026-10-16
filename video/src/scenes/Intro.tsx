@@ -1,9 +1,9 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Audio, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {Logo, LOGO_ASPECT} from '../components/Logo';
 import {LOGO_ASSEMBLY_FRAMES, assembleLogo} from '../components/logoMotion';
 import {Scene} from '../components/Scene';
-import {Wordmark} from '../components/Wordmark';
+import {FRAMES_PER_CHAR, WORD, Wordmark} from '../components/Wordmark';
 import {colors, easeInOut, fonts, progress, rise} from '../theme';
 
 export const INTRO_FRAMES = 140;
@@ -15,6 +15,20 @@ const LIFT_START = Math.ceil(LOGO_ASSEMBLY_FRAMES / SPEED);
 const LIFT_FRAMES = 18;
 const TYPE_START = LIFT_START + LIFT_FRAMES + 4;
 
+// One keystroke per letter, on the frame the letter appears. The levels vary
+// a little so the clicks don't sound like a loop.
+const KEY_VOLUMES = [0.5, 0.42, 0.48, 0.4, 0.5, 0.44, 0.46];
+
+const Keystrokes: React.FC = () => (
+	<>
+		{WORD.split('').map((_, i) => (
+			<Sequence key={i} from={TYPE_START + i * FRAMES_PER_CHAR} layout="none">
+				<Audio src={staticFile('key.mp3')} volume={KEY_VOLUMES[i % KEY_VOLUMES.length]} />
+			</Sequence>
+		))}
+	</>
+);
+
 export const Intro: React.FC = () => {
 	const frame = useCurrentFrame();
 	const lift = progress(frame, LIFT_START, LIFT_FRAMES, easeInOut);
@@ -24,6 +38,7 @@ export const Intro: React.FC = () => {
 
 	return (
 		<Scene>
+			<Keystrokes />
 			<AbsoluteFill>
 				<div
 					style={{

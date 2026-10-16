@@ -1,8 +1,8 @@
 import React from 'react';
 import {colors, fonts} from '../theme';
 
-const WORD = 'layeris';
-const FRAMES_PER_CHAR = 2;
+export const WORD = 'layeris';
+export const FRAMES_PER_CHAR = 2;
 
 /**
  * The lowercase DM Mono wordmark from the docs home page, typed one letter at
