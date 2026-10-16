@@ -6,12 +6,12 @@ import {Scene} from '../components/Scene';
 import {Wordmark} from '../components/Wordmark';
 import {colors, easeInOut, fonts, progress, rise} from '../theme';
 
-export const INTRO_FRAMES = 225;
+export const INTRO_FRAMES = 240;
 
 const LOGO_WIDTH = 440;
 // After assembling, the logo shrinks and moves up to sit above the wordmark.
 const LIFT_START = LOGO_ASSEMBLY_FRAMES + 2;
-const TYPE_START = LIFT_START + 14;
+const TYPE_START = LIFT_START + 30;
 
 export const Intro: React.FC = () => {
 	const frame = useCurrentFrame();
