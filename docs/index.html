@@ -6,166 +6,187 @@
 <title>Layer.is</title>
 <meta name="description" content="Photoshop-style blend modes, adjustments and curves for Python.">
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('layeris-docs-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&amp;family=Schibsted+Grotesk:wght@400;500;600&amp;family=Besley:wght@400;500;600&amp;display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
 <body>
-<header class="topbar">
-  <div class="wrap topbar__inner">
-    <a class="brand" href="index.html"><img class="brand__logo" src="assets/logo.svg" alt="" width="32" height="28"><span>Layer.is</span></a>
-    <nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="examples.html">Examples</a><a href="blend-modes.html">Blend modes</a><a href="operations.html">Operations</a></nav>
-    <a href="https://github.com/subwaymatch/layer-is-python" class="gh-link"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg><span>GitHub</span></a>
-  </div>
+<header class="mobilebar">
+  <a class="mobilebar__brand" href="index.html" aria-label="layeris 0.4.0, overview"><img src="assets/logo.svg" alt="" width="40" height="35"><span class="version">v0.4.0</span></a>
+  <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme"><svg class="icon-moon" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M16.2 12.4A6.6 6.6 0 0 1 7.6 3.8a6.6 6.6 0 1 0 8.6 8.6Z"/></svg><svg class="icon-sun" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.3"/><path d="M10 2.6v1.7M10 15.7v1.7M2.6 10h1.7M15.7 10h1.7M4.8 4.8L6 6M14 14l1.2 1.2M4.8 15.2L6 14M14 6l1.2-1.2"/></svg></button>
+  <button class="icon-button menu-toggle" type="button" data-menu-toggle aria-controls="sidebar" aria-expanded="false" aria-label="Open menu"><svg class="icon-menu" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14"/></svg><svg class="icon-close" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
 </header>
-<main>
-<div class="wrap">
-  <section class="hero">
-    <div class="hero__text">
-      <p class="eyebrow">Image processing for Python</p>
-      <h1>Photoshop-style blend modes and adjustments, in a few lines of Python.</h1>
-      <p class="lede">Layer.is gives you all the common blend modes, brightness, contrast,
-        hue, saturation and lightness controls, and per-channel curves, built on NumPy
-        with a chainable API.</p>
-      <div class="install"><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-shell">pip install layeris</code></pre></div></div>
-      <div class="cta">
-        <a class="button" href="examples.html">Browse 24 examples</a>
-        <a class="button button--ghost" href="blend-modes.html">Explore blend modes</a>
-      </div>
-    </div>
-    <div class="looks" data-looks>
-      <div class="looks__stage"><img data-look="original" class="looks__img" src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses (Original)" width="960" height="640"><img data-look="cross-process" hidden class="looks__img" src="examples/cross-process.jpg" alt="Turquoise 1960s car on a street of pastel houses (Cross-processed)" width="960" height="640"><img data-look="pastel-dream" hidden class="looks__img" src="examples/pastel-dream.jpg" alt="Turquoise 1960s car on a street of pastel houses (Pastel dream)" width="960" height="640"><img data-look="channel-swap" hidden class="looks__img" src="examples/channel-swap.jpg" alt="Turquoise 1960s car on a street of pastel houses (Channel swap)" width="960" height="640"></div>
-      <div class="looks__tabs" role="group" aria-label="Pick a look"><button type="button" class="looks__tab" data-look="original" aria-pressed="true">Original</button><button type="button" class="looks__tab" data-look="cross-process" aria-pressed="false">Cross-processed</button><button type="button" class="looks__tab" data-look="pastel-dream" aria-pressed="false">Pastel dream</button><button type="button" class="looks__tab" data-look="channel-swap" aria-pressed="false">Channel swap</button></div>
-      <div class="looks__panel" data-look="original"><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)</code></pre></div></div><div class="looks__panel" data-look="cross-process" hidden><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <a class="sidebar__logo" href="index.html" aria-label="layeris overview"><img src="assets/logo.svg" alt="" width="68" height="59"></a>
+  <nav class="sidenav" aria-label="Docs"><div class="sidenav__group"><a class="sidenav__page" href="index.html" aria-current="page">Overview</a><div class="sidenav__sections"><a href="#install">Install</a><a href="#quick-start">Quick start</a><a href="#load-and-save">Load and save</a><a href="#performance">Performance</a><a href="#contents">In these docs</a></div></div><div class="sidenav__group"><a class="sidenav__page" href="examples.html">Examples</a></div><div class="sidenav__group"><a class="sidenav__page" href="blend-modes.html">Blend modes</a></div><div class="sidenav__group"><a class="sidenav__page" href="operations.html">Operations</a></div><div class="sidenav__group"><a class="sidenav__page" href="api.html">API reference</a></div></nav>
+  <div class="sidebar__foot">
+    <a class="gh-link" href="https://github.com/subwaymatch/layer-is-python"><svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg><span>GitHub</span></a>
+    <div class="sidebar__meta"><button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme"><svg class="icon-moon" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M16.2 12.4A6.6 6.6 0 0 1 7.6 3.8a6.6 6.6 0 1 0 8.6 8.6Z"/></svg><svg class="icon-sun" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.3"/><path d="M10 2.6v1.7M10 15.7v1.7M2.6 10h1.7M15.7 10h1.7M4.8 4.8L6 6M14 14l1.2 1.2M4.8 15.2L6 14M14 6l1.2-1.2"/></svg></button><span class="version">v0.4.0</span></div>
+  </div>
+</aside>
+<main class="main">
+<div class="main__inner">
+<header class="intro intro--overview">
+  <h1 class="wordmark">layeris</h1>
+  <p class="intro__lede">A Python library for Photoshop-style blend modes, brightness,
+    contrast, hue, saturation and lightness adjustments, and curves on separate RGB
+    channels.</p>
+  <p class="intro__sub">It is built on NumPy and Pillow. Every operation returns the image,
+    so a whole edit reads as one chained pipeline.</p>
+</header>
+
+<div class="looks" data-looks>
+  <div class="looks__text">
+    <div class="looks__tabs" role="group" aria-label="Pick a look"><button type="button" class="looks__tab" data-look="original" aria-pressed="false">Original</button><button type="button" class="looks__tab" data-look="cross-process" aria-pressed="true">Cross-processed</button><button type="button" class="looks__tab" data-look="pastel-dream" aria-pressed="false">Pastel dream</button><button type="button" class="looks__tab" data-look="channel-swap" aria-pressed="false">Channel swap</button></div>
+    <div class="looks__panel" data-look="original" hidden><div class="code code--tall"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)</code></pre></div><p class="looks__note">The unedited sample photo, vintage-car.jpg.</p></div><div class="looks__panel" data-look="cross-process"><div class="code code--tall"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
 (image.<span class="tok-call">curve</span>(<span class="tok-string">&quot;r&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.15</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>])
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;g&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.2</span>, <span class="tok-number">0.55</span>, <span class="tok-number">0.85</span>, <span class="tok-number">1</span>])
-      .<span class="tok-call">curve</span>(<span class="tok-string">&quot;b&quot;</span>, [<span class="tok-number">0.22</span>, <span class="tok-number">0.35</span>, <span class="tok-number">0.48</span>, <span class="tok-number">0.6</span>, <span class="tok-number">0.72</span>]))</code></pre></div></div><div class="looks__panel" data-look="pastel-dream" hidden><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
+      .<span class="tok-call">curve</span>(<span class="tok-string">&quot;b&quot;</span>, [<span class="tok-number">0.22</span>, <span class="tok-number">0.35</span>, <span class="tok-number">0.48</span>, <span class="tok-number">0.6</span>, <span class="tok-number">0.72</span>]))</code></pre></div><p class="looks__note">From the examples: <a href="examples.html#cross-process">Cross-processed</a></p></div><div class="looks__panel" data-look="pastel-dream" hidden><div class="code code--tall"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
 (image.<span class="tok-call">lightness</span>(<span class="tok-number">0.18</span>)
       .<span class="tok-call">saturation</span>(-<span class="tok-number">0.2</span>)
-      .<span class="tok-call">screen</span>(<span class="tok-string">&quot;#ffc4d6&quot;</span>, opacity=<span class="tok-number">0.35</span>))</code></pre></div></div><div class="looks__panel" data-look="channel-swap" hidden><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
+      .<span class="tok-call">screen</span>(<span class="tok-string">&quot;#ffc4d6&quot;</span>, opacity=<span class="tok-number">0.35</span>))</code></pre></div><p class="looks__note">From the examples: <a href="examples.html#pastel-dream">Pastel dream</a></p></div><div class="looks__panel" data-look="channel-swap" hidden><div class="code code--tall"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photos/vintage-car.jpg&quot;</span>)
 pixels = image.<span class="tok-call">get_image_as_array</span>()
 image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_array</span>(pixels[..., [<span class="tok-number">1</span>, <span class="tok-number">0</span>, <span class="tok-number">2</span>]].<span class="tok-call">copy</span>())  <span class="tok-comment"># swap R and G</span>
 
-image.<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>)</code></pre></div></div>
-    </div>
-  </section>
+image.<span class="tok-call">contrast</span>(<span class="tok-number">1.1</span>)</code></pre></div><p class="looks__note">From the examples: <a href="examples.html#channel-swap">Channel swap</a></p></div>
+  </div>
+  <div class="looks__stage"><img data-look="original" hidden src="examples/originals/vintage-car.jpg" alt="Turquoise 1960s car on a street of pastel houses (Original)" width="960" height="640"><img data-look="cross-process" src="examples/cross-process.jpg" alt="Turquoise 1960s car on a street of pastel houses (Cross-processed)" width="960" height="640"><img data-look="pastel-dream" hidden src="examples/pastel-dream.jpg" alt="Turquoise 1960s car on a street of pastel houses (Pastel dream)" width="960" height="640"><img data-look="channel-swap" hidden src="examples/channel-swap.jpg" alt="Turquoise 1960s car on a street of pastel houses (Channel swap)" width="960" height="640"></div>
+</div>
 
-  <section class="section">
-    <h2>Featured looks</h2>
-    <p class="section__intro">Hover or focus a card to see the original photo. Every image is
-      rendered by layeris from the snippet on the <a href="examples.html">examples page</a>.</p>
-    <div class="features">
-      <a class="feature" href="examples.html#teal-and-orange">
-        <span class="feature__media">
-          <img src="examples/teal-and-orange.jpg" alt="Teal &amp; orange applied to the beach photo" width="960" height="640" loading="lazy" decoding="async">
-          <img class="feature__before" src="examples/originals/beach.jpg" alt="Sandy beach in late afternoon light with a lifeguard tower" width="960" height="640" loading="lazy" decoding="async">
-        </span>
-        <span class="feature__title">Teal &amp; orange</span>
-        <span class="feature__meta">Color grading</span>
-      </a>
-      <a class="feature" href="examples.html#double-exposure">
-        <span class="feature__media">
-          <img src="examples/double-exposure.jpg" alt="Double exposure applied to the silhouette photo" width="960" height="640" loading="lazy" decoding="async">
-          <img class="feature__before" src="examples/originals/silhouette.jpg" alt="Profile silhouette of a woman against a white sky" width="960" height="640" loading="lazy" decoding="async">
-        </span>
-        <span class="feature__title">Double exposure</span>
-        <span class="feature__meta">Creative effects</span>
-      </a>
-      <a class="feature" href="examples.html#neon-nights">
-        <span class="feature__media">
-          <img src="examples/neon-nights.jpg" alt="Neon nights applied to the city night photo" width="960" height="640" loading="lazy" decoding="async">
-          <img class="feature__before" src="examples/originals/city-night.jpg" alt="Rainy city street at night with neon reflections" width="960" height="640" loading="lazy" decoding="async">
-        </span>
-        <span class="feature__title">Neon nights</span>
-        <span class="feature__meta">Color grading</span>
-      </a>
-      <a class="feature" href="examples.html#cyanotype">
-        <span class="feature__media">
-          <img src="examples/cyanotype.jpg" alt="Cyanotype applied to the forest photo" width="960" height="640" loading="lazy" decoding="async">
-          <img class="feature__before" src="examples/originals/forest.jpg" alt="Misty pine forest with sun rays and ferns" width="960" height="640" loading="lazy" decoding="async">
-        </span>
-        <span class="feature__title">Cyanotype</span>
-        <span class="feature__meta">Black &amp; white</span>
-      </a>
-      <a class="feature" href="examples.html#graduated-filter">
-        <span class="feature__media">
-          <img src="examples/graduated-filter.jpg" alt="Graduated sky filter applied to the mountain lake photo" width="960" height="640" loading="lazy" decoding="async">
-          <img class="feature__before" src="examples/originals/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water" width="960" height="640" loading="lazy" decoding="async">
-        </span>
-        <span class="feature__title">Graduated sky filter</span>
-        <span class="feature__meta">Creative effects</span>
-      </a>
-      <a class="feature" href="examples.html#duotone">
-        <span class="feature__media">
-          <img src="examples/duotone.jpg" alt="Duotone poster applied to the architecture photo" width="960" height="640" loading="lazy" decoding="async">
-          <img class="feature__before" src="examples/originals/architecture.jpg" alt="White building with curved balconies against a blue sky" width="960" height="640" loading="lazy" decoding="async">
-        </span>
-        <span class="feature__title">Duotone poster</span>
-        <span class="feature__meta">Creative effects</span>
-      </a>
-      <a class="feature" href="examples.html#sepia">
-        <span class="feature__media">
-          <img src="examples/sepia.jpg" alt="Sepia print applied to the portrait photo" width="960" height="640" loading="lazy" decoding="async">
-          <img class="feature__before" src="examples/originals/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window" width="960" height="640" loading="lazy" decoding="async">
-        </span>
-        <span class="feature__title">Sepia print</span>
-        <span class="feature__meta">Film &amp; vintage</span>
-      </a>
-      <a class="feature" href="examples.html#lomo">
-        <span class="feature__media">
-          <img src="examples/lomo.jpg" alt="Lomo applied to the flower market photo" width="960" height="640" loading="lazy" decoding="async">
-          <img class="feature__before" src="examples/originals/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies" width="960" height="640" loading="lazy" decoding="async">
-        </span>
-        <span class="feature__title">Lomo</span>
-        <span class="feature__meta">Film &amp; vintage</span>
-      </a>
+<section class="section section--roomy" id="install">
+  <h2>Install</h2>
+  <div class="cols">
+    <div class="col" style="--flex: 1 1 300px">
+      <h3>From PyPI</h3>
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-shell">pip install layeris</code></pre></div>
+      <p class="col__note">Requires Python 3.10 or higher. The only dependencies are NumPy,
+        Pillow and Requests.</p>
     </div>
-  </section>
+    <div class="col" style="--flex: 1.3 1 360px">
+      <h3>From source</h3>
+      <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-shell">git clone https://github.com/subwaymatch/layer-is-python.git
+cd layer-is-python
+pip install -e .</code></pre></div>
+    </div>
+  </div>
+</section>
 
-  <section class="section split">
-    <div>
-      <h2>Quick start</h2>
+<section class="section section--roomy" id="quick-start">
+  <h2>Quick Start</h2>
+  <div class="cols">
+    <div class="col col--prose" style="--flex: 1 1 280px">
       <p>Load an image from a file, a URL or a NumPy array, chain operations, and save.
         Every operation mutates the image in place and returns it, so a whole look reads
-        as one pipeline. Use <code>clone()</code> to branch off a copy.</p>
-      <p>Requires Python 3.10+. The only dependencies are NumPy, Pillow and Requests.</p>
+        as one pipeline.</p>
+      <p class="muted">Use <code>clone()</code> to branch off an independent copy first.</p>
     </div>
-    <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python"><span class="tok-keyword">from</span> layeris <span class="tok-keyword">import</span> <span class="tok-name">LayerImage</span>
+    <div class="col" style="--flex: 1.5 1 400px"><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python"><span class="tok-keyword">from</span> layeris <span class="tok-keyword">import</span> <span class="tok-name">LayerImage</span>
 
 image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&quot;photo.jpg&quot;</span>)
 (image.<span class="tok-call">grayscale</span>()
       .<span class="tok-call">brightness</span>(<span class="tok-number">0.1</span>)
       .<span class="tok-call">multiply</span>(<span class="tok-string">&quot;#3fe28f&quot;</span>, opacity=<span class="tok-number">0.7</span>)
       .<span class="tok-call">curve</span>(<span class="tok-string">&quot;rgb&quot;</span>, [<span class="tok-number">0</span>, <span class="tok-number">0.1</span>, <span class="tok-number">0.4</span>, <span class="tok-number">0.65</span>, <span class="tok-number">0.9</span>, <span class="tok-number">1</span>])
-      .<span class="tok-call">save</span>(<span class="tok-string">&quot;result.jpg&quot;</span>))</code></pre></div>
-  </section>
+      .<span class="tok-call">save</span>(<span class="tok-string">&quot;result.jpg&quot;</span>))</code></pre></div></div>
+  </div>
 
-  <section class="section">
-    <h2>Documentation</h2>
-    <div class="cards">
-      <a class="card" href="examples.html"><strong>Examples</strong>
-        <span>24 complete looks (fixes, color grades, film, black &amp; white and
-        creative effects), each with a before/after slider and copy-paste code.</span></a>
-      <a class="card" href="blend-modes.html"><strong>Blend modes</strong>
-        <span>All 14 blend modes side by side on three photos, plus how opacity
-        and the blend color change the result.</span></a>
-      <a class="card" href="operations.html"><strong>Operations</strong>
-        <span>A before/after reference for every LayerImage method, from
-        <code>grayscale()</code> to <code>pin_light()</code>.</span></a>
+  <h3 class="subhead" id="load-and-save">Load and Save</h3>
+  <div class="cols cols--tight">
+    <div class="col" style="--flex: 1.4 1 420px"><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python"><span class="tok-keyword">from</span> layeris <span class="tok-keyword">import</span> <span class="tok-name">LayerImage</span>
+
+<span class="tok-comment"># From a local file</span>
+image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_file</span>(<span class="tok-string">&#x27;/path/to/image.jpg&#x27;</span>)
+
+<span class="tok-comment"># From a URL</span>
+image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_url</span>(<span class="tok-string">&#x27;https://example.com/photo.jpg&#x27;</span>)
+
+<span class="tok-comment"># From a NumPy array (float, values in [0, 1], shape HxWx3 or HxWx4)</span>
+<span class="tok-keyword">import</span> numpy <span class="tok-keyword">as</span> <span class="tok-name">np</span>
+data = <span class="tok-name">np</span>.random.<span class="tok-call">random</span>((<span class="tok-number">100</span>, <span class="tok-number">100</span>, <span class="tok-number">3</span>))
+image = <span class="tok-name">LayerImage</span>.<span class="tok-call">from_array</span>(data)</code></pre></div></div>
+    <div class="col" style="--flex: 1 1 300px"><div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python"><span class="tok-comment"># Default quality is 95 for JPEG</span>
+image.<span class="tok-call">save</span>(<span class="tok-string">&#x27;output.jpg&#x27;</span>)
+
+<span class="tok-comment"># Specify JPEG quality (0 to 100)</span>
+image.<span class="tok-call">save</span>(<span class="tok-string">&#x27;output.jpg&#x27;</span>, quality=<span class="tok-number">85</span>)
+
+<span class="tok-comment"># Save as PNG (lossless)</span>
+image.<span class="tok-call">save</span>(<span class="tok-string">&#x27;output.png&#x27;</span>)</code></pre></div></div>
+  </div>
+</section>
+
+<section class="section" id="performance">
+  <h2>Performance</h2>
+  <div class="cols cols--wide">
+    <div class="col col--prose" style="--flex: 1.3 1 360px">
+      <p>Photos loaded with <code>from_file()</code> or <code>from_url()</code> stay as 8-bit
+        images while you apply per-channel operations: <code>brightness</code>,
+        <code>contrast</code>, <code>lightness</code>, <code>curve</code> and every blend mode
+        with a hex color. Each of these only depends on a pixel's own channel value, and an
+        8-bit channel has just 256 possible values, so instead of processing every pixel,
+        layeris updates a 256-entry lookup table. Pillow applies the table in one pass when
+        you call <code>resize()</code> or <code>save()</code>.</p>
+      <p class="muted"><code>get_image_as_array()</code>, <code>grayscale()</code>,
+        <code>hue()</code>, <code>saturation()</code> and blending with a per-pixel NumPy
+        array need float pixels, so they convert the image to float64 once and later
+        operations run in float64. Either way, the results are identical to processing every
+        pixel in float64.</p>
     </div>
-  </section>
+    <figure class="col perf" style="--flex: 1 1 300px">
+      <figcaption>A 12-megapixel JPEG: load it, apply a curve, brightness, contrast and an
+        overlay, then save.</figcaption>
+      <div class="perf__metric"><span class="perf__name">Time</span><div class="perf__bar"><div class="perf__row"><span>8-bit lookup table</span><span class="perf__value">about 0.2 s</span></div><div class="perf__track"><div class="perf__fill" style="width: 4.9%"></div></div></div><div class="perf__bar"><div class="perf__row"><span>float64 on every pixel</span><span class="perf__value">4.1 s</span></div><div class="perf__track"><div class="perf__fill perf__fill--slow" style="width: 100.0%"></div></div></div></div>
+      <div class="perf__metric"><span class="perf__name">Peak memory</span><div class="perf__bar"><div class="perf__row"><span>8-bit lookup table</span><span class="perf__value">under 200 MB</span></div><div class="perf__track"><div class="perf__fill" style="width: 16.7%"></div></div></div><div class="perf__bar"><div class="perf__row"><span>float64 on every pixel</span><span class="perf__value">about 1.2 GB</span></div><div class="perf__track"><div class="perf__fill perf__fill--slow" style="width: 100.0%"></div></div></div></div>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="contents">
+  <h2>In These Docs</h2>
+  <div class="doc-rows">
+    <div class="doc-row">
+      <div class="doc-row__text">
+        <h3><a href="examples.html">Examples</a></h3>
+        <p>24 complete looks (fixes, color grades, film, black &amp; white and creative effects), each with a before/after slider and copy-paste code.</p>
+      </div>
+      <a class="doc-row__media" href="examples.html" aria-label="Examples"><img src="examples/teal-and-orange.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"><img src="examples/double-exposure.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"><img src="examples/cyanotype.jpg" alt="" width="960" height="640" loading="lazy" decoding="async"></a>
+    </div>
+    <div class="doc-row">
+      <div class="doc-row__text">
+        <h3><a href="blend-modes.html">Blend Modes</a></h3>
+        <p>All 14 blend modes side by side on three photos, plus how opacity and the blend color change the result.</p>
+      </div>
+      <a class="doc-row__media" href="blend-modes.html" aria-label="Blend modes"><img src="blend-modes/portrait-soft_light.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-color_dodge.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-overlay.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"></a>
+    </div>
+    <div class="doc-row">
+      <div class="doc-row__text">
+        <h3><a href="operations.html">Operations</a></h3>
+        <p>A before/after reference for every LayerImage method, from <code>grayscale()</code> to <code>pin_light()</code>.</p>
+      </div>
+      <a class="doc-row__media doc-row__media--single" href="operations.html" aria-label="Operations"><img src="previews/chaining.jpg" alt="" width="964" height="320" loading="lazy" decoding="async"></a>
+    </div>
+    <div class="doc-row">
+      <div class="doc-row__text">
+        <h3><a href="api.html">API Reference</a></h3>
+        <p>Signatures, parameters and return values for every method, plus the keys each operation takes in a JSON preset.</p>
+      </div>
+      <nav class="method-index doc-row__methods" aria-label="API reference"><a href="api.html#from_file">from_file<span class="paren">()</span></a><a href="api.html#from_url">from_url<span class="paren">()</span></a><a href="api.html#from_array">from_array<span class="paren">()</span></a><a href="api.html#save">save<span class="paren">()</span></a><a href="api.html#get_image_as_array">get_image_as_array<span class="paren">()</span></a><a href="api.html#clone">clone<span class="paren">()</span></a><a href="api.html#grayscale">grayscale<span class="paren">()</span></a><a href="api.html#brightness">brightness<span class="paren">()</span></a><a href="api.html#contrast">contrast<span class="paren">()</span></a><a href="api.html#hue">hue<span class="paren">()</span></a><a href="api.html#saturation">saturation<span class="paren">()</span></a><a href="api.html#lightness">lightness<span class="paren">()</span></a><a href="api.html#curve">curve<span class="paren">()</span></a><a href="api.html#resize">resize<span class="paren">()</span></a><a href="api.html#blend_mode">blend_mode<span class="paren">()</span></a><a href="api.html#apply_from_dict">apply_from_dict<span class="paren">()</span></a><a href="api.html#apply_from_json">apply_from_json<span class="paren">()</span></a></nav>
+    </div>
+  </div>
+</section>
+<nav class="pager" aria-label="Pages"><div class="pager__prev"></div><div class="pager__next"><a href="examples.html"><span class="pager__label">Next</span><span class="pager__title">Examples</span></a></div></nav>
+<footer class="footer">
+  <div class="footer__meta"><span>layeris 0.4.0</span><span>MIT License</span><a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></div>
+  <p>Every result image on this site is rendered by layeris itself with
+    <code>scripts/build_docs.py</code>. Sample photos were generated with OpenAI's
+    <code>gpt-image-2.5</code> model (<code>scripts/generate_photos.py</code>).</p>
+</footer>
 </div>
 </main>
-<footer class="footer">
-  <div class="wrap footer__inner">
-    <p>layeris v0.4.0 | MIT License |
-       <a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></p>
-    <p>Every result image on this site is rendered by layeris itself with
-       <code>scripts/build_docs.py</code>. Sample photos were generated with
-       OpenAI's <code>gpt-image-2.5</code> model (<code>scripts/generate_photos.py</code>).</p>
-  </div>
-</footer>
+</div>
 </body>
 </html>

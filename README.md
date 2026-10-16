@@ -489,14 +489,15 @@ All results are clamped to `[0, 1]`.
 
 ## Docs site (GitHub Pages)
 
-The [`docs/`](docs/) folder is a static site with four pages:
+The [`docs/`](docs/) folder is a static site with five pages:
 
 | Page | Contents |
 |------|----------|
-| `index.html` | Landing page with a live "look switcher" and featured examples |
-| `examples.html` | 24 photo recipes (fixes, color grading, film, B&W, creative effects) with before/after sliders and copy-paste code |
+| `index.html` | Overview: a live "look switcher", installation, quick start and performance notes |
+| `examples.html` | 24 photo recipes (fixes, color grading, film, B&W, creative effects) with before/after sliders, copy-paste code and a filter by method |
 | `blend-modes.html` | All 14 blend modes on three photos, plus opacity and blend-color comparisons |
 | `operations.html` | The operation gallery above |
+| `api.html` | API reference: signatures, parameters and return values for every method, and the JSON operation types |
 
 Rebuild every page and image with:
 
@@ -506,7 +507,9 @@ python scripts/build_docs.py
 
 Recipes live in [`scripts/docs_examples.py`](scripts/docs_examples.py). Each
 snippet is executed verbatim to render its image, so the code on the page is
-always exactly what produced the result. The sample photos in
+always exactly what produced the result. The API reference lives in
+[`scripts/docs_api.py`](scripts/docs_api.py); the build fails if a public
+`LayerImage` method is missing from it. The sample photos in
 [`docs/photos/`](docs/photos/) were generated with OpenAI's
 `gpt-image-2.5-flare` model at low quality; the prompts are kept in
 [`scripts/generate_photos.py`](scripts/generate_photos.py), which can

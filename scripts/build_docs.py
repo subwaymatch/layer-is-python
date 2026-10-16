@@ -6,10 +6,11 @@ sample photos in ``docs/photos/``. Recipe snippets are executed verbatim (see
 ``scripts/docs_examples.py``), so the code on each page is exactly the code
 that produced its image. The script writes:
 
-  * ``index.html``: landing page
+  * ``index.html``: overview (install, quick start, performance)
   * ``examples.html``: photo recipes with before/after sliders
   * ``blend-modes.html``: every blend mode on several photos
   * ``operations.html``: every operation (via ``generate_previews.py``)
+  * ``api.html``: API reference (content in ``scripts/docs_api.py``)
 
 plus the images they reference. Styles and scripts live in ``docs/assets/``.
 To publish, enable Settings > Pages > Deploy from a branch with the
@@ -30,7 +31,9 @@ import re
 import sys
 from collections.abc import Iterator
 from contextlib import contextmanager
+from dataclasses import dataclass
 from pathlib import Path
+from types import FunctionType
 
 import numpy as np
 from PIL import Image
@@ -40,7 +43,8 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from layeris import LayerImage, __version__  # noqa: E402
 
-import docs_layout as layout  # noqa: E402  (sibling modules in scripts/)
+import docs_api as api  # noqa: E402  (sibling modules in scripts/)
+import docs_layout as layout  # noqa: E402
 import generate_previews as previews  # noqa: E402
 from docs_examples import (  # noqa: E402
     BATCH_PHOTOS,
@@ -67,7 +71,8 @@ DISPLAY_WIDTH = 960  # recipe before/after images
 THUMB_WIDTH = 420  # blend-mode explorer thumbnails
 JPEG_QUALITY = 80
 
-# Featured on the landing page: a look switcher, then a grid of cards.
+# The look switcher at the top of the overview page; the first look shown is
+# HERO_LOOKS[0], after the unedited "Original".
 HERO_PHOTO = "vintage-car"
 HERO_LOOKS = ["cross-process", "pastel-dream", "channel-swap"]
 ARRAY_SNIPPET = """\
@@ -76,9 +81,20 @@ t = np.linspace(0, 1, h)[:, np.newaxis, np.newaxis]  # 0 at the top, 1 at the bo
 gradient = (1 - t) * np.array([1.0, 0.6, 0.3]) + t    # orange fading to white
 
 image.multiply(gradient)  # white is neutral for multiply"""
-FEATURED = [
-    "teal-and-orange", "double-exposure", "neon-nights", "cyanotype",
-    "graduated-filter", "duotone", "sepia", "lomo",
+
+# Thumbnails beside each page in the overview's "In these docs" list.
+CONTENTS_EXAMPLES = ["teal-and-orange", "double-exposure", "cyanotype"]
+CONTENTS_BLEND_MODES = [
+    ("portrait", "soft_light"), ("mountain-lake", "color_dodge"), ("flower-market", "overlay"),
+]
+
+# Measured on a 12-megapixel JPEG: load, curve, brightness, contrast, overlay,
+# save (see the README's Performance section). (label, value, fraction of max)
+PERFORMANCE = [
+    ("Time", [("8-bit lookup table", "about 0.2 s", 0.2 / 4.1),
+              ("float64 on every pixel", "4.1 s", 1.0)]),
+    ("Peak memory", [("8-bit lookup table", "under 200 MB", 200 / 1200),
+                     ("float64 on every pixel", "about 1.2 GB", 1.0)]),
 ]
 
 
@@ -195,45 +211,67 @@ def render_blend_modes(writer: ImageWriter) -> None:
     print(f"  rendered {len(BLEND_PHOTOS) * (len(BLEND_MODES) + 1)} blend-mode thumbnails")
 
 
+
+
 # ----------------------------------------------------------------------
 # Page helpers
 # ----------------------------------------------------------------------
 
-_BLEND_METHODS = {method for method, _, _ in BLEND_MODES}
+_BLEND_METHODS = [method for method, _, _ in BLEND_MODES]
 _OPERATION_SLUGS = {op.slug for op in previews.OPERATIONS}
+esc = layout.esc
+code = layout.code_block
 
 
-def operation_chips(snippet: str) -> str:
-    """Chips linking each layeris method a snippet uses to its reference."""
-    chips: list[str] = []
+def page_head(title: str, lede: str) -> str:
+    return f"""<header class="intro">
+  <h1>{esc(title)}</h1>
+  <p class="intro__lede">{lede}</p>
+</header>"""
+
+
+def section_head(title: str, intro: str = "") -> str:
+    intro_html = f'\n    <p class="section__intro">{intro}</p>' if intro else ""
+    return f"<h2>{esc(title)}</h2>{intro_html}"
+
+
+@dataclass(frozen=True)
+class Use:
+    """A layeris method (or NumPy) that a recipe uses, for the examples filter."""
+
+    key: str
+    label: str
+    paren: str
+    reference: str  # where the filter summary links to
+    reference_label: str
+
+
+def recipe_uses(snippet: str) -> list[Use]:
+    uses: list[Use] = []
     for method in dict.fromkeys(re.findall(r"\.([a-z_]+)\(", snippet)):
         if method in _BLEND_METHODS:
-            href = f"blend-modes.html#{method}"
-        elif method == "curve":
-            href = "operations.html#curve_rgb"
-        elif method in _OPERATION_SLUGS:
-            href = f"operations.html#{method}"
+            reference = f"blend-modes.html#{method}"
+        elif method == "curve" or method in _OPERATION_SLUGS:
+            reference = f"api.html#{method}"
         else:
             continue
-        chips.append(f'<a class="chip chip--code" href="{href}">{method}()</a>')
+        uses.append(Use(method, method, "()", reference, f"{method}() reference"))
     if "np." in snippet:
-        chips.append('<span class="chip">NumPy</span>')
-    return f'<div class="chips">{"".join(chips)}</div>'
-
-
-def recipe_compare(writer: ImageWriter, recipe: Recipe, lazy: bool = True) -> str:
-    return layout.compare(
-        original_path(recipe.photo),
-        f"examples/{recipe.slug}.jpg",
-        writer.sizes[f"examples/{recipe.slug}.jpg"],
-        recipe.title,
-        PHOTOS[recipe.photo].alt,
-        lazy,
-    )
+        uses.append(Use("numpy", "NumPy", "", "blend-modes.html#arrays", "Blending with arrays"))
+    return uses
 
 
 def recipe_by_slug(slug: str) -> Recipe:
     return next(r for r in RECIPES if r.slug == slug)
+
+
+def api_method_links() -> list[str]:
+    return [layout.method_link(f"api.html#{e.name}", e.name)
+            for group in api.GROUPS for e in group.entries]
+
+
+def blend_mode_links(prefix: str = "") -> list[str]:
+    return [layout.method_link(f"{prefix}#{method}", method) for method in _BLEND_METHODS]
 
 
 # ----------------------------------------------------------------------
@@ -241,42 +279,32 @@ def recipe_by_slug(slug: str) -> Recipe:
 # ----------------------------------------------------------------------
 
 
-def render_index(writer: ImageWriter) -> str:
+def render_index(writer: ImageWriter, preview_size: tuple[int, int]) -> str:
+    alt = PHOTOS[HERO_PHOTO].alt
     looks = [("original", "Original", original_path(HERO_PHOTO),
-              f'image = LayerImage.from_file("photos/{HERO_PHOTO}.jpg")')]
+              f'image = LayerImage.from_file("photos/{HERO_PHOTO}.jpg")',
+              f"The unedited sample photo, {HERO_PHOTO}.jpg.")]
     looks += [
-        (r.slug, r.title, f"examples/{r.slug}.jpg", r.snippet)
+        (r.slug, r.title, f"examples/{r.slug}.jpg", r.snippet,
+         f'From the examples: <a href="examples.html#{r.slug}">{esc(r.title)}</a>')
         for r in map(recipe_by_slug, HERO_LOOKS)
     ]
-    alt = PHOTOS[HERO_PHOTO].alt
-    stage = "".join(
-        writer.img(src, f"{alt} ({title})", "looks__img", lazy=False).replace(
-            "<img ", f'<img data-look="{key}"{" hidden" if i else ""} ', 1
-        )
-        for i, (key, title, src, _) in enumerate(looks)
-    )
+    selected = 1  # open on the first edited look, not the original
     tabs = "".join(
         f'<button type="button" class="looks__tab" data-look="{key}" '
-        f'aria-pressed="{"true" if i == 0 else "false"}">{layout.esc(title)}</button>'
-        for i, (key, title, _, _) in enumerate(looks)
+        f'aria-pressed="{"true" if i == selected else "false"}">{esc(title)}</button>'
+        for i, (key, title, _, _, _) in enumerate(looks)
     )
     panels = "".join(
-        f'<div class="looks__panel" data-look="{key}"{" hidden" if i else ""}>'
-        f"{layout.code_block(code)}</div>"
-        for i, (key, _, _, code) in enumerate(looks)
+        f'<div class="looks__panel" data-look="{key}"{"" if i == selected else " hidden"}>'
+        f'{code(snippet, cls="code--tall")}<p class="looks__note">{note}</p></div>'
+        for i, (key, _, _, snippet, note) in enumerate(looks)
     )
-
-    cards = "".join(
-        f"""
-      <a class="feature" href="examples.html#{r.slug}">
-        <span class="feature__media">
-          {writer.img(f"examples/{r.slug}.jpg", f"{r.title} applied to the {r.photo.replace('-', ' ')} photo")}
-          {writer.img(original_path(r.photo), PHOTOS[r.photo].alt, "feature__before")}
-        </span>
-        <span class="feature__title">{layout.esc(r.title)}</span>
-        <span class="feature__meta">{layout.esc(r.category)}</span>
-      </a>"""
-        for r in map(recipe_by_slug, FEATURED)
+    stage = "".join(
+        writer.img(src, f"{alt} ({title})", "", lazy=False).replace(
+            "<img ", f'<img data-look="{key}"{"" if i == selected else " hidden"} ', 1
+        )
+        for i, (key, title, src, _, _) in enumerate(looks)
     )
 
     quickstart = """from layeris import LayerImage
@@ -287,97 +315,241 @@ image = LayerImage.from_file("photo.jpg")
       .multiply("#3fe28f", opacity=0.7)
       .curve("rgb", [0, 0.1, 0.4, 0.65, 0.9, 1])
       .save("result.jpg"))"""
+    load = """from layeris import LayerImage
 
-    body = f"""<div class="wrap">
-  <section class="hero">
-    <div class="hero__text">
-      <p class="eyebrow">Image processing for Python</p>
-      <h1>Photoshop-style blend modes and adjustments, in a few lines of Python.</h1>
-      <p class="lede">Layer.is gives you all the common blend modes, brightness, contrast,
-        hue, saturation and lightness controls, and per-channel curves, built on NumPy
-        with a chainable API.</p>
-      <div class="install">{layout.code_block("pip install layeris", "shell")}</div>
-      <div class="cta">
-        <a class="button" href="examples.html">Browse {len(RECIPES)} examples</a>
-        <a class="button button--ghost" href="blend-modes.html">Explore blend modes</a>
+# From a local file
+image = LayerImage.from_file('/path/to/image.jpg')
+
+# From a URL
+image = LayerImage.from_url('https://example.com/photo.jpg')
+
+# From a NumPy array (float, values in [0, 1], shape HxWx3 or HxWx4)
+import numpy as np
+data = np.random.random((100, 100, 3))
+image = LayerImage.from_array(data)"""
+    save = """# Default quality is 95 for JPEG
+image.save('output.jpg')
+
+# Specify JPEG quality (0 to 100)
+image.save('output.jpg', quality=85)
+
+# Save as PNG (lossless)
+image.save('output.png')"""
+    from_source = f"""git clone {layout.REPO_URL}.git
+cd layer-is-python
+pip install -e ."""
+
+    def bar(label: str, value: str, fraction: float) -> str:
+        fill = "perf__fill perf__fill--slow" if fraction == 1 else "perf__fill"
+        return (
+            f'<div class="perf__bar"><div class="perf__row"><span>{label}</span>'
+            f'<span class="perf__value">{value}</span></div><div class="perf__track">'
+            f'<div class="{fill}" style="width: {fraction * 100:.1f}%"></div></div></div>'
+        )
+
+    metrics = "".join(
+        f'\n      <div class="perf__metric"><span class="perf__name">{name}</span>'
+        f'{"".join(bar(*row) for row in rows)}</div>'
+        for name, rows in PERFORMANCE
+    )
+
+    def thumbs(paths: list[str]) -> str:
+        return "".join(writer.img(path, "") for path in paths)
+
+    contents = [
+        ("examples.html", "Examples",
+         f"{len(RECIPES)} complete looks (fixes, color grades, film, black &amp; white and "
+         "creative effects), each with a before/after slider and copy-paste code.",
+         f'<a class="doc-row__media" href="examples.html" aria-label="Examples">'
+         f'{thumbs([f"examples/{s}.jpg" for s in CONTENTS_EXAMPLES])}</a>'),
+        ("blend-modes.html", "Blend Modes",
+         f"All {len(BLEND_MODES)} blend modes side by side on three photos, plus how opacity "
+         "and the blend color change the result.",
+         f'<a class="doc-row__media" href="blend-modes.html" aria-label="Blend modes">'
+         f'{thumbs([mode_path(p, m) for p, m in CONTENTS_BLEND_MODES])}</a>'),
+        ("operations.html", "Operations",
+         "A before/after reference for every LayerImage method, from "
+         "<code>grayscale()</code> to <code>pin_light()</code>.",
+         '<a class="doc-row__media doc-row__media--single" href="operations.html" '
+         f'aria-label="Operations">{layout.img("previews/chaining.jpg", "", preview_size)}</a>'),
+        ("api.html", "API Reference",
+         "Signatures, parameters and return values for every method, plus the keys each "
+         "operation takes in a JSON preset.",
+         layout.method_index(api_method_links(), "API reference", "doc-row__methods")),
+    ]
+    contents_rows = "".join(
+        f"""
+    <div class="doc-row">
+      <div class="doc-row__text">
+        <h3><a href="{href}">{title}</a></h3>
+        <p>{text}</p>
       </div>
-    </div>
-    <div class="looks" data-looks>
-      <div class="looks__stage">{stage}</div>
-      <div class="looks__tabs" role="group" aria-label="Pick a look">{tabs}</div>
-      {panels}
-    </div>
-  </section>
+      {media}
+    </div>"""
+        for href, title, text, media in contents
+    )
 
-  <section class="section">
-    <h2>Featured looks</h2>
-    <p class="section__intro">Hover or focus a card to see the original photo. Every image is
-      rendered by layeris from the snippet on the <a href="examples.html">examples page</a>.</p>
-    <div class="features">{cards}
-    </div>
-  </section>
+    body = f"""<header class="intro intro--overview">
+  <h1 class="wordmark">layeris</h1>
+  <p class="intro__lede">A Python library for Photoshop-style blend modes, brightness,
+    contrast, hue, saturation and lightness adjustments, and curves on separate RGB
+    channels.</p>
+  <p class="intro__sub">It is built on NumPy and Pillow. Every operation returns the image,
+    so a whole edit reads as one chained pipeline.</p>
+</header>
 
-  <section class="section split">
-    <div>
-      <h2>Quick start</h2>
+<div class="looks" data-looks>
+  <div class="looks__text">
+    <div class="looks__tabs" role="group" aria-label="Pick a look">{tabs}</div>
+    {panels}
+  </div>
+  <div class="looks__stage">{stage}</div>
+</div>
+
+<section class="section section--roomy" id="install">
+  <h2>Install</h2>
+  <div class="cols">
+    <div class="col" style="--flex: 1 1 300px">
+      <h3>From PyPI</h3>
+      {code("pip install layeris", "shell")}
+      <p class="col__note">Requires Python 3.10 or higher. The only dependencies are NumPy,
+        Pillow and Requests.</p>
+    </div>
+    <div class="col" style="--flex: 1.3 1 360px">
+      <h3>From source</h3>
+      {code(from_source, "shell")}
+    </div>
+  </div>
+</section>
+
+<section class="section section--roomy" id="quick-start">
+  <h2>Quick Start</h2>
+  <div class="cols">
+    <div class="col col--prose" style="--flex: 1 1 280px">
       <p>Load an image from a file, a URL or a NumPy array, chain operations, and save.
         Every operation mutates the image in place and returns it, so a whole look reads
-        as one pipeline. Use <code>clone()</code> to branch off a copy.</p>
-      <p>Requires Python 3.10+. The only dependencies are NumPy, Pillow and Requests.</p>
+        as one pipeline.</p>
+      <p class="muted">Use <code>clone()</code> to branch off an independent copy first.</p>
     </div>
-    {layout.code_block(quickstart)}
-  </section>
+    <div class="col" style="--flex: 1.5 1 400px">{code(quickstart)}</div>
+  </div>
 
-  <section class="section">
-    <h2>Documentation</h2>
-    <div class="cards">
-      <a class="card" href="examples.html"><strong>Examples</strong>
-        <span>{len(RECIPES)} complete looks (fixes, color grades, film, black &amp; white and
-        creative effects), each with a before/after slider and copy-paste code.</span></a>
-      <a class="card" href="blend-modes.html"><strong>Blend modes</strong>
-        <span>All {len(BLEND_MODES)} blend modes side by side on three photos, plus how opacity
-        and the blend color change the result.</span></a>
-      <a class="card" href="operations.html"><strong>Operations</strong>
-        <span>A before/after reference for every LayerImage method, from
-        <code>grayscale()</code> to <code>pin_light()</code>.</span></a>
+  <h3 class="subhead" id="load-and-save">Load and Save</h3>
+  <div class="cols cols--tight">
+    <div class="col" style="--flex: 1.4 1 420px">{code(load)}</div>
+    <div class="col" style="--flex: 1 1 300px">{code(save)}</div>
+  </div>
+</section>
+
+<section class="section" id="performance">
+  <h2>Performance</h2>
+  <div class="cols cols--wide">
+    <div class="col col--prose" style="--flex: 1.3 1 360px">
+      <p>Photos loaded with <code>from_file()</code> or <code>from_url()</code> stay as 8-bit
+        images while you apply per-channel operations: <code>brightness</code>,
+        <code>contrast</code>, <code>lightness</code>, <code>curve</code> and every blend mode
+        with a hex color. Each of these only depends on a pixel's own channel value, and an
+        8-bit channel has just 256 possible values, so instead of processing every pixel,
+        layeris updates a 256-entry lookup table. Pillow applies the table in one pass when
+        you call <code>resize()</code> or <code>save()</code>.</p>
+      <p class="muted"><code>get_image_as_array()</code>, <code>grayscale()</code>,
+        <code>hue()</code>, <code>saturation()</code> and blending with a per-pixel NumPy
+        array need float pixels, so they convert the image to float64 once and later
+        operations run in float64. Either way, the results are identical to processing every
+        pixel in float64.</p>
     </div>
-  </section>
-</div>"""
+    <figure class="col perf" style="--flex: 1 1 300px">
+      <figcaption>A 12-megapixel JPEG: load it, apply a curve, brightness, contrast and an
+        overlay, then save.</figcaption>{metrics}
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="contents">
+  <h2>In These Docs</h2>
+  <div class="doc-rows">{contents_rows}
+  </div>
+</section>"""
     return layout.page(
         filename="index.html",
         title="Layer.is",
         description="Photoshop-style blend modes, adjustments and curves for Python.",
         body=body,
         version=__version__,
+        sections=[
+            ("install", "Install", 1), ("quick-start", "Quick start", 1),
+            ("load-and-save", "Load and save", 1), ("performance", "Performance", 1),
+            ("contents", "In these docs", 1),
+        ],
     )
 
 
 def render_examples_page(writer: ImageWriter) -> str:
-    toc = "".join(
-        f'<a class="chip" href="#{slugify(name)}">{layout.esc(name)} '
-        f'<span class="chip__count">{sum(r.category == name for r in RECIPES)}</span></a>'
+    uses = {r.slug: recipe_uses(r.snippet) for r in RECIPES}
+    counts: dict[str, int] = {}
+    by_key: dict[str, Use] = {}
+    for recipe_uses_list in uses.values():
+        for use in recipe_uses_list:
+            counts[use.key] = counts.get(use.key, 0) + 1
+            by_key[use.key] = use
+    filter_order = sorted(by_key.values(), key=lambda u: (-counts[u.key], u.label.lower()))
+
+    def paren(use: Use) -> str:
+        return f'<span class="paren">{use.paren}</span>' if use.paren else ""
+
+    def filter_button(use: Use | None) -> str:
+        if use is None:
+            return (f'<button type="button" class="filter__btn" data-filter-key="" '
+                    f'aria-pressed="true"><span>All</span>'
+                    f'<span class="filter__count">{len(RECIPES)}</span></button>')
+        return (
+            f'<button type="button" class="filter__btn" data-filter-key="{use.key}" '
+            f'data-filter-name="{esc(use.label + use.paren)}" '
+            f'data-filter-ref="{use.reference}" data-filter-ref-label="{esc(use.reference_label)}" '
+            f'aria-pressed="false"><span>{esc(use.label)}{paren(use)}</span>'
+            f'<span class="filter__count">{counts[use.key]}</span></button>'
+        )
+
+    filters = filter_button(None) + "".join(map(filter_button, filter_order))
+
+    def use_buttons(recipe: Recipe) -> str:
+        buttons = "".join(
+            f'<button type="button" class="uses__btn" data-filter-key="{u.key}" '
+            f'title="Show every example that uses {esc(u.label + u.paren)}">'
+            f"{esc(u.label)}{paren(u)}</button>"
+            for u in uses[recipe.slug]
+        )
+        return f'<div class="uses"><span class="uses__label">Uses</span>{buttons}</div>'
+
+    category_links = "".join(
+        f'<a href="#{slugify(name)}" data-category-link="{slugify(name)}"><span>{esc(name)}</span>'
+        f'<span class="toc__count">{sum(r.category == name for r in RECIPES)}</span></a>'
         for name, _ in CATEGORIES
     )
+    category_links += ('<a href="#batch"><span>One preset, many photos</span></a>'
+                       '<a href="#sample-photos"><span>Sample photos</span></a>')
+
     sections = []
     for name, intro in CATEGORIES:
-        recipes = "".join(
+        recipes = [r for r in RECIPES if r.category == name]
+        articles = "".join(
             f"""
-    <article class="recipe" id="{r.slug}">
-      <div class="recipe__media">{recipe_compare(writer, r)}</div>
-      <div class="recipe__body">
-        <h3><a class="anchor" href="#{r.slug}">{layout.esc(r.title)}</a></h3>
-        <p>{layout.esc(r.description)}</p>
-        {operation_chips(r.snippet)}
-        {layout.code_block(r.snippet)}
-      </div>
-    </article>"""
-            for r in RECIPES
-            if r.category == name
+  <article class="recipe{" recipe--first" if i == 0 else ""}" id="{r.slug}" data-uses="{" ".join(u.key for u in uses[r.slug])}">
+    <div class="recipe__media">{layout.compare(
+        original_path(r.photo), f"examples/{r.slug}.jpg", writer.sizes[f"examples/{r.slug}.jpg"],
+        r.title, PHOTOS[r.photo].alt)}</div>
+    <div class="recipe__body">
+      <h3><a href="#{r.slug}">{esc(layout.title_case(r.title))}</a></h3>
+      <p class="recipe__desc">{esc(r.description)}</p>
+      {use_buttons(r)}
+      {code(r.snippet)}
+    </div>
+  </article>"""
+            for i, r in enumerate(recipes)
         )
-        sections.append(f"""  <section class="section" id="{slugify(name)}">
-    <h2>{layout.esc(name)}</h2>
-    <p class="section__intro">{layout.esc(intro)}</p>{recipes}
-  </section>""")
+        sections.append(f"""<section class="section section--recipes" id="{slugify(name)}" data-category>
+  {section_head(layout.title_case(name), esc(intro))}{articles}
+</section>""")
 
     preset_json = json.dumps(BATCH_PRESET, indent=2)
     # Keep each operation on one line for readability.
@@ -400,59 +572,66 @@ for path in Path("photos").glob("*.jpg"):
     LayerImage.from_file(path).apply_from_dict(preset).save(f"out/{path.name}")"""
     batch_items = "".join(
         f"""
-      <figure>
-        {layout.compare(original_path(photo), f"examples/batch/{photo}.jpg",
-                        writer.sizes[f"examples/batch/{photo}.jpg"], "the warm matte preset",
-                        PHOTOS[photo].alt)}
-      </figure>"""
+    <figure>
+      {layout.compare(original_path(photo), f"examples/batch/{photo}.jpg",
+                      writer.sizes[f"examples/batch/{photo}.jpg"],
+                      f"the warm matte preset on {photo}", PHOTOS[photo].alt, tags=False)}
+      <figcaption>{photo}.jpg</figcaption>
+    </figure>"""
         for photo in BATCH_PHOTOS
     )
     photo_links = "".join(
-        f'<a class="photo-link" href="photos/{slug}.jpg" download>'
+        f'\n    <a class="photo-link" href="photos/{slug}.jpg" download>'
         f'{writer.img(original_path(slug), p.alt)}<span>{slug}.jpg</span></a>'
         for slug, p in PHOTOS.items()
     )
 
-    body = f"""<div class="wrap">
-  <header class="page-head">
-    <p class="eyebrow">Cookbook</p>
-    <h1>Examples</h1>
-    <p class="lede">{len(RECIPES)} looks built from layeris operations, each applied to a real
-      photo. Drag the divider to compare. Every snippet below is the exact code that rendered
-      its image, and it runs as-is: it assumes <code>from layeris import LayerImage</code>,
-      <code>import numpy as np</code> and the <a href="#sample-photos">sample photos</a>
-      in a <code>photos/</code> folder. Finish with <code>image.save("result.jpg")</code>.</p>
-    <nav class="toc" aria-label="Categories">{toc}<a class="chip" href="#batch">Batch presets</a></nav>
-  </header>
+    lede = (
+        f"{len(RECIPES)} looks built from layeris operations, each applied to a real photo. "
+        "Drag the divider to compare. Every snippet below is the exact code that rendered its "
+        "image, and it runs as-is: it assumes <code>from layeris import LayerImage</code>, "
+        '<code>import numpy as np</code> and the <a href="#sample-photos">sample photos</a> '
+        'in a <code>photos/</code> folder. Finish with <code>image.save("result.jpg")</code>.'
+    )
+    body = f"""{page_head("Examples", lede)}
+<nav class="toc" aria-label="Categories">{category_links}</nav>
+<div class="filter" id="filter" data-filter>
+  <div class="filter__row"><span class="filter__label">Filter by method</span>{filters}</div>
+  <p class="filter__summary" hidden><span data-filter-summary></span><a data-filter-ref href="#"></a><button type="button" class="link-button" data-filter-clear>Show all examples</button></p>
+</div>
+
 {chr(10).join(sections)}
 
-  <section class="section" id="batch">
-    <h2>One preset, many photos</h2>
-    <p class="section__intro">Operations can also be described as data. Save a look as JSON and
-      apply it to a whole folder with <code>apply_from_dict()</code> (or
-      <code>apply_from_json()</code>). Here is a warm, matte preset on four different photos.</p>
-    <div class="stack">
-      {layout.code_block(preset_json, "json", "warm-matte.json")}
-      {layout.code_block(batch_code, title="batch.py")}
-    </div>
-    <div class="batch">{batch_items}
-    </div>
-  </section>
+<section class="section" id="batch">
+  {section_head("One Preset, Many Photos",
+                "Operations can also be described as data. Save a look as JSON and apply it "
+                "to a whole folder with <code>apply_from_dict()</code> (or "
+                "<code>apply_from_json()</code>). Here is a warm, matte preset on four "
+                "different photos.")}
+  <div class="stack">
+    {code(preset_json, "json", "warm-matte.json")}
+    {code(batch_code, title="batch.py")}
+  </div>
+  <div class="batch">{batch_items}
+  </div>
+</section>
 
-  <section class="section" id="sample-photos">
-    <h2>Sample photos</h2>
-    <p class="section__intro">Download the originals (1536 x 1024) to run the snippets yourself.
-      They were generated for these docs with OpenAI's <code>gpt-image-2.5</code> model; the
-      prompts are in <code>scripts/generate_photos.py</code>.</p>
-    <div class="photos">{photo_links}</div>
-  </section>
-</div>"""
+<section class="section" id="sample-photos">
+  {section_head("Sample Photos",
+                "Download the originals (1536 x 1024) to run the snippets yourself. They were "
+                "generated for these docs with OpenAI's <code>gpt-image-2.5</code> model; the "
+                "prompts are in <code>scripts/generate_photos.py</code>.")}
+  <div class="photos">{photo_links}
+  </div>
+</section>"""
     return layout.page(
         filename="examples.html",
         title="Examples",
         description=f"{len(RECIPES)} photo recipes built with layeris, with before/after sliders.",
         body=body,
         version=__version__,
+        sections=[(slugify(name), name, 1) for name, _ in CATEGORIES]
+        + [("batch", "One preset, many photos", 1), ("sample-photos", "Sample photos", 1)],
     )
 
 
@@ -467,108 +646,207 @@ def render_blend_modes_page(writer: ImageWriter) -> str:
                     "most of these modes.",
     }
 
-    swatch = (f'<span class="swatch" style="background:{BLEND_COLOR}"></span>'
+    swatch = (f'<span class="swatch" style="background: {BLEND_COLOR}"></span>'
               f"<code>{BLEND_COLOR}</code>")
-    base_row = "".join(
-        f"<figure>{writer.img(f'blend-modes/{photo}.jpg', PHOTOS[photo].alt)}"
+    column_head = "".join(f"<span>{photo}</span>" for photo in BLEND_PHOTOS)
+    base_thumbs = "".join(
+        f'<figure>{writer.img(f"blend-modes/{photo}.jpg", PHOTOS[photo].alt, lazy=False)}'
         f"<figcaption>{photo}</figcaption></figure>"
         for photo in BLEND_PHOTOS
     )
-    toc = "".join(
-        f'<a class="chip chip--code" href="#{method}">{method}</a>'
-        for method, _, _ in BLEND_MODES
-    )
 
-    def mode_card(method: str, formula: str) -> str:
+    def mode_row(method: str, formula: str) -> str:
         thumbs = "".join(
-            writer.img(mode_path(photo, method),
-                       f"{method_title(method)} with {BLEND_COLOR} on the {photo} photo")
+            f'<figure><div class="peek">'
+            f'{writer.img(mode_path(photo, method), f"{method_title(method)} with {BLEND_COLOR} on the {photo} photo")}'
+            f'{writer.img(f"blend-modes/{photo}.jpg", "", "peek__base")}'
+            f'<span class="peek__tag">base</span></div>'
+            f"<figcaption>{photo}</figcaption></figure>"
             for photo in BLEND_PHOTOS
         )
-        code = layout.code_block(f'image.{method}("{BLEND_COLOR}")')
         return f"""
-      <article class="mode" id="{method}">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#{method}">{method_title(method)}</a></h3>
-          <code class="formula">{layout.esc(formula)}</code>
-        </header>
-        <div class="mode__thumbs">{thumbs}</div>
-        {code}
-      </article>"""
+    <article class="matrix__row" id="{method}">
+      <div class="matrix__label">
+        <h3><a href="#{method}">{method_title(method)}</a></h3>
+        <code class="matrix__call">image.{method}("{BLEND_COLOR}")</code>
+        <span class="matrix__formula">{esc(formula)}</span>
+      </div>
+      <div class="thumbs">{thumbs}</div>
+    </article>"""
 
-    sections = []
+    group_sections = []
     for group, modes in groups.items():
-        cards = "".join(mode_card(method, formula) for method, formula in modes)
-        sections.append(f"""  <section class="section" id="{slugify(group)}">
-    <h2>{group} group</h2>
-    <p class="section__intro">{group_intros[group]}</p>
-    <div class="modes">{cards}
-    </div>
+        rows = "".join(mode_row(method, formula) for method, formula in modes)
+        group_sections.append(f"""  <section class="section matrix__group" id="{slugify(group)}-group">
+    {section_head(f"{group} Group", group_intros[group])}{rows}
   </section>""")
 
     opacity_strip = "".join(
         f"<figure>{writer.img(opacity_path(o), f'{method_title(OPACITY_MODE)} at opacity {o:g}')}"
-        f"<figcaption><code>opacity={o:g}</code></figcaption></figure>"
+        f"<figcaption>opacity={o:g}</figcaption></figure>"
         for o in OPACITY_STEPS
     )
     color_strip = "".join(
         f"<figure>{writer.img(color_path(c), f'{method_title(COLOR_MODE)} with {c}')}"
-        f'<figcaption><span class="swatch" style="background:{c}"></span>'
-        f"<code>{c}</code></figcaption></figure>"
+        f'<figcaption><span class="swatch" style="background: {c}"></span>{c}</figcaption></figure>'
         for c in COLOR_SWATCHES
     )
-    array_code = layout.code_block(ARRAY_SNIPPET)
 
-    body = f"""<div class="wrap">
-  <header class="page-head">
-    <p class="eyebrow">Reference</p>
-    <h1>Blend modes</h1>
-    <p class="lede">A blend mode combines the image (the base, <em>A</em>) with a blend layer
-      (<em>B</em>). The layer can be a hex color, a NumPy array the same size as the image
-      (a gradient, a texture, another photo) or anything that broadcasts to it. Every mode
-      takes an optional <code>opacity</code> from 0 to 1. Below, all {len(BLEND_MODES)} modes
-      blend {swatch} into the same three photos.</p>
-    <nav class="toc" aria-label="Blend modes">{toc}</nav>
-  </header>
+    lede = (
+        "A blend mode combines the image (the base, <em>A</em>) with a blend layer "
+        "(<em>B</em>). The layer can be a hex color, a NumPy array the same size as the image "
+        "(a gradient, a texture, another photo) or anything that broadcasts to it. Every mode "
+        f"takes an optional <code>opacity</code> from 0 to 1. Below, all {len(BLEND_MODES)} "
+        f"modes blend {swatch} into the same three photos. "
+        '<span class="hint-hover">Hover a result to see the base photo.</span>'
+        '<span class="hint-touch">Press and hold a result to see the base photo.</span>'
+    )
+    body = f"""{page_head("Blend Modes", lede)}
+{layout.method_index(blend_mode_links(), "Blend modes")}
 
-  <section class="section">
-    <h2>Base photos</h2>
-    <p class="section__intro">The unedited photos that every blend mode below is applied to.</p>
-    <div class="strip strip--3">{base_row}</div>
+<div class="matrix">
+  <div class="matrix__head" aria-hidden="true"><span></span><div>{column_head}</div></div>
+  <section class="matrix__row matrix__row--base" id="base">
+    <div class="matrix__label">
+      <h3>Base Photos</h3>
+      <p>The unedited photos that every blend mode below is applied to.</p>
+    </div>
+    <div class="thumbs">{base_thumbs}</div>
   </section>
+{chr(10).join(group_sections)}
+</div>
 
-{chr(10).join(sections)}
+<section class="section" id="opacity">
+  {section_head("Opacity",
+                "Opacity mixes the blended result back with the original: "
+                f'<code>{OPACITY_MODE}("{OPACITY_COLOR}", opacity=...)</code> on the '
+                f"{OPACITY_PHOTO} photo.")}
+  <div class="strip strip--opacity">{opacity_strip}</div>
+</section>
 
-  <section class="section" id="opacity">
-    <h2>Opacity</h2>
-    <p class="section__intro">Opacity mixes the blended result back with the original:
-      <code>{OPACITY_MODE}("{OPACITY_COLOR}", opacity=...)</code> on the {OPACITY_PHOTO} photo.</p>
-    <div class="strip strip--5">{opacity_strip}</div>
-  </section>
+<section class="section" id="colors">
+  {section_head("Choosing a Blend Color",
+                "The same mode gives very different moods depending on the color: "
+                f"<code>{COLOR_MODE}(color)</code> on the {COLOR_PHOTO} photo.")}
+  <div class="strip strip--colors">{color_strip}</div>
+</section>
 
-  <section class="section" id="colors">
-    <h2>Choosing a blend color</h2>
-    <p class="section__intro">The same mode gives very different moods depending on the color:
-      <code>{COLOR_MODE}(color)</code> on the {COLOR_PHOTO} photo.</p>
-    <div class="strip strip--6">{color_strip}</div>
-  </section>
+<section class="section" id="arrays">
+  {section_head("Blending with Arrays",
+                "Pass a NumPy array instead of a hex string to blend per pixel. The "
+                '<a href="examples.html#creative-effects">creative effects</a> examples use '
+                'this for a <a href="examples.html#lomo">vignette</a>, a '
+                '<a href="examples.html#graduated-filter">graduated filter</a> and a '
+                '<a href="examples.html#double-exposure">double exposure</a>.')}
+  {code(ARRAY_SNIPPET)}
+</section>"""
 
-  <section class="section" id="arrays">
-    <h2>Blending with arrays</h2>
-    <p class="section__intro">Pass a NumPy array instead of a hex string to blend per pixel.
-      The <a href="examples.html#creative-effects">creative effects</a> examples use this for
-      a <a href="examples.html#lomo">vignette</a>, a
-      <a href="examples.html#graduated-filter">graduated filter</a> and a
-      <a href="examples.html#double-exposure">double exposure</a>.</p>
-    {array_code}
-  </section>
-</div>"""
+    sections: list[layout.Section] = [("base", "Base photos", 1)]
+    for group, modes in groups.items():
+        sections.append((f"{slugify(group)}-group", f"{group} group", 1))
+        sections += [(method, method, 2) for method, _ in modes]
+    sections += [("opacity", "Opacity", 1), ("colors", "Choosing a blend color", 1),
+                 ("arrays", "Blending with arrays", 1)]
     return layout.page(
         filename="blend-modes.html",
         title="Blend modes",
         description="Every layeris blend mode compared on the same photos.",
         body=body,
         version=__version__,
+        sections=sections,
+    )
+
+
+def check_api_coverage() -> None:
+    """Fail the build if a public LayerImage method is missing from docs_api.py."""
+    public = {
+        name for name, value in vars(LayerImage).items()
+        if not name.startswith("_") and isinstance(value, (staticmethod, FunctionType))
+    }
+    documented = {e.name for group in api.GROUPS for e in group.entries}
+    missing = public - documented - set(_BLEND_METHODS)
+    if missing:
+        raise SystemExit(f"scripts/docs_api.py does not document: {', '.join(sorted(missing))}")
+
+
+def render_api_page() -> str:
+    count = str(len(BLEND_MODES))
+
+    def entry(e: api.Entry, first: bool) -> str:
+        params = ""
+        if e.params:
+            rows = "".join(
+                f'<dt><span class="params__name">{esc(p.name)}</span>'
+                f'<span class="params__type">{esc(p.type)}</span></dt>'
+                f"<dd>{esc(p.description)}</dd>"
+                for p in e.params
+            )
+            params = f'\n    <dl class="params">{rows}</dl>'
+        modes = ("\n    " + layout.method_index(blend_mode_links("blend-modes.html"),
+                                                  "Blend modes", "api-entry__modes")
+                 if e.lists_blend_modes else "")
+        example = f"\n    {code(e.code)}" if e.code else ""
+        note = f" {esc(e.returns_note)}" if e.returns_note else ""
+        meta = [f"<span>Returns <code>{esc(e.returns)}</code>{note}</span>"]
+        meta += [f"<span>Raises <code>{esc(exc)}</code> {esc(when)}</span>" for exc, when in e.raises]
+        if e.see:
+            href, label = e.see
+            meta.append(f'<a href="{href}">{esc(label.format(count=count))}</a>')
+        return f"""
+  <article class="api-entry{" api-entry--first" if first else ""}" id="{e.name}">
+    <h3><a href="#{e.name}"><span class="api-entry__prefix">{esc(e.prefix)}</span><span class="api-entry__name">{e.name}</span><span class="api-entry__args">{esc(e.args)}</span></a></h3>
+    <p class="api-entry__desc">{esc(e.description.format(count=count))}</p>{params}{modes}{example}
+    <div class="api-entry__meta">{"".join(meta)}</div>
+  </article>"""
+
+    groups = "".join(
+        f"""
+<section class="section section--api" id="{g.id}">
+  {section_head(g.title, esc(g.intro))}{"".join(entry(e, i == 0) for i, e in enumerate(g.entries))}
+</section>"""
+        for g in api.GROUPS
+    )
+    json_rows = "".join(
+        f"<tr><td>{esc(t)}</td><td>{esc(keys)}</td><td>{esc(call)}</td></tr>"
+        for t, keys, call in api.JSON_TYPES
+    )
+    lede = (
+        "The package exports one class, <code>LayerImage</code>, and <code>__version__</code>. "
+        "Operations change the image in place and return it, so calls can be chained. Call "
+        "<code>clone()</code> first to keep an unchanged copy. Pixel values are floats in "
+        "[0, 1]."
+    )
+    body = f"""{page_head("API Reference", lede)}
+{layout.method_index(api_method_links(), "Methods")}
+{groups}
+
+<section class="section" id="json-types">
+  {section_head("JSON Operation Types",
+                'Each entry in the <code>"operations"</code> list is an object with a '
+                '<code>"type"</code> and the keys below. Operations run in order. An entry '
+                "with an unknown type or a missing required key is skipped without an error.")}
+  <div class="table-scroll">
+    <table class="json-types">
+      <thead><tr><th>Type</th><th>Keys</th><th>Calls</th></tr></thead>
+      <tbody>{json_rows}</tbody>
+    </table>
+  </div>
+  <p class="section__outro">In a dict or JSON file, blend modes take a hex color only. To blend
+    with a NumPy array, call the method directly.</p>
+</section>"""
+
+    sections: list[layout.Section] = []
+    for g in api.GROUPS:
+        sections.append((g.id, g.title[0] + g.title[1:].lower(), 1))
+        sections += [(e.name, e.name, 2) for e in g.entries]
+    sections.append(("json-types", "JSON operation types", 1))
+    return layout.page(
+        filename="api.html",
+        title="API reference",
+        description="Signatures, parameters and return values for every LayerImage method.",
+        body=body,
+        version=__version__,
+        sections=sections,
     )
 
 
@@ -587,6 +865,7 @@ def main() -> None:
     output_dir: Path = args.output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    check_api_coverage()
     print(f"Building docs into {output_dir}")
     written = previews.generate_previews(previews.DEFAULT_SOURCE, output_dir)
     preview_size = Image.open(written[0][1]).size
@@ -596,10 +875,11 @@ def main() -> None:
     render_blend_modes(writer)
 
     pages = {
-        "index.html": render_index(writer),
+        "index.html": render_index(writer, preview_size),
         "examples.html": render_examples_page(writer),
         "blend-modes.html": render_blend_modes_page(writer),
         "operations.html": previews.render_operations_page(preview_size),
+        "api.html": render_api_page(),
     }
     for name, content in pages.items():
         (output_dir / name).write_text(content, encoding="utf-8")
