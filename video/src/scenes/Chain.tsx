@@ -34,8 +34,8 @@ const SAVE_AT = stepStart(chain.steps.length);
 
 export const CHAIN_FRAMES = SAVE_AT + 50;
 
-const IMAGE_W = 840;
-const IMAGE_H = 560;
+const IMAGE_W = 810;
+const IMAGE_H = 540;
 
 export const Chain: React.FC = () => {
 	const frame = useCurrentFrame();
@@ -91,8 +91,8 @@ export const Chain: React.FC = () => {
 			<div style={{position: 'absolute', left: MARGIN, top: 330, ...rise(frame, CODE_IN)}}>
 				<Code
 					code={CODE}
-					fontSize={26}
-					width={770}
+					fontSize={24}
+					width={800}
 					padding={[30, 36]}
 					reveal={reveal}
 					highlight={highlight}

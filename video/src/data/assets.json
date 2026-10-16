@@ -1,13 +1,13 @@
 {
   "chain": {
-    "photo": "vase.jpg",
+    "photo": "hanbok-portrait.jpg",
     "steps": [
       "grayscale()",
       "contrast(1.2)",
       "multiply(\"#f2c49b\", opacity=0.8)",
       "curve(\"b\", [0.12, 0.4, 0.7, 0.92])"
     ],
-    "saveAs": "vase-toned.jpg",
+    "saveAs": "toned.jpg",
     "images": [
       "renders/chain/0-original.jpg",
       "renders/chain/1-grayscale.jpg",
@@ -17,7 +17,7 @@
     ]
   },
   "blend": {
-    "photo": "dunes.jpg",
+    "photo": "jeju-coast.jpg",
     "color": "#e8743b",
     "tiles": [
       {
@@ -83,7 +83,7 @@
     ]
   },
   "curves": {
-    "photo": "tree.jpg",
+    "photo": "bamboo-forest.jpg",
     "phases": [
       {
         "channels": "r",
@@ -171,7 +171,7 @@
     {
       "slug": "cross-process",
       "title": "Cross-processed",
-      "photo": "lemons.jpg",
+      "photo": "gamcheon-village.jpg",
       "code": "(image.curve(\"r\", [0, 0.15, 0.55, 0.9, 1])\n      .curve(\"g\", [0, 0.2, 0.55, 0.85, 1])\n      .curve(\"b\", [0.22, 0.35, 0.48, 0.6, 0.72]))",
       "preset": null,
       "before": "renders/looks/cross-process-before.jpg",
@@ -180,7 +180,7 @@
     {
       "slug": "cyanotype",
       "title": "Cyanotype",
-      "photo": "lighthouse.jpg",
+      "photo": "palace-pond.jpg",
       "code": "(image.grayscale()\n      .curve(\"rgb\", [0, 0.1, 0.55, 0.9, 1])\n      .curve(\"r\", [0.02, 0.85])\n      .curve(\"g\", [0.15, 0.95])\n      .curve(\"b\", [0.35, 1.0]))",
       "preset": null,
       "before": "renders/looks/cyanotype-before.jpg",
@@ -189,7 +189,7 @@
     {
       "slug": "duotone",
       "title": "Duotone, from a JSON preset",
-      "photo": "stairs.jpg",
+      "photo": "palace-eaves.jpg",
       "code": "image.apply_from_json(\"duotone.json\")",
       "preset": "{\n  \"operations\": [\n    {\"type\": \"grayscale\"},\n    {\"type\": \"contrast\", \"factor\": 1.2},\n    {\"type\": \"curve\", \"channels\": \"r\", \"curve_points\": [0.12, 1.0]},\n    {\"type\": \"curve\", \"channels\": \"g\", \"curve_points\": [0.08, 0.45]},\n    {\"type\": \"curve\", \"channels\": \"b\", \"curve_points\": [0.4, 0.42]}\n  ]\n}",
       "before": "renders/looks/duotone-before.jpg",
