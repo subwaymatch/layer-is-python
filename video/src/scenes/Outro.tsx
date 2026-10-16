@@ -6,7 +6,7 @@ import {assembleLogo} from '../components/logoMotion';
 import {Scene} from '../components/Scene';
 import {colors, fonts, progress, rise} from '../theme';
 
-export const OUTRO_FRAMES = 240;
+export const OUTRO_FRAMES = 186;
 
 const LOGO_WIDTH = 230;
 const SPEED = 1.5;
@@ -14,7 +14,7 @@ const SPEED = 1.5;
 export const Outro: React.FC = () => {
 	const frame = useCurrentFrame();
 	return (
-		<Scene>
+		<Scene exitFrames={20}>
 			<div
 				style={{
 					position: 'absolute',

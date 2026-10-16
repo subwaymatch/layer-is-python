@@ -20,19 +20,19 @@ const CODE = [
 const FIRST_STEP_LINE = 3;
 const SAVE_LINE = FIRST_STEP_LINE + chain.steps.length;
 
-const CODE_IN = 22;
-const IMAGE_IN = 76;
-const STEP_START = 112;
-const STEP_EVERY = 70;
-const TYPE_FRAMES = 22;
-const WIPE_FRAMES = 30;
-const CPF = 2; // characters typed per frame
+const CODE_IN = 12;
+const IMAGE_IN = 50;
+const STEP_START = 72;
+const STEP_EVERY = 52;
+const TYPE_FRAMES = 18;
+const WIPE_FRAMES = 24;
+const CPF = 2.6; // characters typed per frame
 
 const stepStart = (k: number) => STEP_START + k * STEP_EVERY;
 const applyAt = (k: number) => stepStart(k) + TYPE_FRAMES;
 const SAVE_AT = stepStart(chain.steps.length);
 
-export const CHAIN_FRAMES = SAVE_AT + 75;
+export const CHAIN_FRAMES = SAVE_AT + 50;
 
 const IMAGE_W = 840;
 const IMAGE_H = 560;
@@ -40,7 +40,7 @@ const IMAGE_H = 560;
 export const Chain: React.FC = () => {
 	const frame = useCurrentFrame();
 
-	const starts: (number | undefined)[] = [CODE_IN + 6, undefined, CODE_IN + 30];
+	const starts: (number | undefined)[] = [CODE_IN + 6, undefined, CODE_IN + 22];
 	chain.steps.forEach((_, k) => starts.push(stepStart(k)));
 	starts.push(SAVE_AT);
 	const reveal = typeLines(CODE, frame, starts, CPF);
@@ -50,7 +50,7 @@ export const Chain: React.FC = () => {
 	starts.forEach((s, i) => {
 		if (s !== undefined && frame >= s) caretLine = i;
 	});
-	const lastTyped = SAVE_AT + 16;
+	const lastTyped = SAVE_AT + 12;
 
 	// Which step's result is showing, and how far the next one has wiped in.
 	let shown = 0;
@@ -68,8 +68,8 @@ export const Chain: React.FC = () => {
 			highlight = {line: FIRST_STEP_LINE + k, opacity: progress(frame, applyAt(k), 8)};
 		}
 	});
-	if (frame >= SAVE_AT + 18) {
-		highlight = {line: SAVE_LINE, opacity: progress(frame, SAVE_AT + 18, 8)};
+	if (frame >= SAVE_AT + 14) {
+		highlight = {line: SAVE_LINE, opacity: progress(frame, SAVE_AT + 14, 8)};
 	}
 
 	let caption = chain.photo;
@@ -77,9 +77,9 @@ export const Chain: React.FC = () => {
 		const k = wipe > 0 ? shown : shown - 1;
 		caption = `.${chain.steps[k]}`;
 	}
-	if (frame >= SAVE_AT + 18) caption = `saved ${chain.saveAs}`;
+	if (frame >= SAVE_AT + 14) caption = `saved ${chain.saveAs}`;
 
-	const imageIn = progress(frame, IMAGE_IN, 24);
+	const imageIn = progress(frame, IMAGE_IN, 16);
 
 	return (
 		<Scene>

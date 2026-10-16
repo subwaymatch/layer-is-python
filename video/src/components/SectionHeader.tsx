@@ -12,7 +12,7 @@ export const SectionHeader: React.FC<{
 	start?: number;
 }> = ({index, title, subtitle, start = 0}) => {
 	const frame = useCurrentFrame() - start;
-	const rule = progress(frame, 0, 30, easeInOut);
+	const rule = progress(frame, 0, 22, easeInOut);
 	return (
 		<div style={{position: 'absolute', left: MARGIN, right: MARGIN, top: HEADER_TOP}}>
 			<div
@@ -40,7 +40,7 @@ export const SectionHeader: React.FC<{
 						lineHeight: 1.15,
 						letterSpacing: '-0.01em',
 						color: colors.ink,
-						...rise(frame, 6),
+						...rise(frame, 4),
 					}}
 				>
 					{title}
@@ -50,7 +50,7 @@ export const SectionHeader: React.FC<{
 						fontFamily: fonts.mono,
 						fontSize: 22,
 						color: colors.faint,
-						...rise(frame, 10),
+						...rise(frame, 6),
 					}}
 				>
 					{index}
@@ -65,7 +65,7 @@ export const SectionHeader: React.FC<{
 						fontSize: 27,
 						lineHeight: 1.5,
 						color: colors.muted,
-						...rise(frame, 14),
+						...rise(frame, 8),
 					}}
 				>
 					{subtitle}

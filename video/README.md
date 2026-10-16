@@ -1,6 +1,6 @@
 # layeris video
 
-A short, silent walkthrough of layeris (1920×1080, 30 fps, 71.9 seconds),
+A short, silent walkthrough of layeris (1920×1080, 30 fps, 51.3 seconds),
 built with [Remotion](https://www.remotion.dev/). The rendered file is
 [`out/layeris.mp4`](out/layeris.mp4).
 
@@ -62,8 +62,8 @@ total length is their sum (see `src/Video.tsx`).
 
 ## Adding music later
 
-The video has no audio track. It runs 71.9 seconds (2,158 frames at 30 fps),
-and the last half-second fades to white. To add a track, either put the file
+The video has no audio track. It runs 51.3 seconds (1,540 frames at 30 fps),
+and the last two-thirds of a second fades to white. To add a track, either put the file
 in `public/` and add `<Audio src={staticFile('music.mp3')} />` inside
 `LayerisVideo` in `src/Video.tsx` before rendering, or mux it into the
 finished file:

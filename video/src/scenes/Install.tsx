@@ -5,18 +5,18 @@ import {Scene} from '../components/Scene';
 import {SectionHeader} from '../components/SectionHeader';
 import {MARGIN, rise} from '../theme';
 
-export const INSTALL_FRAMES = 120;
+export const INSTALL_FRAMES = 84;
 
 const PYPI = '$ pip install layeris\nSuccessfully installed layeris-0.4.0';
 
-const PYPI_START = 22;
-const PYPI_OUTPUT = PYPI_START + 34;
+const PYPI_START = 12;
+const PYPI_OUTPUT = PYPI_START + 26;
 
 export const Install: React.FC = () => {
 	const frame = useCurrentFrame();
 	// `pip install` types, then its output appears in one go.
 	const reveal = [
-		typeLines(PYPI, frame, [PYPI_START + 8], 1.2)[0],
+		typeLines(PYPI, frame, [PYPI_START + 6], 1.5)[0],
 		frame >= PYPI_OUTPUT ? Infinity : 0,
 	];
 

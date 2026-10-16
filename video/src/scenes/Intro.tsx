@@ -6,7 +6,7 @@ import {Scene} from '../components/Scene';
 import {Wordmark} from '../components/Wordmark';
 import {colors, easeInOut, fonts, progress, rise} from '../theme';
 
-export const INTRO_FRAMES = 150;
+export const INTRO_FRAMES = 140;
 
 const LOGO_WIDTH = 440;
 const SPEED = 2;

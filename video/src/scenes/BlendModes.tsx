@@ -15,12 +15,12 @@ const GAP_X = (1920 - 2 * MARGIN - COLS * TILE_W) / (COLS - 1);
 const GAP_Y = 24;
 const GRID_TOP = 300;
 
-const TILES_IN = 26;
-const APPLY_START = 62;
-const APPLY_EVERY = 9;
-const WIPE_FRAMES = 22;
+const TILES_IN = 14;
+const APPLY_START = 36;
+const APPLY_EVERY = 6;
+const WIPE_FRAMES = 18;
 
-export const BLEND_FRAMES = 300;
+export const BLEND_FRAMES = APPLY_START + 13 * APPLY_EVERY + WIPE_FRAMES + 58;
 
 const Swatch: React.FC = () => (
 	<span
@@ -57,7 +57,7 @@ export const BlendModes: React.FC = () => {
 				const row = Math.floor(k / COLS);
 				const applyAt = APPLY_START + (k - 1) * APPLY_EVERY;
 				const t = k === 0 ? 1 : progress(frame, applyAt, WIPE_FRAMES, easeInOut);
-				const labelIn = k === 0 ? progress(frame, TILES_IN + 10, 14) : progress(frame, applyAt + 6, 14);
+				const labelIn = k === 0 ? progress(frame, TILES_IN + 8, 10) : progress(frame, applyAt + 4, 10);
 				return (
 					<div
 						key={tile.mode}

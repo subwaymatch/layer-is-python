@@ -18,16 +18,16 @@ const GRAPH_TOP = TOP + 50;
 
 const CHANNEL_COLORS: Record<string, string> = {r: colors.red, g: colors.green, b: colors.blue};
 
-const IN = 26;
-const PHASE_FRAMES = 90;
+const IN = 14;
+const PHASE_FRAMES = 66;
 // Per phase: when its code line starts typing, and when its points start moving.
 const PHASES = curves.phases.map((_, i) => {
-	const type = 40 + i * 130;
-	return {type, move: type + 26};
+	const type = 30 + i * 100;
+	return {type, move: type + 22};
 });
 const LAST_TYPED = PHASES[PHASES.length - 1].type + 22;
 
-export const CURVES_FRAMES = PHASES[PHASES.length - 1].move + PHASE_FRAMES + 60;
+export const CURVES_FRAMES = PHASES[PHASES.length - 1].move + PHASE_FRAMES + 40;
 
 const lerp = (a: number[], b: number[], t: number) => a.map((x, i) => x + (b[i] - x) * t);
 
