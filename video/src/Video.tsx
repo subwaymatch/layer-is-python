@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Series} from 'remotion';
+import {AbsoluteFill, Audio, Series, interpolate, staticFile} from 'remotion';
 import './fonts';
 import {BLEND_FRAMES, BlendModes} from './scenes/BlendModes';
 import {CHAIN_FRAMES, Chain} from './scenes/Chain';
@@ -22,8 +22,21 @@ const SCENES: [React.FC, number][] = [
 
 export const TOTAL_FRAMES = SCENES.reduce((sum, [, frames]) => sum + frames, 0);
 
+// Background music from scripts/generate_music.py, generated at the video's
+// length. It ends on its own; the short fade only guards the final frames.
+// 0.85 brings it from -13.3 to about -14.7 LUFS, with headroom below 0 dBFS.
+const MUSIC_VOLUME = 0.85;
+const MUSIC_FADE_FRAMES = 15;
+const musicVolume = (frame: number) =>
+	MUSIC_VOLUME *
+	interpolate(frame, [TOTAL_FRAMES - MUSIC_FADE_FRAMES, TOTAL_FRAMES - 1], [1, 0], {
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+
 export const LayerisVideo: React.FC = () => (
 	<AbsoluteFill style={{background: colors.bg}}>
+		<Audio src={staticFile('music.mp3')} volume={musicVolume} />
 		<Series>
 			{SCENES.map(([SceneComponent, frames], i) => (
 				<Series.Sequence key={i} durationInFrames={frames}>

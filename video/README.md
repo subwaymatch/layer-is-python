@@ -1,6 +1,6 @@
 # layeris video
 
-A short, silent walkthrough of layeris (1920×1080, 30 fps, 52.1 seconds),
+A short walkthrough of layeris (1920×1080, 30 fps, 52.1 seconds),
 built with [Remotion](https://www.remotion.dev/). The rendered file is
 [`out/layeris.mp4`](out/layeris.mp4).
 
@@ -64,14 +64,21 @@ cd video && npm run assets
 Scene lengths are set in each file under `src/scenes/`; the composition's
 total length is their sum (see `src/Video.tsx`).
 
-## Adding music later
+## Music
 
-The video has no audio track. It runs 52.1 seconds (1,563 frames at 30 fps),
-and the last two-thirds of a second fades to white. To add a track, either
-put the file in `public/` and add `<Audio src={staticFile('music.mp3')} />`
-inside `LayerisVideo` in `src/Video.tsx` before rendering, or mux it into the
-finished file:
+The background track, `public/music.mp3`, is instrumental gugak (Korean
+traditional music) in the manner of gayageum ensemble arrangements of
+Pachelbel's Canon: gayageums entering in canon over the Canon's ground bass in
+D, with janggu, geomungo, daegeum and haegeum. It was generated with the
+ElevenLabs Music API (`music_v2_5`) at the video's exact length, 52.1 seconds
+(1,563 frames at 30 fps), and resolves on its own as the outro plays.
+`src/Video.tsx` mixes it in at 85% volume.
+
+To generate a new track (needs `ELEVENLABS_API_KEY`), run:
 
 ```sh
-ffmpeg -i out/layeris.mp4 -i music.mp3 -c:v copy -c:a aac -shortest out/layeris-music.mp4
+python3 scripts/generate_music.py   # writes public/music.mp3
 ```
+
+Each run gives a different track. If the video's length changes, update
+`LENGTH_MS` in the script first.
