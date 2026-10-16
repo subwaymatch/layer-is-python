@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API reference | Layer.is</title>
+<meta name="description" content="Signatures, parameters and return values for every LayerImage method.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('layeris-docs-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&amp;family=Schibsted+Grotesk:wght@400;500;600&amp;family=Besley:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body>
+<header class="mobilebar">
+  <a class="mobilebar__brand" href="index.html" aria-label="layeris 0.4.0, overview"><img src="assets/logo.svg" alt="" width="40" height="35"><span class="version">v0.4.0</span></a>
+  <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme"><svg class="icon-moon" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M16.2 12.4A6.6 6.6 0 0 1 7.6 3.8a6.6 6.6 0 1 0 8.6 8.6Z"/></svg><svg class="icon-sun" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.3"/><path d="M10 2.6v1.7M10 15.7v1.7M2.6 10h1.7M15.7 10h1.7M4.8 4.8L6 6M14 14l1.2 1.2M4.8 15.2L6 14M14 6l1.2-1.2"/></svg></button>
+  <button class="icon-button menu-toggle" type="button" data-menu-toggle aria-controls="sidebar" aria-expanded="false" aria-label="Open menu"><svg class="icon-menu" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14"/></svg><svg class="icon-close" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+</header>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <a class="sidebar__logo" href="index.html" aria-label="layeris overview"><img src="assets/logo.svg" alt="" width="68" height="59"></a>
+  <nav class="sidenav" aria-label="Docs"><div class="sidenav__group"><a class="sidenav__page" href="index.html">Overview</a></div><div class="sidenav__group"><a class="sidenav__page" href="examples.html">Examples</a></div><div class="sidenav__group"><a class="sidenav__page" href="blend-modes.html">Blend modes</a></div><div class="sidenav__group"><a class="sidenav__page" href="operations.html">Operations</a></div><div class="sidenav__group"><a class="sidenav__page" href="api.html" aria-current="page">API reference</a><div class="sidenav__sections"><a href="#creating">Creating an image</a><a href="#from_file" class="sidenav__method">from_file</a><a href="#from_url" class="sidenav__method">from_url</a><a href="#from_array" class="sidenav__method">from_array</a><a href="#output">Saving and output</a><a href="#save" class="sidenav__method">save</a><a href="#get_image_as_array" class="sidenav__method">get_image_as_array</a><a href="#clone" class="sidenav__method">clone</a><a href="#adjustments">Adjustments</a><a href="#grayscale" class="sidenav__method">grayscale</a><a href="#brightness" class="sidenav__method">brightness</a><a href="#contrast" class="sidenav__method">contrast</a><a href="#hue" class="sidenav__method">hue</a><a href="#saturation" class="sidenav__method">saturation</a><a href="#lightness" class="sidenav__method">lightness</a><a href="#curve" class="sidenav__method">curve</a><a href="#resize" class="sidenav__method">resize</a><a href="#blending">Blend modes</a><a href="#blend_mode" class="sidenav__method">blend_mode</a><a href="#data">Operations as data</a><a href="#apply_from_dict" class="sidenav__method">apply_from_dict</a><a href="#apply_from_json" class="sidenav__method">apply_from_json</a><a href="#json-types">JSON operation types</a></div></div></nav>
+  <div class="sidebar__foot">
+    <a class="gh-link" href="https://github.com/subwaymatch/layer-is-python"><svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg><span>GitHub</span></a>
+    <div class="sidebar__meta"><button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme"><svg class="icon-moon" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M16.2 12.4A6.6 6.6 0 0 1 7.6 3.8a6.6 6.6 0 1 0 8.6 8.6Z"/></svg><svg class="icon-sun" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.3"/><path d="M10 2.6v1.7M10 15.7v1.7M2.6 10h1.7M15.7 10h1.7M4.8 4.8L6 6M14 14l1.2 1.2M4.8 15.2L6 14M14 6l1.2-1.2"/></svg></button><span class="version">v0.4.0</span></div>
+  </div>
+</aside>
+<main class="main">
+<div class="main__inner">
+<header class="intro">
+  <h1>API Reference</h1>
+  <p class="intro__lede">The package exports one class, <code>LayerImage</code>, and <code>__version__</code>. Operations change the image in place and return it, so calls can be chained. Call <code>clone()</code> first to keep an unchanged copy. Pixel values are floats in [0, 1].</p>
+</header>
+<nav class="method-index" aria-label="Methods"><a href="api.html#from_file">from_file<span class="paren">()</span></a><a href="api.html#from_url">from_url<span class="paren">()</span></a><a href="api.html#from_array">from_array<span class="paren">()</span></a><a href="api.html#save">save<span class="paren">()</span></a><a href="api.html#get_image_as_array">get_image_as_array<span class="paren">()</span></a><a href="api.html#clone">clone<span class="paren">()</span></a><a href="api.html#grayscale">grayscale<span class="paren">()</span></a><a href="api.html#brightness">brightness<span class="paren">()</span></a><a href="api.html#contrast">contrast<span class="paren">()</span></a><a href="api.html#hue">hue<span class="paren">()</span></a><a href="api.html#saturation">saturation<span class="paren">()</span></a><a href="api.html#lightness">lightness<span class="paren">()</span></a><a href="api.html#curve">curve<span class="paren">()</span></a><a href="api.html#resize">resize<span class="paren">()</span></a><a href="api.html#blend_mode">blend_mode<span class="paren">()</span></a><a href="api.html#apply_from_dict">apply_from_dict<span class="paren">()</span></a><a href="api.html#apply_from_json">apply_from_json<span class="paren">()</span></a></nav>
+
+<section class="section section--api" id="creating">
+  <h2>Creating an Image</h2>
+  <article class="api-entry api-entry--first" id="from_file">
+    <h3><a href="#from_file"><span class="api-entry__prefix">LayerImage.</span><span class="api-entry__name">from_file</span><span class="api-entry__args">(file_path)</span></a></h3>
+    <p class="api-entry__desc">Open an image file with Pillow. EXIF orientation is applied, so photos from cameras and phones load upright. Any color mode is converted to RGB, or to RGBA when the image has transparency. Metadata such as EXIF data and ICC profiles is not kept.</p>
+    <dl class="params"><dt><span class="params__name">file_path</span><span class="params__type">str | Path</span></dt><dd>Path to any image file Pillow can open.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code></span></div>
+  </article>
+  <article class="api-entry" id="from_url">
+    <h3><a href="#from_url"><span class="api-entry__prefix">LayerImage.</span><span class="api-entry__name">from_url</span><span class="api-entry__args">(url, timeout=30.0)</span></a></h3>
+    <p class="api-entry__desc">Download an image over HTTP(S) with Requests, then open it the same way as from_file().</p>
+    <dl class="params"><dt><span class="params__name">url</span><span class="params__type">str</span></dt><dd>Address of the image.</dd><dt><span class="params__name">timeout</span><span class="params__type">float = 30.0</span></dt><dd>Seconds to wait for the server.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code></span><span>Raises <code>requests.HTTPError</code> when the server responds with an error status</span></div>
+  </article>
+  <article class="api-entry" id="from_array">
+    <h3><a href="#from_array"><span class="api-entry__prefix">LayerImage.</span><span class="api-entry__name">from_array</span><span class="api-entry__args">(image_data)</span></a></h3>
+    <p class="api-entry__desc">Wrap a NumPy array of floats with values in [0, 1].</p>
+    <dl class="params"><dt><span class="params__name">image_data</span><span class="params__type">NDArray[float64]</span></dt><dd>Shape (height, width, 3) for RGB or (height, width, 4) for RGBA.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code></span><span>Raises <code>TypeError</code> for an array that is not float (divide 8-bit data by 255 first)</span><span>Raises <code>ValueError</code> for any other shape</span></div>
+  </article>
+</section>
+<section class="section section--api" id="output">
+  <h2>Saving and Output</h2>
+    <p class="section__intro">In a Jupyter notebook, a LayerImage displays as the image itself. Its repr shows the mode and size, for example &lt;LayerImage RGB 1536x1024&gt;.</p>
+  <article class="api-entry api-entry--first" id="save">
+    <h3><a href="#save"><span class="api-entry__prefix">image.</span><span class="api-entry__name">save</span><span class="api-entry__args">(filename, quality=95)</span></a></h3>
+    <p class="api-entry__desc">Write the image to a file. The format comes from the file extension: JPEG, PNG, BMP, TIFF, WebP or any other format Pillow can write. An RGBA image saved as JPEG is composited onto a white background.</p>
+    <dl class="params"><dt><span class="params__name">filename</span><span class="params__type">str | Path</span></dt><dd>Output path.</dd><dt><span class="params__name">quality</span><span class="params__type">int = 95</span></dt><dd>JPEG quality from 0 to 100. Other formats ignore it.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span></div>
+  </article>
+  <article class="api-entry" id="get_image_as_array">
+    <h3><a href="#get_image_as_array"><span class="api-entry__prefix">image.</span><span class="api-entry__name">get_image_as_array</span><span class="api-entry__args">()</span></a></h3>
+    <p class="api-entry__desc">Return the pixels as a float64 array with values in [0, 1] and shape (height, width, 3) or (height, width, 4). This is the underlying array, not a copy. For a photo loaded from a file or URL, it applies any pending per-channel operations and keeps the image in float64 from then on.</p>
+    <div class="api-entry__meta"><span>Returns <code>NDArray[float64]</code></span><a href="index.html#performance">Performance</a></div>
+  </article>
+  <article class="api-entry" id="clone">
+    <h3><a href="#clone"><span class="api-entry__prefix">image.</span><span class="api-entry__name">clone</span><span class="api-entry__args">()</span></a></h3>
+    <p class="api-entry__desc">Return an independent copy, including any operations still pending in the lookup table. Changes to the copy do not affect the original.</p>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (a new image)</span></div>
+  </article>
+</section>
+<section class="section section--api" id="adjustments">
+  <h2>Adjustments</h2>
+  <article class="api-entry api-entry--first" id="grayscale">
+    <h3><a href="#grayscale"><span class="api-entry__prefix">image.</span><span class="api-entry__name">grayscale</span><span class="api-entry__args">()</span></a></h3>
+    <p class="api-entry__desc">Convert to grayscale with the ITU-R 601 luminance weights (0.2989, 0.5870, 0.1140). The alpha channel is kept.</p>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><a href="operations.html#grayscale">Before and after</a></div>
+  </article>
+  <article class="api-entry" id="brightness">
+    <h3><a href="#brightness"><span class="api-entry__prefix">image.</span><span class="api-entry__name">brightness</span><span class="api-entry__args">(factor)</span></a></h3>
+    <p class="api-entry__desc">Multiply every channel by 1 + factor and clip to [0, 1]. A factor above 0 brightens, below 0 darkens.</p>
+    <dl class="params"><dt><span class="params__name">factor</span><span class="params__type">float</span></dt><dd>0 leaves the image unchanged.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><a href="operations.html#brightness">Before and after</a></div>
+  </article>
+  <article class="api-entry" id="contrast">
+    <h3><a href="#contrast"><span class="api-entry__prefix">image.</span><span class="api-entry__name">contrast</span><span class="api-entry__args">(factor)</span></a></h3>
+    <p class="api-entry__desc">Scale each value around mid-gray, factor * (value - 0.5) + 0.5, and clip to [0, 1]. Above 1 increases contrast; between 0 and 1 decreases it.</p>
+    <dl class="params"><dt><span class="params__name">factor</span><span class="params__type">float</span></dt><dd>1 leaves the image unchanged.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><a href="operations.html#contrast">Before and after</a></div>
+  </article>
+  <article class="api-entry" id="hue">
+    <h3><a href="#hue"><span class="api-entry__prefix">image.</span><span class="api-entry__name">hue</span><span class="api-entry__args">(target_hue)</span></a></h3>
+    <p class="api-entry__desc">Set every pixel&#x27;s hue to target_hue while keeping saturation and value. This is a colorize-style adjustment.</p>
+    <dl class="params"><dt><span class="params__name">target_hue</span><span class="params__type">float</span></dt><dd>Hue in [0, 1].</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><a href="operations.html#hue">Before and after</a></div>
+  </article>
+  <article class="api-entry" id="saturation">
+    <h3><a href="#saturation"><span class="api-entry__prefix">image.</span><span class="api-entry__name">saturation</span><span class="api-entry__args">(factor)</span></a></h3>
+    <p class="api-entry__desc">Multiply saturation by 1 + factor and clip to [0, 1]. Above 0 boosts color, below 0 mutes it.</p>
+    <dl class="params"><dt><span class="params__name">factor</span><span class="params__type">float</span></dt><dd>-1 removes all color. 0 leaves the image unchanged.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><a href="operations.html#saturation">Before and after</a></div>
+  </article>
+  <article class="api-entry" id="lightness">
+    <h3><a href="#lightness"><span class="api-entry__prefix">image.</span><span class="api-entry__name">lightness</span><span class="api-entry__args">(factor)</span></a></h3>
+    <p class="api-entry__desc">Blend toward white when factor is above 0, or toward black when it is below 0.</p>
+    <dl class="params"><dt><span class="params__name">factor</span><span class="params__type">float</span></dt><dd>From -1 (black) to 1 (white). 0 leaves the image unchanged.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><a href="operations.html#lightness">Before and after</a></div>
+  </article>
+  <article class="api-entry" id="curve">
+    <h3><a href="#curve"><span class="api-entry__prefix">image.</span><span class="api-entry__name">curve</span><span class="api-entry__args">(channels=&quot;rgb&quot;, curve_points=None)</span></a></h3>
+    <p class="api-entry__desc">Remap tones through control points spaced evenly across [0, 1], on any combination of the red, green and blue channels.</p>
+    <dl class="params"><dt><span class="params__name">channels</span><span class="params__type">str = &quot;rgb&quot;</span></dt><dd>Any non-empty combination of r, g and b, such as &quot;rgb&quot;, &quot;r&quot; or &quot;gb&quot;.</dd><dt><span class="params__name">curve_points</span><span class="params__type">list[float] | None = None</span></dt><dd>Output levels in [0, 1]. The default, [0, 1], leaves the image unchanged.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><span>Raises <code>ValueError</code> for any other channel letters</span><a href="operations.html#curve_rgb">Before and after</a></div>
+  </article>
+  <article class="api-entry" id="resize">
+    <h3><a href="#resize"><span class="api-entry__prefix">image.</span><span class="api-entry__name">resize</span><span class="api-entry__args">(width, height)</span></a></h3>
+    <p class="api-entry__desc">Resize with Lanczos resampling. A photo loaded from a file or URL stays 8-bit.</p>
+    <dl class="params"><dt><span class="params__name">width</span><span class="params__type">int</span></dt><dd>New width in pixels, at least 1.</dd><dt><span class="params__name">height</span><span class="params__type">int</span></dt><dd>New height in pixels, at least 1.</dd></dl>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><span>Raises <code>ValueError</code> if width or height is below 1</span><a href="operations.html#resize">Before and after</a></div>
+  </article>
+</section>
+<section class="section section--api" id="blending">
+  <h2>Blend Modes</h2>
+  <article class="api-entry api-entry--first" id="blend_mode">
+    <h3><a href="#blend_mode"><span class="api-entry__prefix">image.</span><span class="api-entry__name">blend_mode</span><span class="api-entry__args">(blend_data, opacity=1.0)</span></a></h3>
+    <p class="api-entry__desc">Every blend mode has this signature: replace blend_mode with one of the 14 methods below. Each combines the image (the base, A) with a blend layer (B), then mixes the result back with the original by opacity. A hex color, or an array with one value per channel, keeps an 8-bit photo on the lookup-table path. A per-pixel array converts it to float64 first.</p>
+    <dl class="params"><dt><span class="params__name">blend_data</span><span class="params__type">str | NDArray[float64]</span></dt><dd>A hex color such as &quot;#e8743b&quot;, or a float array in [0, 1] that broadcasts to the image: shape (3,) for one color, or (height, width, 3) for a per-pixel layer such as a gradient or another photo.</dd><dt><span class="params__name">opacity</span><span class="params__type">float = 1.0</span></dt><dd>From 0 (no change) to 1 (full effect).</dd></dl>
+    <nav class="method-index api-entry__modes" aria-label="Blend modes"><a href="blend-modes.html#darken">darken<span class="paren">()</span></a><a href="blend-modes.html#multiply">multiply<span class="paren">()</span></a><a href="blend-modes.html#color_burn">color_burn<span class="paren">()</span></a><a href="blend-modes.html#linear_burn">linear_burn<span class="paren">()</span></a><a href="blend-modes.html#lighten">lighten<span class="paren">()</span></a><a href="blend-modes.html#screen">screen<span class="paren">()</span></a><a href="blend-modes.html#color_dodge">color_dodge<span class="paren">()</span></a><a href="blend-modes.html#linear_dodge">linear_dodge<span class="paren">()</span></a><a href="blend-modes.html#overlay">overlay<span class="paren">()</span></a><a href="blend-modes.html#soft_light">soft_light<span class="paren">()</span></a><a href="blend-modes.html#hard_light">hard_light<span class="paren">()</span></a><a href="blend-modes.html#vivid_light">vivid_light<span class="paren">()</span></a><a href="blend-modes.html#linear_light">linear_light<span class="paren">()</span></a><a href="blend-modes.html#pin_light">pin_light<span class="paren">()</span></a></nav>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><a href="blend-modes.html">All 14 modes compared</a></div>
+  </article>
+</section>
+<section class="section section--api" id="data">
+  <h2>Operations as Data</h2>
+  <article class="api-entry api-entry--first" id="apply_from_dict">
+    <h3><a href="#apply_from_dict"><span class="api-entry__prefix">image.</span><span class="api-entry__name">apply_from_dict</span><span class="api-entry__args">(data)</span></a></h3>
+    <p class="api-entry__desc">Run a sequence of operations described in a dictionary, in order. The operation types below list the keys each one takes.</p>
+    <dl class="params"><dt><span class="params__name">data</span><span class="params__type">dict</span></dt><dd>A dict with an &quot;operations&quot; list.</dd></dl>
+    <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">apply_from_dict</span>({
+    <span class="tok-string">&quot;operations&quot;</span>: [
+        {<span class="tok-string">&quot;type&quot;</span>: <span class="tok-string">&quot;grayscale&quot;</span>},
+        {<span class="tok-string">&quot;type&quot;</span>: <span class="tok-string">&quot;brightness&quot;</span>, <span class="tok-string">&quot;factor&quot;</span>: <span class="tok-number">0.2</span>},
+        {<span class="tok-string">&quot;type&quot;</span>: <span class="tok-string">&quot;multiply&quot;</span>, <span class="tok-string">&quot;hex&quot;</span>: <span class="tok-string">&quot;#ff0000&quot;</span>, <span class="tok-string">&quot;opacity&quot;</span>: <span class="tok-number">0.5</span>},
+        {<span class="tok-string">&quot;type&quot;</span>: <span class="tok-string">&quot;resize&quot;</span>, <span class="tok-string">&quot;width&quot;</span>: <span class="tok-number">800</span>, <span class="tok-string">&quot;height&quot;</span>: <span class="tok-number">600</span>},
+        {<span class="tok-string">&quot;type&quot;</span>: <span class="tok-string">&quot;curve&quot;</span>, <span class="tok-string">&quot;channels&quot;</span>: <span class="tok-string">&quot;rgb&quot;</span>, <span class="tok-string">&quot;curve_points&quot;</span>: [<span class="tok-number">0</span>, <span class="tok-number">0.5</span>, <span class="tok-number">1</span>]},
+    ]
+})</code></pre></div>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><a href="#json-types">Operation types</a></div>
+  </article>
+  <article class="api-entry" id="apply_from_json">
+    <h3><a href="#apply_from_json"><span class="api-entry__prefix">image.</span><span class="api-entry__name">apply_from_json</span><span class="api-entry__args">(filepath)</span></a></h3>
+    <p class="api-entry__desc">Load a JSON file with the same structure and pass it to apply_from_dict().</p>
+    <dl class="params"><dt><span class="params__name">filepath</span><span class="params__type">str | Path</span></dt><dd>Path to the JSON file.</dd></dl>
+    <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">apply_from_json</span>(<span class="tok-string">&quot;pipeline.json&quot;</span>)</code></pre></div>
+    <div class="api-entry__meta"><span>Returns <code>LayerImage</code> (the same image)</span><a href="examples.html#batch">Batch example</a></div>
+  </article>
+</section>
+
+<section class="section" id="json-types">
+  <h2>JSON Operation Types</h2>
+    <p class="section__intro">Each entry in the <code>"operations"</code> list is an object with a <code>"type"</code> and the keys below. Operations run in order. An entry with an unknown type or a missing required key is skipped without an error.</p>
+  <div class="table-scroll">
+    <table class="json-types">
+      <thead><tr><th>Type</th><th>Keys</th><th>Calls</th></tr></thead>
+      <tbody><tr><td>grayscale</td><td>none</td><td>grayscale()</td></tr><tr><td>brightness</td><td>factor</td><td>brightness(factor)</td></tr><tr><td>contrast</td><td>factor</td><td>contrast(factor)</td></tr><tr><td>saturation</td><td>factor</td><td>saturation(factor)</td></tr><tr><td>lightness</td><td>factor</td><td>lightness(factor)</td></tr><tr><td>hue</td><td>hue</td><td>hue(hue)</td></tr><tr><td>curve</td><td>channels, curve_points</td><td>curve(channels, curve_points)</td></tr><tr><td>resize</td><td>width, height</td><td>resize(width, height)</td></tr><tr><td>any blend mode, such as multiply</td><td>hex, opacity (optional, default 1.0)</td><td>multiply(hex, opacity)</td></tr></tbody>
+    </table>
+  </div>
+  <p class="section__outro">In a dict or JSON file, blend modes take a hex color only. To blend
+    with a NumPy array, call the method directly.</p>
+</section>
+<nav class="pager" aria-label="Pages"><div class="pager__prev"><a href="operations.html"><span class="pager__label">Previous</span><span class="pager__title">Operations</span></a></div><div class="pager__next"></div></nav>
+<footer class="footer">
+  <div class="footer__meta"><span>layeris 0.4.0</span><span>MIT License</span><a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></div>
+  <p>Every result image on this site is rendered by layeris itself with
+    <code>scripts/build_docs.py</code>. Sample photos were generated with OpenAI's
+    <code>gpt-image-2.5</code> model (<code>scripts/generate_photos.py</code>).</p>
+</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

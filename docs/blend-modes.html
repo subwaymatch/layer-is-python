@@ -6,207 +6,201 @@
 <title>Blend modes | Layer.is</title>
 <meta name="description" content="Every layeris blend mode compared on the same photos.">
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('layeris-docs-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&amp;family=Schibsted+Grotesk:wght@400;500;600&amp;family=Besley:wght@400;500;600&amp;display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
 </head>
 <body>
-<header class="topbar">
-  <div class="wrap topbar__inner">
-    <a class="brand" href="index.html"><img class="brand__logo" src="assets/logo.svg" alt="" width="32" height="28"><span>Layer.is</span></a>
-    <nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="examples.html">Examples</a><a href="blend-modes.html" aria-current="page">Blend modes</a><a href="operations.html">Operations</a></nav>
-    <a href="https://github.com/subwaymatch/layer-is-python" class="gh-link"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg><span>GitHub</span></a>
-  </div>
+<header class="mobilebar">
+  <a class="mobilebar__brand" href="index.html" aria-label="layeris 0.4.0, overview"><img src="assets/logo.svg" alt="" width="40" height="35"><span class="version">v0.4.0</span></a>
+  <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme"><svg class="icon-moon" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M16.2 12.4A6.6 6.6 0 0 1 7.6 3.8a6.6 6.6 0 1 0 8.6 8.6Z"/></svg><svg class="icon-sun" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.3"/><path d="M10 2.6v1.7M10 15.7v1.7M2.6 10h1.7M15.7 10h1.7M4.8 4.8L6 6M14 14l1.2 1.2M4.8 15.2L6 14M14 6l1.2-1.2"/></svg></button>
+  <button class="icon-button menu-toggle" type="button" data-menu-toggle aria-controls="sidebar" aria-expanded="false" aria-label="Open menu"><svg class="icon-menu" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14"/></svg><svg class="icon-close" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
 </header>
-<main>
-<div class="wrap">
-  <header class="page-head">
-    <p class="eyebrow">Reference</p>
-    <h1>Blend modes</h1>
-    <p class="lede">A blend mode combines the image (the base, <em>A</em>) with a blend layer
-      (<em>B</em>). The layer can be a hex color, a NumPy array the same size as the image
-      (a gradient, a texture, another photo) or anything that broadcasts to it. Every mode
-      takes an optional <code>opacity</code> from 0 to 1. Below, all 14 modes
-      blend <span class="swatch" style="background:#e8743b"></span><code>#e8743b</code> into the same three photos.</p>
-    <nav class="toc" aria-label="Blend modes"><a class="chip chip--code" href="#darken">darken</a><a class="chip chip--code" href="#multiply">multiply</a><a class="chip chip--code" href="#color_burn">color_burn</a><a class="chip chip--code" href="#linear_burn">linear_burn</a><a class="chip chip--code" href="#lighten">lighten</a><a class="chip chip--code" href="#screen">screen</a><a class="chip chip--code" href="#color_dodge">color_dodge</a><a class="chip chip--code" href="#linear_dodge">linear_dodge</a><a class="chip chip--code" href="#overlay">overlay</a><a class="chip chip--code" href="#soft_light">soft_light</a><a class="chip chip--code" href="#hard_light">hard_light</a><a class="chip chip--code" href="#vivid_light">vivid_light</a><a class="chip chip--code" href="#linear_light">linear_light</a><a class="chip chip--code" href="#pin_light">pin_light</a></nav>
-  </header>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <a class="sidebar__logo" href="index.html" aria-label="layeris overview"><img src="assets/logo.svg" alt="" width="68" height="59"></a>
+  <nav class="sidenav" aria-label="Docs"><div class="sidenav__group"><a class="sidenav__page" href="index.html">Overview</a></div><div class="sidenav__group"><a class="sidenav__page" href="examples.html">Examples</a></div><div class="sidenav__group"><a class="sidenav__page" href="blend-modes.html" aria-current="page">Blend modes</a><div class="sidenav__sections"><a href="#base">Base photos</a><a href="#darken-group">Darken group</a><a href="#darken" class="sidenav__method">darken</a><a href="#multiply" class="sidenav__method">multiply</a><a href="#color_burn" class="sidenav__method">color_burn</a><a href="#linear_burn" class="sidenav__method">linear_burn</a><a href="#lighten-group">Lighten group</a><a href="#lighten" class="sidenav__method">lighten</a><a href="#screen" class="sidenav__method">screen</a><a href="#color_dodge" class="sidenav__method">color_dodge</a><a href="#linear_dodge" class="sidenav__method">linear_dodge</a><a href="#contrast-group">Contrast group</a><a href="#overlay" class="sidenav__method">overlay</a><a href="#soft_light" class="sidenav__method">soft_light</a><a href="#hard_light" class="sidenav__method">hard_light</a><a href="#vivid_light" class="sidenav__method">vivid_light</a><a href="#linear_light" class="sidenav__method">linear_light</a><a href="#pin_light" class="sidenav__method">pin_light</a><a href="#opacity">Opacity</a><a href="#colors">Choosing a blend color</a><a href="#arrays">Blending with arrays</a></div></div><div class="sidenav__group"><a class="sidenav__page" href="operations.html">Operations</a></div><div class="sidenav__group"><a class="sidenav__page" href="api.html">API reference</a></div></nav>
+  <div class="sidebar__foot">
+    <a class="gh-link" href="https://github.com/subwaymatch/layer-is-python"><svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg><span>GitHub</span></a>
+    <div class="sidebar__meta"><button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme"><svg class="icon-moon" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M16.2 12.4A6.6 6.6 0 0 1 7.6 3.8a6.6 6.6 0 1 0 8.6 8.6Z"/></svg><svg class="icon-sun" viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.3"/><path d="M10 2.6v1.7M10 15.7v1.7M2.6 10h1.7M15.7 10h1.7M4.8 4.8L6 6M14 14l1.2 1.2M4.8 15.2L6 14M14 6l1.2-1.2"/></svg></button><span class="version">v0.4.0</span></div>
+  </div>
+</aside>
+<main class="main">
+<div class="main__inner">
+<header class="intro">
+  <h1>Blend Modes</h1>
+  <p class="intro__lede">A blend mode combines the image (the base, <em>A</em>) with a blend layer (<em>B</em>). The layer can be a hex color, a NumPy array the same size as the image (a gradient, a texture, another photo) or anything that broadcasts to it. Every mode takes an optional <code>opacity</code> from 0 to 1. Below, all 14 modes blend <span class="swatch" style="background: #e8743b"></span><code>#e8743b</code> into the same three photos. <span class="hint-hover">Hover a result to see the base photo.</span><span class="hint-touch">Press and hold a result to see the base photo.</span></p>
+</header>
+<nav class="method-index" aria-label="Blend modes"><a href="#darken">darken<span class="paren">()</span></a><a href="#multiply">multiply<span class="paren">()</span></a><a href="#color_burn">color_burn<span class="paren">()</span></a><a href="#linear_burn">linear_burn<span class="paren">()</span></a><a href="#lighten">lighten<span class="paren">()</span></a><a href="#screen">screen<span class="paren">()</span></a><a href="#color_dodge">color_dodge<span class="paren">()</span></a><a href="#linear_dodge">linear_dodge<span class="paren">()</span></a><a href="#overlay">overlay<span class="paren">()</span></a><a href="#soft_light">soft_light<span class="paren">()</span></a><a href="#hard_light">hard_light<span class="paren">()</span></a><a href="#vivid_light">vivid_light<span class="paren">()</span></a><a href="#linear_light">linear_light<span class="paren">()</span></a><a href="#pin_light">pin_light<span class="paren">()</span></a></nav>
 
-  <section class="section">
-    <h2>Base photos</h2>
-    <p class="section__intro">The unedited photos that every blend mode below is applied to.</p>
-    <div class="strip strip--3"><figure><img src="blend-modes/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window" width="420" height="280" loading="lazy" decoding="async"><figcaption>portrait</figcaption></figure><figure><img src="blend-modes/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water" width="420" height="280" loading="lazy" decoding="async"><figcaption>mountain-lake</figcaption></figure><figure><img src="blend-modes/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies" width="420" height="280" loading="lazy" decoding="async"><figcaption>flower-market</figcaption></figure></div>
+<div class="matrix">
+  <div class="matrix__head" aria-hidden="true"><span></span><div><span>portrait</span><span>mountain-lake</span><span>flower-market</span></div></div>
+  <section class="matrix__row matrix__row--base" id="base">
+    <div class="matrix__label">
+      <h3>Base Photos</h3>
+      <p>The unedited photos that every blend mode below is applied to.</p>
+    </div>
+    <div class="thumbs"><figure><img src="blend-modes/portrait.jpg" alt="Older man with a grey beard and knitted cap by a workshop window" width="420" height="280"><figcaption>portrait</figcaption></figure><figure><img src="blend-modes/mountain-lake.jpg" alt="Alpine lake at sunrise with mountains reflected in the water" width="420" height="280"><figcaption>mountain-lake</figcaption></figure><figure><img src="blend-modes/flower-market.jpg" alt="Flower stall with tulips, roses, sunflowers and peonies" width="420" height="280"><figcaption>flower-market</figcaption></figure></div>
   </section>
-
-  <section class="section" id="darken">
-    <h2>Darken group</h2>
+  <section class="section matrix__group" id="darken-group">
+    <h2>Darken Group</h2>
     <p class="section__intro">The result is never lighter than the base. White is neutral.</p>
-    <div class="modes">
-      <article class="mode" id="darken">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#darken">Darken</a></h3>
-          <code class="formula">min(A, B)</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-darken.jpg" alt="Darken with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-darken.jpg" alt="Darken with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-darken.jpg" alt="Darken with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">darken</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="multiply">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#multiply">Multiply</a></h3>
-          <code class="formula">A * B</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-multiply.jpg" alt="Multiply with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-multiply.jpg" alt="Multiply with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-multiply.jpg" alt="Multiply with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">multiply</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="color_burn">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#color_burn">Color Burn</a></h3>
-          <code class="formula">1 - (1 - A) / B</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-color_burn.jpg" alt="Color Burn with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-color_burn.jpg" alt="Color Burn with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-color_burn.jpg" alt="Color Burn with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">color_burn</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="linear_burn">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#linear_burn">Linear Burn</a></h3>
-          <code class="formula">A + B - 1</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-linear_burn.jpg" alt="Linear Burn with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-linear_burn.jpg" alt="Linear Burn with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-linear_burn.jpg" alt="Linear Burn with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">linear_burn</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-    </div>
+    <article class="matrix__row" id="darken">
+      <div class="matrix__label">
+        <h3><a href="#darken">Darken</a></h3>
+        <code class="matrix__call">image.darken("#e8743b")</code>
+        <span class="matrix__formula">min(A, B)</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-darken.jpg" alt="Darken with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-darken.jpg" alt="Darken with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-darken.jpg" alt="Darken with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="multiply">
+      <div class="matrix__label">
+        <h3><a href="#multiply">Multiply</a></h3>
+        <code class="matrix__call">image.multiply("#e8743b")</code>
+        <span class="matrix__formula">A * B</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-multiply.jpg" alt="Multiply with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-multiply.jpg" alt="Multiply with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-multiply.jpg" alt="Multiply with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="color_burn">
+      <div class="matrix__label">
+        <h3><a href="#color_burn">Color Burn</a></h3>
+        <code class="matrix__call">image.color_burn("#e8743b")</code>
+        <span class="matrix__formula">1 - (1 - A) / B</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-color_burn.jpg" alt="Color Burn with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-color_burn.jpg" alt="Color Burn with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-color_burn.jpg" alt="Color Burn with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="linear_burn">
+      <div class="matrix__label">
+        <h3><a href="#linear_burn">Linear Burn</a></h3>
+        <code class="matrix__call">image.linear_burn("#e8743b")</code>
+        <span class="matrix__formula">A + B - 1</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-linear_burn.jpg" alt="Linear Burn with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-linear_burn.jpg" alt="Linear Burn with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-linear_burn.jpg" alt="Linear Burn with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
   </section>
-  <section class="section" id="lighten">
-    <h2>Lighten group</h2>
+  <section class="section matrix__group" id="lighten-group">
+    <h2>Lighten Group</h2>
     <p class="section__intro">The result is never darker than the base. Black is neutral.</p>
-    <div class="modes">
-      <article class="mode" id="lighten">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#lighten">Lighten</a></h3>
-          <code class="formula">max(A, B)</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-lighten.jpg" alt="Lighten with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-lighten.jpg" alt="Lighten with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-lighten.jpg" alt="Lighten with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">lighten</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="screen">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#screen">Screen</a></h3>
-          <code class="formula">1 - (1 - A)(1 - B)</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-screen.jpg" alt="Screen with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-screen.jpg" alt="Screen with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-screen.jpg" alt="Screen with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">screen</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="color_dodge">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#color_dodge">Color Dodge</a></h3>
-          <code class="formula">A / (1 - B)</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-color_dodge.jpg" alt="Color Dodge with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-color_dodge.jpg" alt="Color Dodge with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-color_dodge.jpg" alt="Color Dodge with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">color_dodge</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="linear_dodge">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#linear_dodge">Linear Dodge</a></h3>
-          <code class="formula">A + B</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-linear_dodge.jpg" alt="Linear Dodge with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-linear_dodge.jpg" alt="Linear Dodge with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-linear_dodge.jpg" alt="Linear Dodge with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">linear_dodge</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-    </div>
+    <article class="matrix__row" id="lighten">
+      <div class="matrix__label">
+        <h3><a href="#lighten">Lighten</a></h3>
+        <code class="matrix__call">image.lighten("#e8743b")</code>
+        <span class="matrix__formula">max(A, B)</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-lighten.jpg" alt="Lighten with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-lighten.jpg" alt="Lighten with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-lighten.jpg" alt="Lighten with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="screen">
+      <div class="matrix__label">
+        <h3><a href="#screen">Screen</a></h3>
+        <code class="matrix__call">image.screen("#e8743b")</code>
+        <span class="matrix__formula">1 - (1 - A)(1 - B)</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-screen.jpg" alt="Screen with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-screen.jpg" alt="Screen with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-screen.jpg" alt="Screen with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="color_dodge">
+      <div class="matrix__label">
+        <h3><a href="#color_dodge">Color Dodge</a></h3>
+        <code class="matrix__call">image.color_dodge("#e8743b")</code>
+        <span class="matrix__formula">A / (1 - B)</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-color_dodge.jpg" alt="Color Dodge with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-color_dodge.jpg" alt="Color Dodge with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-color_dodge.jpg" alt="Color Dodge with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="linear_dodge">
+      <div class="matrix__label">
+        <h3><a href="#linear_dodge">Linear Dodge</a></h3>
+        <code class="matrix__call">image.linear_dodge("#e8743b")</code>
+        <span class="matrix__formula">A + B</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-linear_dodge.jpg" alt="Linear Dodge with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-linear_dodge.jpg" alt="Linear Dodge with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-linear_dodge.jpg" alt="Linear Dodge with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
   </section>
-  <section class="section" id="contrast">
-    <h2>Contrast group</h2>
+  <section class="section matrix__group" id="contrast-group">
+    <h2>Contrast Group</h2>
     <p class="section__intro">Darken below mid-gray, lighten above it. 50% gray is neutral for most of these modes.</p>
-    <div class="modes">
-      <article class="mode" id="overlay">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#overlay">Overlay</a></h3>
-          <code class="formula">2AB if A &lt;= 0.5, else 1 - 2(1 - A)(1 - B)</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-overlay.jpg" alt="Overlay with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-overlay.jpg" alt="Overlay with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-overlay.jpg" alt="Overlay with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">overlay</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="soft_light">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#soft_light">Soft Light</a></h3>
-          <code class="formula">Pegtop soft light</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-soft_light.jpg" alt="Soft Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-soft_light.jpg" alt="Soft Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-soft_light.jpg" alt="Soft Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">soft_light</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="hard_light">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#hard_light">Hard Light</a></h3>
-          <code class="formula">2AB if B &lt;= 0.5, else 1 - 2(1 - A)(1 - B)</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-hard_light.jpg" alt="Hard Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-hard_light.jpg" alt="Hard Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-hard_light.jpg" alt="Hard Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">hard_light</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="vivid_light">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#vivid_light">Vivid Light</a></h3>
-          <code class="formula">Color burn if B &lt;= 0.5, else color dodge</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-vivid_light.jpg" alt="Vivid Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-vivid_light.jpg" alt="Vivid Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-vivid_light.jpg" alt="Vivid Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">vivid_light</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="linear_light">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#linear_light">Linear Light</a></h3>
-          <code class="formula">A + 2B - 1</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-linear_light.jpg" alt="Linear Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-linear_light.jpg" alt="Linear Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-linear_light.jpg" alt="Linear Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">linear_light</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-      <article class="mode" id="pin_light">
-        <header class="mode__head">
-          <h3><a class="anchor" href="#pin_light">Pin Light</a></h3>
-          <code class="formula">Replace A depending on B</code>
-        </header>
-        <div class="mode__thumbs"><img src="blend-modes/portrait-pin_light.jpg" alt="Pin Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/mountain-lake-pin_light.jpg" alt="Pin Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img src="blend-modes/flower-market-pin_light.jpg" alt="Pin Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"></div>
-        <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">image.<span class="tok-call">pin_light</span>(<span class="tok-string">&quot;#e8743b&quot;</span>)</code></pre></div>
-      </article>
-    </div>
+    <article class="matrix__row" id="overlay">
+      <div class="matrix__label">
+        <h3><a href="#overlay">Overlay</a></h3>
+        <code class="matrix__call">image.overlay("#e8743b")</code>
+        <span class="matrix__formula">2AB if A &lt;= 0.5, else 1 - 2(1 - A)(1 - B)</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-overlay.jpg" alt="Overlay with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-overlay.jpg" alt="Overlay with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-overlay.jpg" alt="Overlay with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="soft_light">
+      <div class="matrix__label">
+        <h3><a href="#soft_light">Soft Light</a></h3>
+        <code class="matrix__call">image.soft_light("#e8743b")</code>
+        <span class="matrix__formula">Pegtop soft light</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-soft_light.jpg" alt="Soft Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-soft_light.jpg" alt="Soft Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-soft_light.jpg" alt="Soft Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="hard_light">
+      <div class="matrix__label">
+        <h3><a href="#hard_light">Hard Light</a></h3>
+        <code class="matrix__call">image.hard_light("#e8743b")</code>
+        <span class="matrix__formula">2AB if B &lt;= 0.5, else 1 - 2(1 - A)(1 - B)</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-hard_light.jpg" alt="Hard Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-hard_light.jpg" alt="Hard Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-hard_light.jpg" alt="Hard Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="vivid_light">
+      <div class="matrix__label">
+        <h3><a href="#vivid_light">Vivid Light</a></h3>
+        <code class="matrix__call">image.vivid_light("#e8743b")</code>
+        <span class="matrix__formula">Color burn if B &lt;= 0.5, else color dodge</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-vivid_light.jpg" alt="Vivid Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-vivid_light.jpg" alt="Vivid Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-vivid_light.jpg" alt="Vivid Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="linear_light">
+      <div class="matrix__label">
+        <h3><a href="#linear_light">Linear Light</a></h3>
+        <code class="matrix__call">image.linear_light("#e8743b")</code>
+        <span class="matrix__formula">A + 2B - 1</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-linear_light.jpg" alt="Linear Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-linear_light.jpg" alt="Linear Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-linear_light.jpg" alt="Linear Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
+    <article class="matrix__row" id="pin_light">
+      <div class="matrix__label">
+        <h3><a href="#pin_light">Pin Light</a></h3>
+        <code class="matrix__call">image.pin_light("#e8743b")</code>
+        <span class="matrix__formula">Replace A depending on B</span>
+      </div>
+      <div class="thumbs"><figure><div class="peek"><img src="blend-modes/portrait-pin_light.jpg" alt="Pin Light with #e8743b on the portrait photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/portrait.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>portrait</figcaption></figure><figure><div class="peek"><img src="blend-modes/mountain-lake-pin_light.jpg" alt="Pin Light with #e8743b on the mountain-lake photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/mountain-lake.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>mountain-lake</figcaption></figure><figure><div class="peek"><img src="blend-modes/flower-market-pin_light.jpg" alt="Pin Light with #e8743b on the flower-market photo" width="420" height="280" loading="lazy" decoding="async"><img class="peek__base" src="blend-modes/flower-market.jpg" alt="" width="420" height="280" loading="lazy" decoding="async"><span class="peek__tag">base</span></div><figcaption>flower-market</figcaption></figure></div>
+    </article>
   </section>
+</div>
 
-  <section class="section" id="opacity">
-    <h2>Opacity</h2>
-    <p class="section__intro">Opacity mixes the blended result back with the original:
-      <code>overlay("#ff4f8b", opacity=...)</code> on the mountain-lake photo.</p>
-    <div class="strip strip--5"><figure><img src="blend-modes/opacity-0.jpg" alt="Overlay at opacity 0" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=0</code></figcaption></figure><figure><img src="blend-modes/opacity-25.jpg" alt="Overlay at opacity 0.25" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=0.25</code></figcaption></figure><figure><img src="blend-modes/opacity-50.jpg" alt="Overlay at opacity 0.5" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=0.5</code></figcaption></figure><figure><img src="blend-modes/opacity-75.jpg" alt="Overlay at opacity 0.75" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=0.75</code></figcaption></figure><figure><img src="blend-modes/opacity-100.jpg" alt="Overlay at opacity 1" width="420" height="280" loading="lazy" decoding="async"><figcaption><code>opacity=1</code></figcaption></figure></div>
-  </section>
+<section class="section" id="opacity">
+  <h2>Opacity</h2>
+    <p class="section__intro">Opacity mixes the blended result back with the original: <code>overlay("#ff4f8b", opacity=...)</code> on the mountain-lake photo.</p>
+  <div class="strip strip--opacity"><figure><img src="blend-modes/opacity-0.jpg" alt="Overlay at opacity 0" width="420" height="280" loading="lazy" decoding="async"><figcaption>opacity=0</figcaption></figure><figure><img src="blend-modes/opacity-25.jpg" alt="Overlay at opacity 0.25" width="420" height="280" loading="lazy" decoding="async"><figcaption>opacity=0.25</figcaption></figure><figure><img src="blend-modes/opacity-50.jpg" alt="Overlay at opacity 0.5" width="420" height="280" loading="lazy" decoding="async"><figcaption>opacity=0.5</figcaption></figure><figure><img src="blend-modes/opacity-75.jpg" alt="Overlay at opacity 0.75" width="420" height="280" loading="lazy" decoding="async"><figcaption>opacity=0.75</figcaption></figure><figure><img src="blend-modes/opacity-100.jpg" alt="Overlay at opacity 1" width="420" height="280" loading="lazy" decoding="async"><figcaption>opacity=1</figcaption></figure></div>
+</section>
 
-  <section class="section" id="colors">
-    <h2>Choosing a blend color</h2>
-    <p class="section__intro">The same mode gives very different moods depending on the color:
-      <code>soft_light(color)</code> on the portrait photo.</p>
-    <div class="strip strip--6"><figure><img src="blend-modes/color-ff6b35.jpg" alt="Soft Light with #ff6b35" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background:#ff6b35"></span><code>#ff6b35</code></figcaption></figure><figure><img src="blend-modes/color-ffd23f.jpg" alt="Soft Light with #ffd23f" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background:#ffd23f"></span><code>#ffd23f</code></figcaption></figure><figure><img src="blend-modes/color-3bceac.jpg" alt="Soft Light with #3bceac" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background:#3bceac"></span><code>#3bceac</code></figcaption></figure><figure><img src="blend-modes/color-0ead69.jpg" alt="Soft Light with #0ead69" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background:#0ead69"></span><code>#0ead69</code></figcaption></figure><figure><img src="blend-modes/color-4361ee.jpg" alt="Soft Light with #4361ee" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background:#4361ee"></span><code>#4361ee</code></figcaption></figure><figure><img src="blend-modes/color-c42bd8.jpg" alt="Soft Light with #c42bd8" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background:#c42bd8"></span><code>#c42bd8</code></figcaption></figure></div>
-  </section>
+<section class="section" id="colors">
+  <h2>Choosing a Blend Color</h2>
+    <p class="section__intro">The same mode gives very different moods depending on the color: <code>soft_light(color)</code> on the portrait photo.</p>
+  <div class="strip strip--colors"><figure><img src="blend-modes/color-ff6b35.jpg" alt="Soft Light with #ff6b35" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background: #ff6b35"></span>#ff6b35</figcaption></figure><figure><img src="blend-modes/color-ffd23f.jpg" alt="Soft Light with #ffd23f" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background: #ffd23f"></span>#ffd23f</figcaption></figure><figure><img src="blend-modes/color-3bceac.jpg" alt="Soft Light with #3bceac" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background: #3bceac"></span>#3bceac</figcaption></figure><figure><img src="blend-modes/color-0ead69.jpg" alt="Soft Light with #0ead69" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background: #0ead69"></span>#0ead69</figcaption></figure><figure><img src="blend-modes/color-4361ee.jpg" alt="Soft Light with #4361ee" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background: #4361ee"></span>#4361ee</figcaption></figure><figure><img src="blend-modes/color-c42bd8.jpg" alt="Soft Light with #c42bd8" width="420" height="280" loading="lazy" decoding="async"><figcaption><span class="swatch" style="background: #c42bd8"></span>#c42bd8</figcaption></figure></div>
+</section>
 
-  <section class="section" id="arrays">
-    <h2>Blending with arrays</h2>
-    <p class="section__intro">Pass a NumPy array instead of a hex string to blend per pixel.
-      The <a href="examples.html#creative-effects">creative effects</a> examples use this for
-      a <a href="examples.html#lomo">vignette</a>, a
-      <a href="examples.html#graduated-filter">graduated filter</a> and a
-      <a href="examples.html#double-exposure">double exposure</a>.</p>
-    <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">h, w, _ = image.<span class="tok-call">get_image_as_array</span>().shape
+<section class="section" id="arrays">
+  <h2>Blending with Arrays</h2>
+    <p class="section__intro">Pass a NumPy array instead of a hex string to blend per pixel. The <a href="examples.html#creative-effects">creative effects</a> examples use this for a <a href="examples.html#lomo">vignette</a>, a <a href="examples.html#graduated-filter">graduated filter</a> and a <a href="examples.html#double-exposure">double exposure</a>.</p>
+  <div class="code"><button class="code__copy" type="button" data-copy>Copy</button><pre><code class="lang-python">h, w, _ = image.<span class="tok-call">get_image_as_array</span>().shape
 t = <span class="tok-name">np</span>.<span class="tok-call">linspace</span>(<span class="tok-number">0</span>, <span class="tok-number">1</span>, h)[:, <span class="tok-name">np</span>.newaxis, <span class="tok-name">np</span>.newaxis]  <span class="tok-comment"># 0 at the top, 1 at the bottom</span>
 gradient = (<span class="tok-number">1</span> - t) * <span class="tok-name">np</span>.<span class="tok-call">array</span>([<span class="tok-number">1.0</span>, <span class="tok-number">0.6</span>, <span class="tok-number">0.3</span>]) + t    <span class="tok-comment"># orange fading to white</span>
 
 image.<span class="tok-call">multiply</span>(gradient)  <span class="tok-comment"># white is neutral for multiply</span></code></pre></div>
-  </section>
+</section>
+<nav class="pager" aria-label="Pages"><div class="pager__prev"><a href="examples.html"><span class="pager__label">Previous</span><span class="pager__title">Examples</span></a></div><div class="pager__next"><a href="operations.html"><span class="pager__label">Next</span><span class="pager__title">Operations</span></a></div></nav>
+<footer class="footer">
+  <div class="footer__meta"><span>layeris 0.4.0</span><span>MIT License</span><a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></div>
+  <p>Every result image on this site is rendered by layeris itself with
+    <code>scripts/build_docs.py</code>. Sample photos were generated with OpenAI's
+    <code>gpt-image-2.5</code> model (<code>scripts/generate_photos.py</code>).</p>
+</footer>
 </div>
 </main>
-<footer class="footer">
-  <div class="wrap footer__inner">
-    <p>layeris v0.4.0 | MIT License |
-       <a href="https://github.com/subwaymatch/layer-is-python">Source on GitHub</a></p>
-    <p>Every result image on this site is rendered by layeris itself with
-       <code>scripts/build_docs.py</code>. Sample photos were generated with
-       OpenAI's <code>gpt-image-2.5</code> model (<code>scripts/generate_photos.py</code>).</p>
-  </div>
-</footer>
+</div>
 </body>
 </html>

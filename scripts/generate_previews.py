@@ -435,56 +435,72 @@ def render_markdown() -> str:
     return "\n".join(lines)
 
 
+# Anchor ids for the operation groups on the docs site.
+GROUP_IDS = {
+    "Basic adjustments": "basic",
+    "Blend modes: darken": "ops-darken",
+    "Blend modes: lighten": "ops-lighten",
+    "Blend modes: contrast": "ops-contrast",
+    "Putting it together": "together",
+}
+
+# Labels in the method index at the top of the page: (name, parenthesized part).
+INDEX_LABELS = {"curve_rgb": ("curve", "('rgb')"), "curve_red": ("curve", "('r')"),
+                "chaining": ("chaining", "")}
+
+
 def render_operations_page(preview_size: tuple[int, int]) -> str:
     """The docs site's operations page (docs/operations.html)."""
     groups: dict[str, list[Operation]] = {}
     for op in OPERATIONS:
         groups.setdefault(op.group, []).append(op)
 
-    toc = "".join(
-        f'<a class="chip" href="#{op.slug}">{layout.esc(op.title)}</a>' for op in OPERATIONS
+    index = layout.method_index(
+        [layout.method_link(f"#{op.slug}", *INDEX_LABELS.get(op.slug, (op.slug, "()")))
+         for op in OPERATIONS],
+        "Operations",
     )
     sections = []
     for group, ops in groups.items():
         cards = "".join(
             f"""
-    <article class="op" id="{op.slug}">
-      <div class="op__text">
-        <h3><a class="anchor" href="#{op.slug}">{layout.esc(op.title)}</a></h3>
-        <p>{layout.esc(op.description)}</p>
-        {layout.code_block(op.code)}
-      </div>
-      <figure class="op__figure">
-        <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
-        {layout.img(f"previews/{op.slug}.jpg", f"Before/after preview of {op.title}",
-                    preview_size)}
-      </figure>
-    </article>"""
-            for op in ops
+  <article class="op{" op--first" if i == 0 else ""}" id="{op.slug}">
+    <div class="op__text">
+      <h3><a href="#{op.slug}">{layout.esc(layout.title_case(op.title))}</a></h3>
+      <p>{layout.esc(op.description)}</p>
+      {layout.code_block(op.code)}
+    </div>
+    <figure class="op__figure">
+      <div class="op__labels" aria-hidden="true"><span>Before</span><span>After</span></div>
+      {layout.img(f"previews/{op.slug}.jpg", f"Before/after preview of {op.title}",
+                  preview_size)}
+    </figure>
+  </article>"""
+            for i, op in enumerate(ops)
         )
         sections.append(
-            f'  <section class="section">\n    <h2>{layout.esc(group)}</h2>{cards}\n  </section>'
+            f'<section class="section section--ops" id="{GROUP_IDS[group]}">\n'
+            f"  <h2>{layout.esc(layout.title_case(group))}</h2>{cards}\n</section>"
         )
 
-    body = f"""<div class="wrap">
-  <header class="page-head">
-    <p class="eyebrow">Reference</p>
-    <h1>Operations</h1>
-    <p class="lede">Every LayerImage operation on a single photo, with the input on the
-      left and the result of the snippet on the right. The darken-group blend modes run
-      on a grayscale copy (<code>grayscale_image = image.clone().grayscale()</code>),
-      as in the original demo. See <a href="examples.html">Examples</a> for complete
-      looks built from these operations.</p>
-    <nav class="toc" aria-label="Operations">{toc}</nav>
-  </header>
-{chr(10).join(sections)}
-</div>"""
+    body = f"""<header class="intro">
+  <h1>Operations</h1>
+  <p class="intro__lede">Every LayerImage operation on a single photo, with the input on the
+    left and the result of the snippet on the right. The darken-group blend modes run on a
+    grayscale copy (<code>grayscale_image = image.clone().grayscale()</code>), as in the
+    original demo. See <a href="examples.html">Examples</a> for complete looks built from
+    these operations.</p>
+</header>
+{index}
+
+{chr(10).join(sections)}"""
     return layout.page(
         filename="operations.html",
         title="Operations",
         description="Before/after previews of every layeris operation.",
         body=body,
         version=__version__,
+        sections=[(GROUP_IDS[group], group, 1) for group in groups],
     )
 
 
