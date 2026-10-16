@@ -63,9 +63,9 @@ total length is their sum (see `src/Video.tsx`).
 ## Adding music later
 
 The video has no audio track. It runs 51.3 seconds (1,540 frames at 30 fps),
-and the last two-thirds of a second fades to white. To add a track, either put the file
-in `public/` and add `<Audio src={staticFile('music.mp3')} />` inside
-`LayerisVideo` in `src/Video.tsx` before rendering, or mux it into the
+and the last two-thirds of a second fades to white. To add a track, either
+put the file in `public/` and add `<Audio src={staticFile('music.mp3')} />`
+inside `LayerisVideo` in `src/Video.tsx` before rendering, or mux it into the
 finished file:
 
 ```sh
