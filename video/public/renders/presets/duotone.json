@@ -1,0 +1,9 @@
+{
+  "operations": [
+    {"type": "grayscale"},
+    {"type": "contrast", "factor": 1.2},
+    {"type": "curve", "channels": "r", "curve_points": [0.12, 1.0]},
+    {"type": "curve", "channels": "g", "curve_points": [0.08, 0.45]},
+    {"type": "curve", "channels": "b", "curve_points": [0.4, 0.42]}
+  ]
+}

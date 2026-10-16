@@ -1,0 +1,199 @@
+{
+  "chain": {
+    "photo": "vase.jpg",
+    "steps": [
+      "grayscale()",
+      "contrast(1.2)",
+      "multiply(\"#f2c49b\", opacity=0.8)",
+      "curve(\"b\", [0.12, 0.4, 0.7, 0.92])"
+    ],
+    "saveAs": "vase-toned.jpg",
+    "images": [
+      "renders/chain/0-original.jpg",
+      "renders/chain/1-grayscale.jpg",
+      "renders/chain/2-contrast.jpg",
+      "renders/chain/3-multiply.jpg",
+      "renders/chain/4-curve.jpg"
+    ]
+  },
+  "blend": {
+    "photo": "dunes.jpg",
+    "color": "#e8743b",
+    "tiles": [
+      {
+        "mode": "original",
+        "image": "renders/blend/original.jpg"
+      },
+      {
+        "mode": "darken",
+        "image": "renders/blend/darken.jpg"
+      },
+      {
+        "mode": "multiply",
+        "image": "renders/blend/multiply.jpg"
+      },
+      {
+        "mode": "color_burn",
+        "image": "renders/blend/color_burn.jpg"
+      },
+      {
+        "mode": "linear_burn",
+        "image": "renders/blend/linear_burn.jpg"
+      },
+      {
+        "mode": "lighten",
+        "image": "renders/blend/lighten.jpg"
+      },
+      {
+        "mode": "screen",
+        "image": "renders/blend/screen.jpg"
+      },
+      {
+        "mode": "color_dodge",
+        "image": "renders/blend/color_dodge.jpg"
+      },
+      {
+        "mode": "linear_dodge",
+        "image": "renders/blend/linear_dodge.jpg"
+      },
+      {
+        "mode": "overlay",
+        "image": "renders/blend/overlay.jpg"
+      },
+      {
+        "mode": "soft_light",
+        "image": "renders/blend/soft_light.jpg"
+      },
+      {
+        "mode": "hard_light",
+        "image": "renders/blend/hard_light.jpg"
+      },
+      {
+        "mode": "vivid_light",
+        "image": "renders/blend/vivid_light.jpg"
+      },
+      {
+        "mode": "linear_light",
+        "image": "renders/blend/linear_light.jpg"
+      },
+      {
+        "mode": "pin_light",
+        "image": "renders/blend/pin_light.jpg"
+      }
+    ]
+  },
+  "curves": {
+    "photo": "tree.jpg",
+    "phases": [
+      {
+        "channels": "r",
+        "start": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "target": [
+          0,
+          0.1,
+          0.5,
+          0.9,
+          1
+        ],
+        "images": [
+          "renders/curves/0-r-00.jpg",
+          "renders/curves/0-r-01.jpg",
+          "renders/curves/0-r-02.jpg",
+          "renders/curves/0-r-03.jpg",
+          "renders/curves/0-r-04.jpg",
+          "renders/curves/0-r-05.jpg",
+          "renders/curves/0-r-06.jpg",
+          "renders/curves/0-r-07.jpg",
+          "renders/curves/0-r-08.jpg",
+          "renders/curves/0-r-09.jpg",
+          "renders/curves/0-r-10.jpg",
+          "renders/curves/0-r-11.jpg",
+          "renders/curves/0-r-12.jpg",
+          "renders/curves/0-r-13.jpg",
+          "renders/curves/0-r-14.jpg",
+          "renders/curves/0-r-15.jpg",
+          "renders/curves/0-r-16.jpg",
+          "renders/curves/0-r-17.jpg",
+          "renders/curves/0-r-18.jpg",
+          "renders/curves/0-r-19.jpg",
+          "renders/curves/0-r-20.jpg"
+        ]
+      },
+      {
+        "channels": "b",
+        "start": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "target": [
+          0.2,
+          0.36,
+          0.5,
+          0.62,
+          0.78
+        ],
+        "images": [
+          "renders/curves/1-b-00.jpg",
+          "renders/curves/1-b-01.jpg",
+          "renders/curves/1-b-02.jpg",
+          "renders/curves/1-b-03.jpg",
+          "renders/curves/1-b-04.jpg",
+          "renders/curves/1-b-05.jpg",
+          "renders/curves/1-b-06.jpg",
+          "renders/curves/1-b-07.jpg",
+          "renders/curves/1-b-08.jpg",
+          "renders/curves/1-b-09.jpg",
+          "renders/curves/1-b-10.jpg",
+          "renders/curves/1-b-11.jpg",
+          "renders/curves/1-b-12.jpg",
+          "renders/curves/1-b-13.jpg",
+          "renders/curves/1-b-14.jpg",
+          "renders/curves/1-b-15.jpg",
+          "renders/curves/1-b-16.jpg",
+          "renders/curves/1-b-17.jpg",
+          "renders/curves/1-b-18.jpg",
+          "renders/curves/1-b-19.jpg",
+          "renders/curves/1-b-20.jpg"
+        ]
+      }
+    ]
+  },
+  "looks": [
+    {
+      "slug": "cross-process",
+      "title": "Cross-processed",
+      "photo": "lemons.jpg",
+      "code": "(image.curve(\"r\", [0, 0.15, 0.55, 0.9, 1])\n      .curve(\"g\", [0, 0.2, 0.55, 0.85, 1])\n      .curve(\"b\", [0.22, 0.35, 0.48, 0.6, 0.72]))",
+      "preset": null,
+      "before": "renders/looks/cross-process-before.jpg",
+      "after": "renders/looks/cross-process-after.jpg"
+    },
+    {
+      "slug": "cyanotype",
+      "title": "Cyanotype",
+      "photo": "lighthouse.jpg",
+      "code": "(image.grayscale()\n      .curve(\"rgb\", [0, 0.1, 0.55, 0.9, 1])\n      .curve(\"r\", [0.02, 0.85])\n      .curve(\"g\", [0.15, 0.95])\n      .curve(\"b\", [0.35, 1.0]))",
+      "preset": null,
+      "before": "renders/looks/cyanotype-before.jpg",
+      "after": "renders/looks/cyanotype-after.jpg"
+    },
+    {
+      "slug": "duotone",
+      "title": "Duotone, from a JSON preset",
+      "photo": "stairs.jpg",
+      "code": "image.apply_from_json(\"duotone.json\")",
+      "preset": "{\n  \"operations\": [\n    {\"type\": \"grayscale\"},\n    {\"type\": \"contrast\", \"factor\": 1.2},\n    {\"type\": \"curve\", \"channels\": \"r\", \"curve_points\": [0.12, 1.0]},\n    {\"type\": \"curve\", \"channels\": \"g\", \"curve_points\": [0.08, 0.45]},\n    {\"type\": \"curve\", \"channels\": \"b\", \"curve_points\": [0.4, 0.42]}\n  ]\n}",
+      "before": "renders/looks/duotone-before.jpg",
+      "after": "renders/looks/duotone-after.jpg"
+    }
+  ]
+}

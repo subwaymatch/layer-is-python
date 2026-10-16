@@ -1,0 +1,80 @@
+import {evolvePath} from '@remotion/paths';
+import React, {useId} from 'react';
+import {colors} from '../theme';
+
+// The three layers of docs/assets/logo.svg, back to front.
+export const LOGO_PATHS = [
+	'M93.5 201.7C83.8 203.3 76.2 199.9 69.1 193.5C62 187.1 55.3 177.8 51.3 166.4C47.3 155.1 46 141.8 46.1 128.7C46.3 115.5 48 102.5 51.5 89.6C55.1 76.7 60.5 64 67.3 54.2C74.2 44.5 82.5 37.7 92.5 34C102.5 30.3 114.1 29.5 127.1 30.4C140.1 31.3 154.4 33.8 168.4 37.2C182.4 40.6 196 45.1 209.6 50C223.3 54.9 236.9 60.4 250.8 66.4C264.7 72.5 278.9 79.1 287.8 85.9C296.7 92.6 300.2 99.5 300.8 105.5C301.4 111.6 299.1 116.9 290.8 121.3C282.6 125.8 268.3 129.5 253.6 134C238.8 138.6 223.6 144 209.4 149.4C195.2 154.8 182 160.2 168.5 166.5C154.9 172.8 141 180 128 186.8C115.1 193.7 103.2 200.1 93.5 201.7Z',
+	'M88.1 239.9C77.8 241.9 69.4 238.8 61.6 233C53.8 227.2 46.6 218.6 42.2 207.3C37.9 196.1 36.5 182.2 36.9 168.4C37.2 154.5 39.3 140.7 43.7 127.8C48.1 114.9 54.7 103 63 93.1C71.3 83.2 81.2 75.2 92.5 70C103.9 64.8 116.7 62.3 130.6 61.3C144.5 60.2 159.4 60.7 173.8 62.4C188.2 64.2 202.1 67.3 215.8 72.2C229.6 77 243.1 83.6 255.2 91.4C267.3 99.3 277.9 108.4 287.6 119.1C297.4 129.8 306.4 142.2 311.1 152.2C315.8 162.2 316.3 170 313.5 175C310.7 180.1 304.6 182.5 293.2 183.5C281.7 184.4 265 183.9 250 184.6C235 185.3 221.9 187.1 207.8 190.3C193.6 193.4 178.5 197.8 164.2 203.6C149.8 209.3 136.3 216.4 123.5 223.5C110.6 230.6 98.4 237.8 88.1 239.9Z',
+	'M71.1 290.1C64.6 291.7 60 289.9 54.7 286.5C49.3 283.1 43.4 278.2 38.6 268.1C33.8 258.1 30.2 242.9 30 227.3C29.7 211.7 32.8 195.7 37.7 182.6C42.7 169.5 49.5 159.3 60.6 149.1C71.6 139 86.9 128.9 102.8 121.9C118.8 114.9 135.5 110.9 152.4 109.5C169.3 108.1 186.4 109.2 204.4 113.6C222.4 118 241.3 125.7 257.8 134.4C274.3 143.2 288.4 153 300.2 164.8C311.9 176.6 321.3 190.3 326 199.5C330.7 208.8 330.8 213.6 329.7 217C328.7 220.4 326.5 222.5 323.1 224.4C319.6 226.3 314.8 228.1 299.3 226.3C283.8 224.5 257.6 219 235.9 217.3C214.2 215.5 197 217.4 181.5 220.5C165.9 223.6 151.9 227.9 137.6 237.7C123.3 247.5 108.7 263 97.2 273.2C85.8 283.4 77.5 288.5 71.1 290.1Z',
+];
+
+const VIEWBOX = {x: 28, y: 28, w: 304, h: 265};
+export const LOGO_ASPECT = VIEWBOX.h / VIEWBOX.w;
+
+// Fill opacity of each layer in the finished logo.
+export const LOGO_FILL_OPACITY = 0.36;
+
+export type LayerState = {
+	/** Offset from the layer's resting place, in logo units. */
+	dx?: number;
+	dy?: number;
+	/** 0 to 1: how much of the outline is drawn. */
+	stroke?: number;
+	strokeOpacity?: number;
+	/** 0 to 1, as a fraction of the finished logo's fill opacity. */
+	fill?: number;
+};
+
+const FINISHED: LayerState = {stroke: 0, strokeOpacity: 0, fill: 1};
+
+export const Logo: React.FC<{
+	width: number;
+	layers?: LayerState[];
+	style?: React.CSSProperties;
+}> = ({width, layers, style}) => {
+	const gradientId = `layeris-fill-${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+	return (
+		<svg
+			viewBox={`${VIEWBOX.x} ${VIEWBOX.y} ${VIEWBOX.w} ${VIEWBOX.h}`}
+			width={width}
+			height={width * LOGO_ASPECT}
+			style={{overflow: 'visible', display: 'block', ...style}}
+		>
+			<defs>
+				{/* One gradient shared by all three layers, sized to each layer's bounding box */}
+				<radialGradient
+					id={gradientId}
+					cx="0.5"
+					cy="0.5"
+					r="0.5"
+					gradientTransform="translate(0.5 0.5) scale(0.904 1.137) translate(-0.5 -0.5)"
+				>
+					<stop offset="0" stopColor="#fff" />
+					<stop offset="1" stopColor={colors.cyan} />
+				</radialGradient>
+			</defs>
+			{LOGO_PATHS.map((d, i) => {
+				const s = {...FINISHED, ...layers?.[i]};
+				const outline = evolvePath(s.stroke ?? 0, d);
+				return (
+					<g key={i} transform={`translate(${s.dx ?? 0} ${s.dy ?? 0})`}>
+						<path d={d} fill={`url(#${gradientId})`} fillOpacity={LOGO_FILL_OPACITY * (s.fill ?? 1)} />
+						{(s.stroke ?? 0) > 0 && (s.strokeOpacity ?? 0) > 0 ? (
+							<path
+								d={d}
+								fill="none"
+								stroke={colors.cyan}
+								strokeWidth={1.4}
+								strokeLinecap="round"
+								strokeOpacity={s.strokeOpacity}
+								strokeDasharray={outline.strokeDasharray}
+								strokeDashoffset={outline.strokeDashoffset}
+							/>
+						) : null}
+					</g>
+				);
+			})}
+		</svg>
+	);
+};

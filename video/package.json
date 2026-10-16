@@ -1,0 +1,28 @@
+{
+  "name": "layeris-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A short walkthrough video of layeris, built with Remotion",
+  "scripts": {
+    "assets": "python3 scripts/build_assets.py",
+    "start": "remotion studio",
+    "render": "remotion render LayerisVideo out/layeris.mp4",
+    "still": "remotion still LayerisVideo out/still.png",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/besley": "5.2.8",
+    "@fontsource/dm-mono": "5.2.7",
+    "@fontsource/schibsted-grotesk": "5.2.8",
+    "@remotion/cli": "4.0.531",
+    "@remotion/paths": "4.0.531",
+    "@remotion/transitions": "4.0.531",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "remotion": "4.0.531"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.12",
+    "typescript": "5.9.2"
+  }
+}
