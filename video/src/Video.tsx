@@ -24,8 +24,8 @@ export const TOTAL_FRAMES = SCENES.reduce((sum, [, frames]) => sum + frames, 0);
 
 // Background music from scripts/generate_music.py, generated at the video's
 // length. It ends on its own; the short fade only guards the final frames.
-// 0.85 brings it from -13.3 to about -14.7 LUFS, with headroom below 0 dBFS.
-const MUSIC_VOLUME = 0.85;
+// 0.8 brings it from -12.7 to about -14.6 LUFS, with headroom below 0 dBFS.
+const MUSIC_VOLUME = 0.8;
 const MUSIC_FADE_FRAMES = 15;
 const musicVolume = (frame: number) =>
 	MUSIC_VOLUME *

@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """Generate the video's background music with the ElevenLabs Music API.
 
-The track is instrumental gugak (Korean traditional music) in the manner of
-gayageum ensemble arrangements of Pachelbel's Canon, generated at the video's
-exact length. The render only *reads* ``video/public/music.mp3``, so this
-script is needed only to replace the track.
+Each style below is an instrumental prompt sized to the video's exact length.
+The render only *reads* ``video/public/music.mp3``, so this script is needed
+only to replace the track. Every run gives a different take, even for the
+same style.
 
 Usage::
 
     export ELEVENLABS_API_KEY=...
-    python video/scripts/generate_music.py
-    python video/scripts/generate_music.py --model music_v1 --out /tmp/try.mp3
+    python video/scripts/generate_music.py                     # default style
+    python video/scripts/generate_music.py --style lofi --out /tmp/lofi.mp3
 """
 
 from __future__ import annotations
@@ -29,29 +29,46 @@ MODEL = "music_v2_5"
 # The composition's length: 1,563 frames at 30 fps (see src/Video.tsx).
 LENGTH_MS = 52_100
 
-# In the manner of Korean gayageum ensemble arrangements of Pachelbel's
-# Canon. The API rejects prompts that name a piece, so this one describes the
-# music instead: the Canon's ground bass (public domain) and the canon texture.
-PROMPT = (
-    "An instrumental piece of Korean traditional music (gugak) played by a "
-    "gayageum ensemble, built on a baroque-style repeating eight-chord "
-    "ground bass in D major (D, A, B minor, F-sharp minor, G, D, G, A). "
-    "Several gayageums (12-string Korean zithers) enter one after another "
-    "in canon over the progression, each variation livelier than the last, "
-    "with bright plucked arpeggios, cascading runs, gentle vibrato and "
-    "expressive pitch bends. The janggu (hourglass drum) keeps a light, "
-    "steady beat, low geomungo plucks double the bass line, and the daegeum "
-    "(bamboo flute) and haegeum (two-string fiddle) join with soaring "
-    "melodic lines in the later variations. Bright, graceful and uplifting, "
-    "with clean modern production and a moderate tempo around 90 BPM. It "
-    "opens with a solo gayageum playing the progression, builds gradually "
-    "through the variations, and ends on a full, resolved final chord that "
-    "rings out. No vocals."
+# Shared by every style: what the track is for, and what to avoid.
+BRIEF = (
+    "Background music for a calm, minimal walkthrough video of a software "
+    "library. Clean, polished production with a spacious, airy mix. "
+    "Instrumental only: no vocals, no drops, no cinematic swells, nothing "
+    "corporate or cheesy."
 )
+
+STYLES: dict[str, str] = {
+    "piano": (
+        "Warm, minimal modern instrumental. Soft felt piano plays a simple, "
+        "hopeful chord progression, joined by gentle plucked synth arpeggios, "
+        "a light crisp beat with a soft kick, brushed snare and shaker, and a "
+        "round, warm bass. Around 100 BPM, optimistic but understated. It "
+        "starts with solo piano, the beat comes in after a few seconds, it "
+        "grows slightly fuller in the middle, and it ends on a soft final "
+        "piano chord that rings out."
+    ),
+    "marimba": (
+        "Light, playful minimal electronic instrumental. Marimba and kalimba "
+        "plucks trade a bright, curious motif over soft synth pads, finger "
+        "snaps, a gentle bouncy beat and a warm bass. Around 110 BPM, "
+        "friendly and focused. It opens with a solo marimba, builds lightly, "
+        "and ends on a clean final note that rings out."
+    ),
+    "lofi": (
+        "Mellow lo-fi chillhop instrumental. Jazzy Rhodes electric piano "
+        "chords over a soft, laid-back boom-bap beat with a slight swing, a "
+        "warm upright bass and subtle vinyl texture. Around 85 BPM, relaxed, "
+        "cozy and focused. It opens with the Rhodes alone, the beat drops in "
+        "after a few seconds, and it ends with the last chord ringing out."
+    ),
+}
+DEFAULT_STYLE = "piano"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--style", choices=sorted(STYLES), default=DEFAULT_STYLE,
+                        help=f"prompt to use (default: {DEFAULT_STYLE})")
     parser.add_argument("--model", default=MODEL, help=f"model id (default: {MODEL})")
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT, help="output MP3 path")
     args = parser.parse_args()
@@ -60,12 +77,12 @@ def main() -> None:
     if not api_key:
         sys.exit("ELEVENLABS_API_KEY is not set")
 
-    print(f"Generating {LENGTH_MS / 1000:.1f} s of music with {args.model}")
+    print(f"Generating {LENGTH_MS / 1000:.1f} s of '{args.style}' music with {args.model}")
     response = requests.post(
         "https://api.elevenlabs.io/v1/music",
         headers={"xi-api-key": api_key},
         json={
-            "prompt": PROMPT,
+            "prompt": f"{STYLES[args.style]} {BRIEF}",
             "music_length_ms": LENGTH_MS,
             "model_id": args.model,
             "force_instrumental": True,

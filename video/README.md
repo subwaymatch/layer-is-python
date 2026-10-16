@@ -66,19 +66,20 @@ total length is their sum (see `src/Video.tsx`).
 
 ## Music
 
-The background track, `public/music.mp3`, is instrumental gugak (Korean
-traditional music) in the manner of gayageum ensemble arrangements of
-Pachelbel's Canon: gayageums entering in canon over the Canon's ground bass in
-D, with janggu, geomungo, daegeum and haegeum. It was generated with the
+The background track, `public/music.mp3`, is a warm, minimal instrumental:
+felt piano over a light beat and plucked synth arpeggios, about 99 BPM, on a
+four-chord loop that changes once per bar. It was generated with the
 ElevenLabs Music API (`music_v2_5`) at the video's exact length, 52.1 seconds
-(1,563 frames at 30 fps), and resolves on its own as the outro plays.
-`src/Video.tsx` mixes it in at 85% volume.
+(1,563 frames at 30 fps). It gets fuller around the blend-modes scene and
+rings out under the outro. `src/Video.tsx` mixes it in at 80% volume.
 
-To generate a new track (needs `ELEVENLABS_API_KEY`), run:
+`scripts/generate_music.py` holds the prompts. To generate a new take (needs
+`ELEVENLABS_API_KEY`):
 
 ```sh
-python3 scripts/generate_music.py   # writes public/music.mp3
+python3 scripts/generate_music.py                 # "piano" style, writes public/music.mp3
+python3 scripts/generate_music.py --style lofi    # or "marimba"
 ```
 
-Each run gives a different track. If the video's length changes, update
+Every run gives a different take. If the video's length changes, update
 `LENGTH_MS` in the script first.
