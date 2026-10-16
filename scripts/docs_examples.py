@@ -21,19 +21,19 @@ class Photo:
 PHOTOS: dict[str, Photo] = {
     p.slug: p
     for p in [
-        Photo("mountain-lake", "Alpine lake at sunrise with mountains reflected in the water"),
-        Photo("portrait", "Older man with a grey beard and knitted cap by a workshop window"),
-        Photo("city-night", "Rainy city street at night with neon reflections"),
-        Photo("breakfast", "Overhead view of a breakfast table with avocado toast and berries"),
-        Photo("flower-market", "Flower stall with tulips, roses, sunflowers and peonies"),
-        Photo("architecture", "White building with curved balconies against a blue sky"),
-        Photo("beach", "Sandy beach in late afternoon light with a lifeguard tower"),
-        Photo("forest", "Misty pine forest with sun rays and ferns"),
-        Photo("cafe", "Cozy cafe interior with a barista behind the counter"),
-        Photo("vintage-car", "Turquoise 1960s car on a street of pastel houses"),
-        Photo("harbor", "Fishing harbor on a hazy, overcast day"),
-        Photo("silhouette", "Profile silhouette of a woman against a white sky"),
-        Photo("snowy-cabin", "Wooden cabin in a snowy landscape with smoke from the chimney"),
+        Photo("palace-pond", "Gyeonghoeru pavilion reflected in its pond at sunrise"),
+        Photo("hanbok-portrait", "Older man in a white hanbok and black gat hat by a paper window"),
+        Photo("seoul-night", "Seoul alley at night with neon and lanterns reflected on wet pavement"),
+        Photo("bibimbap", "Overhead view of bibimbap in a stone bowl with banchan side dishes"),
+        Photo("lotus-lanterns", "Rows of colorful lotus lanterns over a temple courtyard"),
+        Photo("palace-eaves", "Painted palace eaves against a deep blue sky"),
+        Photo("jeju-coast", "Jeju beach with black volcanic rocks in late afternoon light"),
+        Photo("bamboo-forest", "Misty bamboo forest with sun rays"),
+        Photo("hanok-tea", "Celadon tea set on a low table in a hanok room"),
+        Photo("gamcheon-village", "Pastel houses on a hillside in Gamcheon Culture Village, Busan"),
+        Photo("fishing-harbor", "Fishing harbor on Korea's east coast on a hazy day"),
+        Photo("hanbok-silhouette", "Profile silhouette of a woman in hanbok against a white sky"),
+        Photo("snowy-hanok", "Hanok house with a snow-covered tiled roof"),
     ]
 }
 
@@ -70,7 +70,7 @@ RECIPES: list[Recipe] = [
         slug="rescue-flat-photo",
         title="Rescue a flat photo",
         category="Everyday fixes",
-        photo="harbor",
+        photo="fishing-harbor",
         description=(
             "A hazy, overcast shot has no true blacks or whites. Curve points "
             "computed with NumPy emulate a Levels adjustment that stretches the "
@@ -78,9 +78,9 @@ RECIPES: list[Recipe] = [
             "colors back."
         ),
         code="""
-# Levels: map input 0.12 to black and 0.88 to white
+# Levels: map input 0.16 to black and 0.82 to white
 x = np.linspace(0, 1, 26)
-levels = np.clip((x - 0.12) / 0.76, 0, 1)
+levels = np.clip((x - 0.16) / 0.66, 0, 1)
 
 (image.curve("rgb", levels.tolist())
       .saturation(0.35)
@@ -91,7 +91,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="food-pop",
         title="Make food pop",
         category="Everyday fixes",
-        photo="breakfast",
+        photo="bibimbap",
         description=(
             "Food photos benefit from rich color and a touch of warmth. A gentle "
             "S-curve adds contrast without crushing the shadows."
@@ -106,7 +106,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="warm-white-balance",
         title="Warm up skin tones",
         category="Everyday fixes",
-        photo="portrait",
+        photo="hanbok-portrait",
         description=(
             "Per-channel curves act as a white-balance slider: raise the red "
             "midtones and lower the blue ones to warm up a cool, grey-lit "
@@ -125,7 +125,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="teal-and-orange",
         title="Teal & orange",
         category="Color grading",
-        photo="beach",
+        photo="jeju-coast",
         description=(
             "The blockbuster grade: an S-curve on red and an inverted S-curve "
             "on blue push the shadows toward teal and the highlights toward "
@@ -142,7 +142,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="neon-nights",
         title="Neon nights",
         category="Color grading",
-        photo="city-night",
+        photo="seoul-night",
         description=(
             "Lift the blue in the shadows, wash the scene with magenta using "
             "Soft Light, and turn up saturation for a cyberpunk feel."
@@ -158,7 +158,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="winter-blues",
         title="Winter blues",
         category="Color grading",
-        photo="snowy-cabin",
+        photo="snowy-hanok",
         description=(
             "A blue Soft Light layer and a curve that lifts the blue shadows "
             "cool the whole scene; a small lightness lift keeps it airy."
@@ -173,7 +173,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="moody-forest",
         title="Moody forest",
         category="Color grading",
-        photo="forest",
+        photo="bamboo-forest",
         description=(
             "Muted greens and a deep teal cast: desaturate, crush the shadows "
             "with a curve, then multiply with a dark teal at low opacity."
@@ -189,7 +189,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="golden-glow",
         title="Golden glow",
         category="Color grading",
-        photo="mountain-lake",
+        photo="palace-pond",
         description=(
             "Exaggerate the sunrise: Screen a dark orange to lift and tint the "
             "shadows, Overlay a brighter one to warm the midtones, then restore "
@@ -208,7 +208,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="faded-film",
         title="Faded film",
         category="Film & vintage",
-        photo="cafe",
+        photo="hanok-tea",
         description=(
             "Lifted blacks and softened whites give the matte look of expired "
             "film; a cream Soft Light layer warms the midtones."
@@ -223,7 +223,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="cross-process",
         title="Cross-processed",
         category="Film & vintage",
-        photo="vintage-car",
+        photo="gamcheon-village",
         description=(
             "Developing slide film in negative chemistry gave punchy, yellow-"
             "green highlights and blue shadows. Opposing curves on each channel "
@@ -239,7 +239,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="instant-film",
         title="Instant film",
         category="Film & vintage",
-        photo="beach",
+        photo="jeju-coast",
         description=(
             "Lighten with a deep navy so no shadow goes below it, warm the "
             "image with Overlay and pull back saturation for a Polaroid feel."
@@ -255,7 +255,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="sepia",
         title="Sepia print",
         category="Film & vintage",
-        photo="portrait",
+        photo="hanbok-portrait",
         description=(
             "Convert to grayscale, then use per-channel curves as a gradient "
             "map: black becomes dark brown and white becomes warm cream."
@@ -271,7 +271,7 @@ levels = np.clip((x - 0.12) / 0.76, 0, 1)
         slug="lomo",
         title="Lomo",
         category="Film & vintage",
-        photo="flower-market",
+        photo="lotus-lanterns",
         description=(
             "Toy-camera look: high contrast, oversaturated color and dark "
             "corners. The vignette is a NumPy array blended with Multiply, "
@@ -294,10 +294,10 @@ vignette = np.clip(1.2 - 0.6 * (x**2 + y**2), 0, 1)[..., np.newaxis]
         slug="classic-bw",
         title="Classic black & white",
         category="Black & white",
-        photo="portrait",
+        photo="hanbok-portrait",
         description=(
             "Grayscale alone is often flat. An S-curve restores depth and "
-            "makes the textures of the beard and sweater stand out."
+            "brings out the texture of the beard and the woven gat hat."
         ),
         code="""
 (image.grayscale()
@@ -308,7 +308,7 @@ vignette = np.clip(1.2 - 0.6 * (x**2 + y**2), 0, 1)[..., np.newaxis]
         slug="red-filter-bw",
         title="B&W with a red filter",
         category="Black & white",
-        photo="architecture",
+        photo="jeju-coast",
         description=(
             "Film photographers used a red lens filter to turn blue skies "
             "almost black. Multiplying by red before converting to grayscale "
@@ -325,7 +325,7 @@ vignette = np.clip(1.2 - 0.6 * (x**2 + y**2), 0, 1)[..., np.newaxis]
         slug="noir",
         title="Noir",
         category="Black & white",
-        photo="city-night",
+        photo="seoul-night",
         description=(
             "Crushed blacks and bright highlights for a film-noir street. The "
             "curve's low second point drives most of the frame into shadow."
@@ -340,7 +340,7 @@ vignette = np.clip(1.2 - 0.6 * (x**2 + y**2), 0, 1)[..., np.newaxis]
         slug="cyanotype",
         title="Cyanotype",
         category="Black & white",
-        photo="forest",
+        photo="bamboo-forest",
         description=(
             "The 19th-century blueprint process, recreated with a gradient map "
             "from deep Prussian blue to pale cyan."
@@ -357,7 +357,7 @@ vignette = np.clip(1.2 - 0.6 * (x**2 + y**2), 0, 1)[..., np.newaxis]
         slug="high-key",
         title="High-key monochrome",
         category="Black & white",
-        photo="snowy-cabin",
+        photo="snowy-hanok",
         description=(
             "Bright, airy black and white: lighten toward white, then add "
             "contrast so the darkest details still read."
@@ -375,7 +375,7 @@ vignette = np.clip(1.2 - 0.6 * (x**2 + y**2), 0, 1)[..., np.newaxis]
         slug="duotone",
         title="Duotone poster",
         category="Creative effects",
-        photo="architecture",
+        photo="palace-eaves",
         description=(
             "Map shadows to one color and highlights to another. A two-point "
             "curve per channel acts as a gradient map."
@@ -392,16 +392,16 @@ for channel, lo, hi in zip("rgb", shadow, highlight):
         slug="double-exposure",
         title="Double exposure",
         category="Creative effects",
-        photo="silhouette",
+        photo="hanbok-silhouette",
         description=(
             "Blend modes accept another photo's pixels. Screen keeps the white "
-            "sky white and fills the dark silhouette with the forest; a pale "
+            "sky white and fills the dark silhouette with the bamboo; a pale "
             "green Multiply tints the result."
         ),
         code="""
-forest = LayerImage.from_file("photos/forest.jpg").get_image_as_array()
+bamboo = LayerImage.from_file("photos/bamboo-forest.jpg").get_image_as_array()
 
-(image.screen(forest)
+(image.screen(bamboo)
       .grayscale()
       .curve("rgb", [0, 0.12, 0.5, 0.88, 1])
       .multiply("#cfe3dc"))
@@ -411,10 +411,10 @@ forest = LayerImage.from_file("photos/forest.jpg").get_image_as_array()
         slug="graduated-filter",
         title="Graduated sky filter",
         category="Creative effects",
-        photo="mountain-lake",
+        photo="palace-pond",
         description=(
             "A vertical gradient from warm tint to white, blended with Multiply, "
-            "deepens the sky while leaving the lake untouched, like a "
+            "deepens the sky while leaving the pond untouched, like a "
             "graduated filter on a lens."
         ),
         code="""
@@ -429,11 +429,11 @@ image.multiply(gradient)
         slug="channel-swap",
         title="Channel swap",
         category="Creative effects",
-        photo="vintage-car",
+        photo="gamcheon-village",
         description=(
             "LayerImage works on plain NumPy arrays, so anything NumPy can do is "
             "fair game. Swapping the red and green channels turns the turquoise "
-            "car violet and the pink house lime."
+            "houses violet and the pink ones lime."
         ),
         code="""
 pixels = image.get_image_as_array()
@@ -446,10 +446,10 @@ image.contrast(1.1)
         slug="colorize",
         title="Colorize",
         category="Creative effects",
-        photo="flower-market",
+        photo="lotus-lanterns",
         description=(
             "hue() sets every pixel to a single hue while keeping saturation "
-            "and value, so the whole stall becomes shades of magenta."
+            "and value, so every lantern becomes a shade of magenta."
         ),
         code="""
 image.hue(0.88).contrast(1.1)
@@ -459,7 +459,7 @@ image.hue(0.88).contrast(1.1)
         slug="pastel-dream",
         title="Pastel dream",
         category="Creative effects",
-        photo="vintage-car",
+        photo="gamcheon-village",
         description=(
             "Soft and airy: lighten toward white, mute the colors and Screen a "
             "pale pink over everything."
@@ -485,7 +485,7 @@ BATCH_PRESET: dict = {
         {"type": "lighten", "hex": "#1e1b2e"},
     ]
 }
-BATCH_PHOTOS: list[str] = ["mountain-lake", "breakfast", "harbor", "cafe"]
+BATCH_PHOTOS: list[str] = ["palace-pond", "bibimbap", "fishing-harbor", "hanok-tea"]
 
 
 # ----------------------------------------------------------------------
@@ -493,7 +493,7 @@ BATCH_PHOTOS: list[str] = ["mountain-lake", "breakfast", "harbor", "cafe"]
 # ----------------------------------------------------------------------
 
 BLEND_COLOR = "#e8743b"
-BLEND_PHOTOS: list[str] = ["portrait", "mountain-lake", "flower-market"]
+BLEND_PHOTOS: list[str] = ["hanbok-portrait", "palace-pond", "lotus-lanterns"]
 
 # (method, group, formula) in the order of Photoshop's blend-mode menu.
 BLEND_MODES: list[tuple[str, str, str]] = [
@@ -513,11 +513,11 @@ BLEND_MODES: list[tuple[str, str, str]] = [
     ("pin_light", "Contrast", "Replace A depending on B"),
 ]
 
-OPACITY_PHOTO = "mountain-lake"
+OPACITY_PHOTO = "palace-pond"
 OPACITY_MODE = "overlay"
 OPACITY_COLOR = "#ff4f8b"
 OPACITY_STEPS: list[float] = [0.0, 0.25, 0.5, 0.75, 1.0]
 
-COLOR_PHOTO = "portrait"
+COLOR_PHOTO = "hanbok-portrait"
 COLOR_MODE = "soft_light"
 COLOR_SWATCHES: list[str] = ["#ff6b35", "#ffd23f", "#3bceac", "#0ead69", "#4361ee", "#c42bd8"]

@@ -73,7 +73,7 @@ JPEG_QUALITY = 80
 
 # The look switcher at the top of the overview page; the first look shown is
 # HERO_LOOKS[0], after the unedited "Original".
-HERO_PHOTO = "vintage-car"
+HERO_PHOTO = "gamcheon-village"
 HERO_LOOKS = ["cross-process", "pastel-dream", "channel-swap"]
 ARRAY_SNIPPET = """\
 h, w, _ = image.get_image_as_array().shape
@@ -85,7 +85,7 @@ image.multiply(gradient)  # white is neutral for multiply"""
 # Thumbnails beside each page in the overview's "In these docs" list.
 CONTENTS_EXAMPLES = ["teal-and-orange", "double-exposure", "cyanotype"]
 CONTENTS_BLEND_MODES = [
-    ("portrait", "soft_light"), ("mountain-lake", "color_dodge"), ("flower-market", "overlay"),
+    ("hanbok-portrait", "soft_light"), ("palace-pond", "color_dodge"), ("lotus-lanterns", "overlay"),
 ]
 
 # Measured on a 12-megapixel JPEG: load, curve, brightness, contrast, overlay,
