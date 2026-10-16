@@ -2,7 +2,9 @@
 
 A short walkthrough of layeris (1920×1080, 30 fps, 52.1 seconds),
 built with [Remotion](https://www.remotion.dev/). The rendered file is
-[`out/layeris.mp4`](out/layeris.mp4).
+[`docs/video/layeris.mp4`](../docs/video/layeris.mp4), where the docs site's
+overview page plays it, with
+[`docs/video/poster.jpg`](../docs/video/poster.jpg) as its poster frame.
 
 It follows the docs site's look: white page, DM Mono for the wordmark and
 code, Schibsted Grotesk for text, Besley for section titles, and the same
@@ -44,7 +46,8 @@ cd video
 npm install
 
 npm run start     # open Remotion Studio to preview and scrub
-npm run render    # render out/layeris.mp4
+npm run render    # render ../docs/video/layeris.mp4
+npm run poster    # render the poster frame, ../docs/video/poster.jpg
 ```
 
 To change an edit, update `scripts/build_assets.py` and rebuild the renders:
