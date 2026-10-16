@@ -35,7 +35,7 @@ from layeris import LayerImage, __version__  # noqa: E402
 
 import docs_layout as layout  # noqa: E402  (sibling module in scripts/)
 
-DEFAULT_SOURCE = REPO_ROOT / "docs" / "photos" / "gamcheon-village.jpg"
+DEFAULT_SOURCE = REPO_ROOT / "docs" / "photos" / "hanbok-portrait.jpg"
 PANEL_WIDTH = 480  # width of each before/after panel
 GUTTER = 4  # white gap between the two panels
 JPEG_QUALITY = 82

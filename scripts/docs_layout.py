@@ -8,9 +8,12 @@ so the generated pages need no build tooling.
 
 from __future__ import annotations
 
+import hashlib
 import html
 import re
 from dataclasses import dataclass
+from functools import cache
+from pathlib import Path
 
 REPO_URL = "https://github.com/subwaymatch/layer-is-python"
 
@@ -36,6 +39,20 @@ Section = tuple[str, str, int]
 
 # The Layer.is logo (docs/assets/logo.svg), used in the sidebar and as favicon.
 LOGO = "assets/logo.svg"
+
+ASSETS_DIR = Path(__file__).resolve().parent.parent / "docs" / "assets"
+
+
+@cache
+def asset_url(name: str) -> str:
+    """URL of a file in docs/assets/ with a hash of its contents appended.
+
+    GitHub Pages serves assets under fixed names with a 10-minute cache, so
+    without this a browser can pair a freshly built page with a stale
+    stylesheet. The hash gives every version of a file its own URL.
+    """
+    digest = hashlib.sha256((ASSETS_DIR / name).read_bytes()).hexdigest()[:10]
+    return f"assets/{name}?v={digest}"
 
 # GitHub's "mark-github" octicon (MIT licensed, github.com/primer/octicons).
 GITHUB_ICON = (
@@ -266,8 +283,8 @@ def page(
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{esc(FONTS_URL)}">
-<link rel="stylesheet" href="assets/site.css">
-<script src="assets/site.js" defer></script>
+<link rel="stylesheet" href="{asset_url("site.css")}">
+<script src="{asset_url("site.js")}" defer></script>
 </head>
 <body>
 <header class="mobilebar">
