@@ -10,7 +10,7 @@ Usage::
 
     export ELEVENLABS_API_KEY=...
     python video/scripts/generate_music.py                     # default style
-    python video/scripts/generate_music.py --style lofi --out /tmp/lofi.mp3
+    python video/scripts/generate_music.py --style piano --out /tmp/piano.mp3
 """
 
 from __future__ import annotations
@@ -26,8 +26,9 @@ VIDEO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUT = VIDEO_ROOT / "public" / "music.mp3"
 
 MODEL = "music_v2_5"
-# The composition's length: 1,563 frames at 30 fps (see src/Video.tsx).
-LENGTH_MS = 52_100
+# The music runs from the end of the intro to the end of the video: 1,433
+# frames at 30 fps (see MUSIC_START in src/Video.tsx).
+LENGTH_MS = 47_800
 
 # Shared by every style: what the track is for, and what to avoid.
 BRIEF = (
@@ -62,7 +63,7 @@ STYLES: dict[str, str] = {
         "after a few seconds, and it ends with the last chord ringing out."
     ),
 }
-DEFAULT_STYLE = "piano"
+DEFAULT_STYLE = "lofi"
 
 
 def main() -> None:

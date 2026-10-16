@@ -64,22 +64,26 @@ cd video && npm run assets
 Scene lengths are set in each file under `src/scenes/`; the composition's
 total length is their sum (see `src/Video.tsx`).
 
-## Music
+## Sound
 
-The background track, `public/music.mp3`, is a warm, minimal instrumental:
-felt piano over a light beat and plucked synth arpeggios, about 99 BPM, on a
-four-chord loop that changes once per bar. It was generated with the
-ElevenLabs Music API (`music_v2_5`) at the video's exact length, 52.1 seconds
-(1,563 frames at 30 fps). It gets fuller around the blend-modes scene and
-rings out under the outro. `src/Video.tsx` mixes it in at 80% volume.
+The intro is quiet except for a short shimmer as the logo appears
+(`public/logo.mp3`, from `scripts/generate_sound_effect.py`).
 
-`scripts/generate_music.py` holds the prompts. To generate a new take (needs
-`ELEVENLABS_API_KEY`):
+The music, `public/music.mp3`, starts as the logo fades out at the end of the
+intro. It is a mellow lo-fi instrumental: Rhodes chords over a laid-back beat
+with upright bass, about 86 BPM. It was generated with the ElevenLabs Music
+API (`music_v2_5`). This take is 52.1 seconds long, longer than the 47.8
+seconds between the intro and the end, so `src/Video.tsx` fades out its last
+second; by then it is already winding down.
+
+`scripts/generate_music.py` holds the prompts (`lofi`, `piano`, `marimba`) and
+sizes new takes to the 47.8 seconds exactly. Both scripts need
+`ELEVENLABS_API_KEY`:
 
 ```sh
-python3 scripts/generate_music.py                 # "piano" style, writes public/music.mp3
-python3 scripts/generate_music.py --style lofi    # or "marimba"
+python3 scripts/generate_music.py           # "lofi" style, writes public/music.mp3
+python3 scripts/generate_sound_effect.py    # writes public/logo.mp3
 ```
 
 Every run gives a different take. If the video's length changes, update
-`LENGTH_MS` in the script first.
+`LENGTH_MS` in the music script first.

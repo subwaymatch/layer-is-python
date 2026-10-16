@@ -1,5 +1,6 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Series, interpolate, staticFile} from 'remotion';
+import {AbsoluteFill, Audio, Sequence, Series, interpolate, staticFile} from 'remotion';
+import {EXIT_FRAMES} from './components/Scene';
 import './fonts';
 import {BLEND_FRAMES, BlendModes} from './scenes/BlendModes';
 import {CHAIN_FRAMES, Chain} from './scenes/Chain';
@@ -22,21 +23,29 @@ const SCENES: [React.FC, number][] = [
 
 export const TOTAL_FRAMES = SCENES.reduce((sum, [, frames]) => sum + frames, 0);
 
-// Background music from scripts/generate_music.py, generated at the video's
-// length. It ends on its own; the short fade only guards the final frames.
-// 0.8 brings it from -12.7 to about -14.6 LUFS, with headroom below 0 dBFS.
-const MUSIC_VOLUME = 0.8;
-const MUSIC_FADE_FRAMES = 15;
+// The logo's sound effect (scripts/generate_sound_effect.py) plays as its
+// outlines start to draw.
+const LOGO_SOUND_START = 3;
+
+// The music (scripts/generate_music.py) starts as the logo fades out at the
+// end of the intro, and fades over the last second so it ends with the video.
+const MUSIC_START = INTRO_FRAMES - EXIT_FRAMES;
+const MUSIC_FRAMES = TOTAL_FRAMES - MUSIC_START;
+const MUSIC_FADE_FRAMES = 30;
 const musicVolume = (frame: number) =>
-	MUSIC_VOLUME *
-	interpolate(frame, [TOTAL_FRAMES - MUSIC_FADE_FRAMES, TOTAL_FRAMES - 1], [1, 0], {
+	interpolate(frame, [MUSIC_FRAMES - MUSIC_FADE_FRAMES, MUSIC_FRAMES - 1], [1, 0], {
 		extrapolateLeft: 'clamp',
 		extrapolateRight: 'clamp',
 	});
 
 export const LayerisVideo: React.FC = () => (
 	<AbsoluteFill style={{background: colors.bg}}>
-		<Audio src={staticFile('music.mp3')} volume={musicVolume} />
+		<Sequence from={LOGO_SOUND_START} layout="none">
+			<Audio src={staticFile('logo.mp3')} />
+		</Sequence>
+		<Sequence from={MUSIC_START} layout="none">
+			<Audio src={staticFile('music.mp3')} volume={musicVolume} />
+		</Sequence>
 		<Series>
 			{SCENES.map(([SceneComponent, frames], i) => (
 				<Series.Sequence key={i} durationInFrames={frames}>
